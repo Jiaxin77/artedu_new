@@ -14,6 +14,33 @@
       </list>
     </option>
   </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/AnswerLibraryMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/AssessAndPlanMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/AssessLibraryMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/BorgScaleAnswerPaperMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/BorgScaleMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/ChoiceQuestionLibraryMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/ExpertAnswerPaperMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/ExpertMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/ExpertPlanMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/ExpertQuestionScoreMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/ExpertScoreMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/ExpertTaskContentMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/ExpertTaskMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/FibModelMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/HardwareMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/IndexAndMethodMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/IndexLibraryMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/MethodLibraryMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/PaperListMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/QuestionLibraryMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/RecordTableMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/SurveyLibraryMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/SusScaleAnswerPaperMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/SusScaleMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/SusScaleQuestionScoreMapper.xml" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

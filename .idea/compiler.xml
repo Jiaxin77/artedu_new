@@ -7,16 +7,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="dky" />
+        <module name="artedu" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="7">
-      <module name="dky" target="1.8" />
+      <module name="artedu" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="dky" options="-parameters" />
+      <module name="artedu" options="-parameters" />
     </option>
   </component>
 </project>
