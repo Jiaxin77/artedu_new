@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class User implements Serializable {
-    private Integer userId;
+    private Integer id;
 
     /**
      * 姓名
