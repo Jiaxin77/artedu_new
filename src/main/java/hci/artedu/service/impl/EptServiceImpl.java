@@ -4,6 +4,7 @@ import hci.artedu.common.ServerResponse;
 import hci.artedu.dao.ExperimentMapper;
 import hci.artedu.pojo.Experiment;
 import hci.artedu.pojo.ExperimentExample;
+import hci.artedu.service.EptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,7 +22,7 @@ import java.util.List;
  * @Version 1.0
  **/
 @Service
-public class EptServiceImpl {
+public class EptServiceImpl implements EptService {
 
     @Autowired
     private ExperimentMapper experimentMapper;
@@ -47,14 +48,17 @@ public class EptServiceImpl {
         {
             HashMap<String,Object> eptInfo = new HashMap<String, Object>();
             eptInfo.put("eptId",ept.getId());
-            eptInfo.put("eptName",ept.getEptname());
-            eptInfo.put("eptTime",ept.getEpttime());
+            eptInfo.put("eptName",ept.getEptName());
+            eptInfo.put("eptTime",ept.getEptTime());
             eptList.add(eptInfo);
         }
 
         return ServerResponse.createBySuccess("获取成功",eptList);
     }
 
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public ServerResponse<HashMap<String,Object>> getOneEptPurpose(int eptId)
     {
         /**
@@ -65,8 +69,13 @@ public class EptServiceImpl {
          * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
          **/
 
-        ExperimentExample experimentExample = new ExperimentExample();
-        ExperimentExample.Criteria
+        Experiment experiment = experimentMapper.selectByPrimaryKey((Integer)eptId);
+        HashMap<String,Object> eptInfo = new HashMap<String, Object>();
+        eptInfo.put("eptId",experiment.getId());
+        eptInfo.put("eptName",experiment.getEptName());
+        eptInfo.put("eptPurpose",experiment.getPurpose());
+
+        return ServerResponse.createBySuccess("获取成功",eptInfo);
 
 
     }
