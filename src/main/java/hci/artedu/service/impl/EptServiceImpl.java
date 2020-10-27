@@ -27,7 +27,7 @@ public class EptServiceImpl implements EptService {
     @Autowired
     private ExperimentMapper experimentMapper;
 
-    @Override
+
     @Transactional(propagation = Propagation.SUPPORTS)
     public ServerResponse<ArrayList> getEptList()
     {
@@ -57,6 +57,23 @@ public class EptServiceImpl implements EptService {
     }
 
 
+
+    //    public ServerResponse<HashMap<String,Object>> getOneEptPurpose(int eptId)
+//    {
+//        /**
+//         * @Author jiaxin
+//         * @Description 获取某实验目的//TODO
+//         * @Date 11:14 上午 2020/10/27
+//         * @Param [eptId]
+//         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+//         **/
+//
+//        ExperimentExample experimentExample = new ExperimentExample();
+//
+//        return ServerResponse.createBySuccess("获取成功");
+//
+//    }
+
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public ServerResponse<HashMap<String,Object>> getOneEptPurpose(int eptId)
@@ -79,6 +96,5 @@ public class EptServiceImpl implements EptService {
 
 
     }
-
 
 }
