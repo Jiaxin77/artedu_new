@@ -18,17 +18,17 @@ public class Useroperation implements Serializable {
     /**
      * 用户id
      */
-    private Integer userid;
+    private Integer userId;
 
     /**
      * 用户姓名
      */
-    private String username;
+    private String userName;
 
     /**
      * 用户操作（"登录成功"/"退出登录"/"开始实验"/"退出实验"）
      */
-    private String useroperation;
+    private String userOperation;
 
     /**
      * 参数（学习的课程ID/实验id）
@@ -38,12 +38,12 @@ public class Useroperation implements Serializable {
     /**
      * 用户ip地址
      */
-    private String userip;
+    private String userIp;
 
     /**
      * 操作时间
      */
-    private Date operationtime;
+    private Date operationTime;
 
     private static final long serialVersionUID = 1L;
 }

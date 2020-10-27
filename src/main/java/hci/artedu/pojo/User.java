@@ -14,57 +14,57 @@ public class User implements Serializable {
     /**
      * 姓名
      */
-    private String username;
+    private String userName;
 
     /**
      * 性别
      */
-    private Boolean usergender;
+    private Boolean userGender;
 
     /**
      * 邮箱
      */
-    private String useremail;
+    private String userEmail;
 
     /**
      * 密码
      */
-    private String userpassword;
+    private String userPassword;
 
     /**
      * 用户类型
      */
-    private Integer usertype;
+    private Integer userType;
 
     /**
      * 学号/工号
      */
-    private String usernumber;
+    private String userNumber;
 
     /**
      * 学校名称
      */
-    private String schoolname;
+    private String schoolName;
 
     /**
      * 班号
      */
-    private String classname;
+    private String className;
 
     /**
      * 对素描的掌握程度
      */
-    private Integer levelofmastery;
+    private Integer levelOfMastery;
 
     /**
      * 对素描课程态度
      */
-    private Integer userattitude;
+    private Integer userAttitude;
 
     /**
      * 成绩
      */
-    private Double userscore;
+    private Double userScore;
 
     private static final long serialVersionUID = 1L;
 }

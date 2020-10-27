@@ -3,14 +3,14 @@
 <mapper namespace="hci.artedu.dao.ExperimentMapper">
   <resultMap id="BaseResultMap" type="hci.artedu.pojo.Experiment">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="eptName" jdbcType="VARCHAR" property="eptname" />
-    <result column="eptTime" jdbcType="BIGINT" property="epttime" />
-    <result column="difficultDegree" jdbcType="INTEGER" property="difficultdegree" />
-    <result column="eptType" jdbcType="VARCHAR" property="epttype" />
-    <result column="passRate" jdbcType="INTEGER" property="passrate" />
-    <result column="participateRate" jdbcType="INTEGER" property="participaterate" />
+    <result column="eptName" jdbcType="VARCHAR" property="eptName" />
+    <result column="eptTime" jdbcType="BIGINT" property="eptTime" />
+    <result column="difficultDegree" jdbcType="INTEGER" property="difficultDegree" />
+    <result column="eptType" jdbcType="VARCHAR" property="eptType" />
+    <result column="passRate" jdbcType="INTEGER" property="passRate" />
+    <result column="participateRate" jdbcType="INTEGER" property="participateRate" />
     <result column="course" jdbcType="VARCHAR" property="course" />
-    <result column="allCourseTime" jdbcType="INTEGER" property="allcoursetime" />
+    <result column="allCourseTime" jdbcType="INTEGER" property="allCourseTime" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="des" jdbcType="VARCHAR" property="des" />
     <result column="purpose" jdbcType="VARCHAR" property="purpose" />
@@ -119,9 +119,9 @@
       des, purpose, requirement, 
       principle, `method`, steps, 
       device)
-    values (#{eptname,jdbcType=VARCHAR}, #{epttime,jdbcType=BIGINT}, #{difficultdegree,jdbcType=INTEGER}, 
-      #{epttype,jdbcType=VARCHAR}, #{passrate,jdbcType=INTEGER}, #{participaterate,jdbcType=INTEGER}, 
-      #{course,jdbcType=VARCHAR}, #{allcoursetime,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+    values (#{eptName,jdbcType=VARCHAR}, #{eptTime,jdbcType=BIGINT}, #{difficultDegree,jdbcType=INTEGER}, 
+      #{eptType,jdbcType=VARCHAR}, #{passRate,jdbcType=INTEGER}, #{participateRate,jdbcType=INTEGER}, 
+      #{course,jdbcType=VARCHAR}, #{allCourseTime,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
       #{des,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, #{requirement,jdbcType=VARCHAR}, 
       #{principle,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{steps,jdbcType=VARCHAR}, 
       #{device,jdbcType=VARCHAR})
@@ -129,28 +129,28 @@
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Experiment" useGeneratedKeys="true">
     insert into experiment
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="eptname != null">
+      <if test="eptName != null">
         eptName,
       </if>
-      <if test="epttime != null">
+      <if test="eptTime != null">
         eptTime,
       </if>
-      <if test="difficultdegree != null">
+      <if test="difficultDegree != null">
         difficultDegree,
       </if>
-      <if test="epttype != null">
+      <if test="eptType != null">
         eptType,
       </if>
-      <if test="passrate != null">
+      <if test="passRate != null">
         passRate,
       </if>
-      <if test="participaterate != null">
+      <if test="participateRate != null">
         participateRate,
       </if>
       <if test="course != null">
         course,
       </if>
-      <if test="allcoursetime != null">
+      <if test="allCourseTime != null">
         allCourseTime,
       </if>
       <if test="content != null">
@@ -179,29 +179,29 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="eptname != null">
-        #{eptname,jdbcType=VARCHAR},
+      <if test="eptName != null">
+        #{eptName,jdbcType=VARCHAR},
       </if>
-      <if test="epttime != null">
-        #{epttime,jdbcType=BIGINT},
+      <if test="eptTime != null">
+        #{eptTime,jdbcType=BIGINT},
       </if>
-      <if test="difficultdegree != null">
-        #{difficultdegree,jdbcType=INTEGER},
+      <if test="difficultDegree != null">
+        #{difficultDegree,jdbcType=INTEGER},
       </if>
-      <if test="epttype != null">
-        #{epttype,jdbcType=VARCHAR},
+      <if test="eptType != null">
+        #{eptType,jdbcType=VARCHAR},
       </if>
-      <if test="passrate != null">
-        #{passrate,jdbcType=INTEGER},
+      <if test="passRate != null">
+        #{passRate,jdbcType=INTEGER},
       </if>
-      <if test="participaterate != null">
-        #{participaterate,jdbcType=INTEGER},
+      <if test="participateRate != null">
+        #{participateRate,jdbcType=INTEGER},
       </if>
       <if test="course != null">
         #{course,jdbcType=VARCHAR},
       </if>
-      <if test="allcoursetime != null">
-        #{allcoursetime,jdbcType=INTEGER},
+      <if test="allCourseTime != null">
+        #{allCourseTime,jdbcType=INTEGER},
       </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
@@ -241,29 +241,29 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.eptname != null">
-        eptName = #{record.eptname,jdbcType=VARCHAR},
+      <if test="record.eptName != null">
+        eptName = #{record.eptName,jdbcType=VARCHAR},
       </if>
-      <if test="record.epttime != null">
-        eptTime = #{record.epttime,jdbcType=BIGINT},
+      <if test="record.eptTime != null">
+        eptTime = #{record.eptTime,jdbcType=BIGINT},
       </if>
-      <if test="record.difficultdegree != null">
-        difficultDegree = #{record.difficultdegree,jdbcType=INTEGER},
+      <if test="record.difficultDegree != null">
+        difficultDegree = #{record.difficultDegree,jdbcType=INTEGER},
       </if>
-      <if test="record.epttype != null">
-        eptType = #{record.epttype,jdbcType=VARCHAR},
+      <if test="record.eptType != null">
+        eptType = #{record.eptType,jdbcType=VARCHAR},
       </if>
-      <if test="record.passrate != null">
-        passRate = #{record.passrate,jdbcType=INTEGER},
+      <if test="record.passRate != null">
+        passRate = #{record.passRate,jdbcType=INTEGER},
       </if>
-      <if test="record.participaterate != null">
-        participateRate = #{record.participaterate,jdbcType=INTEGER},
+      <if test="record.participateRate != null">
+        participateRate = #{record.participateRate,jdbcType=INTEGER},
       </if>
       <if test="record.course != null">
         course = #{record.course,jdbcType=VARCHAR},
       </if>
-      <if test="record.allcoursetime != null">
-        allCourseTime = #{record.allcoursetime,jdbcType=INTEGER},
+      <if test="record.allCourseTime != null">
+        allCourseTime = #{record.allCourseTime,jdbcType=INTEGER},
       </if>
       <if test="record.content != null">
         content = #{record.content,jdbcType=VARCHAR},
@@ -297,14 +297,14 @@
   <update id="updateByExample" parameterType="map">
     update experiment
     set id = #{record.id,jdbcType=INTEGER},
-      eptName = #{record.eptname,jdbcType=VARCHAR},
-      eptTime = #{record.epttime,jdbcType=BIGINT},
-      difficultDegree = #{record.difficultdegree,jdbcType=INTEGER},
-      eptType = #{record.epttype,jdbcType=VARCHAR},
-      passRate = #{record.passrate,jdbcType=INTEGER},
-      participateRate = #{record.participaterate,jdbcType=INTEGER},
+      eptName = #{record.eptName,jdbcType=VARCHAR},
+      eptTime = #{record.eptTime,jdbcType=BIGINT},
+      difficultDegree = #{record.difficultDegree,jdbcType=INTEGER},
+      eptType = #{record.eptType,jdbcType=VARCHAR},
+      passRate = #{record.passRate,jdbcType=INTEGER},
+      participateRate = #{record.participateRate,jdbcType=INTEGER},
       course = #{record.course,jdbcType=VARCHAR},
-      allCourseTime = #{record.allcoursetime,jdbcType=INTEGER},
+      allCourseTime = #{record.allCourseTime,jdbcType=INTEGER},
       content = #{record.content,jdbcType=VARCHAR},
       des = #{record.des,jdbcType=VARCHAR},
       purpose = #{record.purpose,jdbcType=VARCHAR},
@@ -320,29 +320,29 @@
   <update id="updateByPrimaryKeySelective" parameterType="hci.artedu.pojo.Experiment">
     update experiment
     <set>
-      <if test="eptname != null">
-        eptName = #{eptname,jdbcType=VARCHAR},
+      <if test="eptName != null">
+        eptName = #{eptName,jdbcType=VARCHAR},
       </if>
-      <if test="epttime != null">
-        eptTime = #{epttime,jdbcType=BIGINT},
+      <if test="eptTime != null">
+        eptTime = #{eptTime,jdbcType=BIGINT},
       </if>
-      <if test="difficultdegree != null">
-        difficultDegree = #{difficultdegree,jdbcType=INTEGER},
+      <if test="difficultDegree != null">
+        difficultDegree = #{difficultDegree,jdbcType=INTEGER},
       </if>
-      <if test="epttype != null">
-        eptType = #{epttype,jdbcType=VARCHAR},
+      <if test="eptType != null">
+        eptType = #{eptType,jdbcType=VARCHAR},
       </if>
-      <if test="passrate != null">
-        passRate = #{passrate,jdbcType=INTEGER},
+      <if test="passRate != null">
+        passRate = #{passRate,jdbcType=INTEGER},
       </if>
-      <if test="participaterate != null">
-        participateRate = #{participaterate,jdbcType=INTEGER},
+      <if test="participateRate != null">
+        participateRate = #{participateRate,jdbcType=INTEGER},
       </if>
       <if test="course != null">
         course = #{course,jdbcType=VARCHAR},
       </if>
-      <if test="allcoursetime != null">
-        allCourseTime = #{allcoursetime,jdbcType=INTEGER},
+      <if test="allCourseTime != null">
+        allCourseTime = #{allCourseTime,jdbcType=INTEGER},
       </if>
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
@@ -373,14 +373,14 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="hci.artedu.pojo.Experiment">
     update experiment
-    set eptName = #{eptname,jdbcType=VARCHAR},
-      eptTime = #{epttime,jdbcType=BIGINT},
-      difficultDegree = #{difficultdegree,jdbcType=INTEGER},
-      eptType = #{epttype,jdbcType=VARCHAR},
-      passRate = #{passrate,jdbcType=INTEGER},
-      participateRate = #{participaterate,jdbcType=INTEGER},
+    set eptName = #{eptName,jdbcType=VARCHAR},
+      eptTime = #{eptTime,jdbcType=BIGINT},
+      difficultDegree = #{difficultDegree,jdbcType=INTEGER},
+      eptType = #{eptType,jdbcType=VARCHAR},
+      passRate = #{passRate,jdbcType=INTEGER},
+      participateRate = #{participateRate,jdbcType=INTEGER},
       course = #{course,jdbcType=VARCHAR},
-      allCourseTime = #{allcoursetime,jdbcType=INTEGER},
+      allCourseTime = #{allCourseTime,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
       des = #{des,jdbcType=VARCHAR},
       purpose = #{purpose,jdbcType=VARCHAR},

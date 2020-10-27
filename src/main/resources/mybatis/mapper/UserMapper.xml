@@ -3,17 +3,17 @@
 <mapper namespace="hci.artedu.dao.UserMapper">
   <resultMap id="BaseResultMap" type="hci.artedu.pojo.User">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="userName" jdbcType="VARCHAR" property="username" />
-    <result column="userGender" jdbcType="BOOLEAN" property="usergender" />
-    <result column="userEmail" jdbcType="VARCHAR" property="useremail" />
-    <result column="userPassword" jdbcType="VARCHAR" property="userpassword" />
-    <result column="userType" jdbcType="INTEGER" property="usertype" />
-    <result column="userNumber" jdbcType="VARCHAR" property="usernumber" />
-    <result column="schoolName" jdbcType="VARCHAR" property="schoolname" />
-    <result column="className" jdbcType="VARCHAR" property="classname" />
-    <result column="levelOfMastery" jdbcType="INTEGER" property="levelofmastery" />
-    <result column="userAttitude" jdbcType="INTEGER" property="userattitude" />
-    <result column="userScore" jdbcType="FLOAT" property="userscore" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="userGender" jdbcType="BOOLEAN" property="userGender" />
+    <result column="userEmail" jdbcType="VARCHAR" property="userEmail" />
+    <result column="userPassword" jdbcType="VARCHAR" property="userPassword" />
+    <result column="userType" jdbcType="INTEGER" property="userType" />
+    <result column="userNumber" jdbcType="VARCHAR" property="userNumber" />
+    <result column="schoolName" jdbcType="VARCHAR" property="schoolName" />
+    <result column="className" jdbcType="VARCHAR" property="className" />
+    <result column="levelOfMastery" jdbcType="INTEGER" property="levelOfMastery" />
+    <result column="userAttitude" jdbcType="INTEGER" property="userAttitude" />
+    <result column="userScore" jdbcType="FLOAT" property="userScore" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -112,81 +112,81 @@
       userPassword, userType, userNumber, 
       schoolName, className, levelOfMastery, 
       userAttitude, userScore)
-    values (#{username,jdbcType=VARCHAR}, #{usergender,jdbcType=BOOLEAN}, #{useremail,jdbcType=VARCHAR}, 
-      #{userpassword,jdbcType=VARCHAR}, #{usertype,jdbcType=INTEGER}, #{usernumber,jdbcType=VARCHAR}, 
-      #{schoolname,jdbcType=VARCHAR}, #{classname,jdbcType=VARCHAR}, #{levelofmastery,jdbcType=INTEGER}, 
-      #{userattitude,jdbcType=INTEGER}, #{userscore,jdbcType=FLOAT})
+    values (#{userName,jdbcType=VARCHAR}, #{userGender,jdbcType=BOOLEAN}, #{userEmail,jdbcType=VARCHAR}, 
+      #{userPassword,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{userNumber,jdbcType=VARCHAR}, 
+      #{schoolName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{levelOfMastery,jdbcType=INTEGER}, 
+      #{userAttitude,jdbcType=INTEGER}, #{userScore,jdbcType=FLOAT})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.User" useGeneratedKeys="true">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="username != null">
+      <if test="userName != null">
         userName,
       </if>
-      <if test="usergender != null">
+      <if test="userGender != null">
         userGender,
       </if>
-      <if test="useremail != null">
+      <if test="userEmail != null">
         userEmail,
       </if>
-      <if test="userpassword != null">
+      <if test="userPassword != null">
         userPassword,
       </if>
-      <if test="usertype != null">
+      <if test="userType != null">
         userType,
       </if>
-      <if test="usernumber != null">
+      <if test="userNumber != null">
         userNumber,
       </if>
-      <if test="schoolname != null">
+      <if test="schoolName != null">
         schoolName,
       </if>
-      <if test="classname != null">
+      <if test="className != null">
         className,
       </if>
-      <if test="levelofmastery != null">
+      <if test="levelOfMastery != null">
         levelOfMastery,
       </if>
-      <if test="userattitude != null">
+      <if test="userAttitude != null">
         userAttitude,
       </if>
-      <if test="userscore != null">
+      <if test="userScore != null">
         userScore,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="usergender != null">
-        #{usergender,jdbcType=BOOLEAN},
+      <if test="userGender != null">
+        #{userGender,jdbcType=BOOLEAN},
       </if>
-      <if test="useremail != null">
-        #{useremail,jdbcType=VARCHAR},
+      <if test="userEmail != null">
+        #{userEmail,jdbcType=VARCHAR},
       </if>
-      <if test="userpassword != null">
-        #{userpassword,jdbcType=VARCHAR},
+      <if test="userPassword != null">
+        #{userPassword,jdbcType=VARCHAR},
       </if>
-      <if test="usertype != null">
-        #{usertype,jdbcType=INTEGER},
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
       </if>
-      <if test="usernumber != null">
-        #{usernumber,jdbcType=VARCHAR},
+      <if test="userNumber != null">
+        #{userNumber,jdbcType=VARCHAR},
       </if>
-      <if test="schoolname != null">
-        #{schoolname,jdbcType=VARCHAR},
+      <if test="schoolName != null">
+        #{schoolName,jdbcType=VARCHAR},
       </if>
-      <if test="classname != null">
-        #{classname,jdbcType=VARCHAR},
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
       </if>
-      <if test="levelofmastery != null">
-        #{levelofmastery,jdbcType=INTEGER},
+      <if test="levelOfMastery != null">
+        #{levelOfMastery,jdbcType=INTEGER},
       </if>
-      <if test="userattitude != null">
-        #{userattitude,jdbcType=INTEGER},
+      <if test="userAttitude != null">
+        #{userAttitude,jdbcType=INTEGER},
       </if>
-      <if test="userscore != null">
-        #{userscore,jdbcType=FLOAT},
+      <if test="userScore != null">
+        #{userScore,jdbcType=FLOAT},
       </if>
     </trim>
   </insert>
@@ -202,38 +202,38 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.username != null">
-        userName = #{record.username,jdbcType=VARCHAR},
+      <if test="record.userName != null">
+        userName = #{record.userName,jdbcType=VARCHAR},
       </if>
-      <if test="record.usergender != null">
-        userGender = #{record.usergender,jdbcType=BOOLEAN},
+      <if test="record.userGender != null">
+        userGender = #{record.userGender,jdbcType=BOOLEAN},
       </if>
-      <if test="record.useremail != null">
-        userEmail = #{record.useremail,jdbcType=VARCHAR},
+      <if test="record.userEmail != null">
+        userEmail = #{record.userEmail,jdbcType=VARCHAR},
       </if>
-      <if test="record.userpassword != null">
-        userPassword = #{record.userpassword,jdbcType=VARCHAR},
+      <if test="record.userPassword != null">
+        userPassword = #{record.userPassword,jdbcType=VARCHAR},
       </if>
-      <if test="record.usertype != null">
-        userType = #{record.usertype,jdbcType=INTEGER},
+      <if test="record.userType != null">
+        userType = #{record.userType,jdbcType=INTEGER},
       </if>
-      <if test="record.usernumber != null">
-        userNumber = #{record.usernumber,jdbcType=VARCHAR},
+      <if test="record.userNumber != null">
+        userNumber = #{record.userNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.schoolname != null">
-        schoolName = #{record.schoolname,jdbcType=VARCHAR},
+      <if test="record.schoolName != null">
+        schoolName = #{record.schoolName,jdbcType=VARCHAR},
       </if>
-      <if test="record.classname != null">
-        className = #{record.classname,jdbcType=VARCHAR},
+      <if test="record.className != null">
+        className = #{record.className,jdbcType=VARCHAR},
       </if>
-      <if test="record.levelofmastery != null">
-        levelOfMastery = #{record.levelofmastery,jdbcType=INTEGER},
+      <if test="record.levelOfMastery != null">
+        levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},
       </if>
-      <if test="record.userattitude != null">
-        userAttitude = #{record.userattitude,jdbcType=INTEGER},
+      <if test="record.userAttitude != null">
+        userAttitude = #{record.userAttitude,jdbcType=INTEGER},
       </if>
-      <if test="record.userscore != null">
-        userScore = #{record.userscore,jdbcType=FLOAT},
+      <if test="record.userScore != null">
+        userScore = #{record.userScore,jdbcType=FLOAT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -243,17 +243,17 @@
   <update id="updateByExample" parameterType="map">
     update user
     set id = #{record.id,jdbcType=INTEGER},
-      userName = #{record.username,jdbcType=VARCHAR},
-      userGender = #{record.usergender,jdbcType=BOOLEAN},
-      userEmail = #{record.useremail,jdbcType=VARCHAR},
-      userPassword = #{record.userpassword,jdbcType=VARCHAR},
-      userType = #{record.usertype,jdbcType=INTEGER},
-      userNumber = #{record.usernumber,jdbcType=VARCHAR},
-      schoolName = #{record.schoolname,jdbcType=VARCHAR},
-      className = #{record.classname,jdbcType=VARCHAR},
-      levelOfMastery = #{record.levelofmastery,jdbcType=INTEGER},
-      userAttitude = #{record.userattitude,jdbcType=INTEGER},
-      userScore = #{record.userscore,jdbcType=FLOAT}
+      userName = #{record.userName,jdbcType=VARCHAR},
+      userGender = #{record.userGender,jdbcType=BOOLEAN},
+      userEmail = #{record.userEmail,jdbcType=VARCHAR},
+      userPassword = #{record.userPassword,jdbcType=VARCHAR},
+      userType = #{record.userType,jdbcType=INTEGER},
+      userNumber = #{record.userNumber,jdbcType=VARCHAR},
+      schoolName = #{record.schoolName,jdbcType=VARCHAR},
+      className = #{record.className,jdbcType=VARCHAR},
+      levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},
+      userAttitude = #{record.userAttitude,jdbcType=INTEGER},
+      userScore = #{record.userScore,jdbcType=FLOAT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -261,55 +261,55 @@
   <update id="updateByPrimaryKeySelective" parameterType="hci.artedu.pojo.User">
     update user
     <set>
-      <if test="username != null">
-        userName = #{username,jdbcType=VARCHAR},
+      <if test="userName != null">
+        userName = #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="usergender != null">
-        userGender = #{usergender,jdbcType=BOOLEAN},
+      <if test="userGender != null">
+        userGender = #{userGender,jdbcType=BOOLEAN},
       </if>
-      <if test="useremail != null">
-        userEmail = #{useremail,jdbcType=VARCHAR},
+      <if test="userEmail != null">
+        userEmail = #{userEmail,jdbcType=VARCHAR},
       </if>
-      <if test="userpassword != null">
-        userPassword = #{userpassword,jdbcType=VARCHAR},
+      <if test="userPassword != null">
+        userPassword = #{userPassword,jdbcType=VARCHAR},
       </if>
-      <if test="usertype != null">
-        userType = #{usertype,jdbcType=INTEGER},
+      <if test="userType != null">
+        userType = #{userType,jdbcType=INTEGER},
       </if>
-      <if test="usernumber != null">
-        userNumber = #{usernumber,jdbcType=VARCHAR},
+      <if test="userNumber != null">
+        userNumber = #{userNumber,jdbcType=VARCHAR},
       </if>
-      <if test="schoolname != null">
-        schoolName = #{schoolname,jdbcType=VARCHAR},
+      <if test="schoolName != null">
+        schoolName = #{schoolName,jdbcType=VARCHAR},
       </if>
-      <if test="classname != null">
-        className = #{classname,jdbcType=VARCHAR},
+      <if test="className != null">
+        className = #{className,jdbcType=VARCHAR},
       </if>
-      <if test="levelofmastery != null">
-        levelOfMastery = #{levelofmastery,jdbcType=INTEGER},
+      <if test="levelOfMastery != null">
+        levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},
       </if>
-      <if test="userattitude != null">
-        userAttitude = #{userattitude,jdbcType=INTEGER},
+      <if test="userAttitude != null">
+        userAttitude = #{userAttitude,jdbcType=INTEGER},
       </if>
-      <if test="userscore != null">
-        userScore = #{userscore,jdbcType=FLOAT},
+      <if test="userScore != null">
+        userScore = #{userScore,jdbcType=FLOAT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="hci.artedu.pojo.User">
     update user
-    set userName = #{username,jdbcType=VARCHAR},
-      userGender = #{usergender,jdbcType=BOOLEAN},
-      userEmail = #{useremail,jdbcType=VARCHAR},
-      userPassword = #{userpassword,jdbcType=VARCHAR},
-      userType = #{usertype,jdbcType=INTEGER},
-      userNumber = #{usernumber,jdbcType=VARCHAR},
-      schoolName = #{schoolname,jdbcType=VARCHAR},
-      className = #{classname,jdbcType=VARCHAR},
-      levelOfMastery = #{levelofmastery,jdbcType=INTEGER},
-      userAttitude = #{userattitude,jdbcType=INTEGER},
-      userScore = #{userscore,jdbcType=FLOAT}
+    set userName = #{userName,jdbcType=VARCHAR},
+      userGender = #{userGender,jdbcType=BOOLEAN},
+      userEmail = #{userEmail,jdbcType=VARCHAR},
+      userPassword = #{userPassword,jdbcType=VARCHAR},
+      userType = #{userType,jdbcType=INTEGER},
+      userNumber = #{userNumber,jdbcType=VARCHAR},
+      schoolName = #{schoolName,jdbcType=VARCHAR},
+      className = #{className,jdbcType=VARCHAR},
+      levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},
+      userAttitude = #{userAttitude,jdbcType=INTEGER},
+      userScore = #{userScore,jdbcType=FLOAT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

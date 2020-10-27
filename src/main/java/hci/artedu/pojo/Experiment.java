@@ -18,32 +18,32 @@ public class Experiment implements Serializable {
     /**
      * 实验名称
      */
-    private String eptname;
+    private String eptName;
 
     /**
      * 实验课时数
      */
-    private Long epttime;
+    private Long eptTime;
 
     /**
      * 难易程度
      */
-    private Integer difficultdegree;
+    private Integer difficultDegree;
 
     /**
      * 实验类别
      */
-    private String epttype;
+    private String eptType;
 
     /**
      * 实验通过率
      */
-    private Integer passrate;
+    private Integer passRate;
 
     /**
      * 实验参与率
      */
-    private Integer participaterate;
+    private Integer participateRate;
 
     /**
      * 实验课程
@@ -53,7 +53,7 @@ public class Experiment implements Serializable {
     /**
      * 总课时数
      */
-    private Integer allcoursetime;
+    private Integer allCourseTime;
 
     /**
      * 实验内容

@@ -3,12 +3,12 @@
 <mapper namespace="hci.artedu.dao.UseroperationMapper">
   <resultMap id="BaseResultMap" type="hci.artedu.pojo.Useroperation">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="userId" jdbcType="INTEGER" property="userid" />
-    <result column="userName" jdbcType="VARCHAR" property="username" />
-    <result column="userOperation" jdbcType="VARCHAR" property="useroperation" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="userOperation" jdbcType="VARCHAR" property="userOperation" />
     <result column="params" jdbcType="VARCHAR" property="params" />
-    <result column="userIp" jdbcType="VARCHAR" property="userip" />
-    <result column="operationTime" jdbcType="TIMESTAMP" property="operationtime" />
+    <result column="userIp" jdbcType="VARCHAR" property="userIp" />
+    <result column="operationTime" jdbcType="TIMESTAMP" property="operationTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -105,50 +105,50 @@
     insert into userOperation (userId, userName, userOperation, 
       params, userIp, operationTime
       )
-    values (#{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{useroperation,jdbcType=VARCHAR}, 
-      #{params,jdbcType=VARCHAR}, #{userip,jdbcType=VARCHAR}, #{operationtime,jdbcType=TIMESTAMP}
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userOperation,jdbcType=VARCHAR}, 
+      #{params,jdbcType=VARCHAR}, #{userIp,jdbcType=VARCHAR}, #{operationTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Useroperation" useGeneratedKeys="true">
     insert into userOperation
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userid != null">
+      <if test="userId != null">
         userId,
       </if>
-      <if test="username != null">
+      <if test="userName != null">
         userName,
       </if>
-      <if test="useroperation != null">
+      <if test="userOperation != null">
         userOperation,
       </if>
       <if test="params != null">
         params,
       </if>
-      <if test="userip != null">
+      <if test="userIp != null">
         userIp,
       </if>
-      <if test="operationtime != null">
+      <if test="operationTime != null">
         operationTime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userid != null">
-        #{userid,jdbcType=INTEGER},
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
       </if>
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="useroperation != null">
-        #{useroperation,jdbcType=VARCHAR},
+      <if test="userOperation != null">
+        #{userOperation,jdbcType=VARCHAR},
       </if>
       <if test="params != null">
         #{params,jdbcType=VARCHAR},
       </if>
-      <if test="userip != null">
-        #{userip,jdbcType=VARCHAR},
+      <if test="userIp != null">
+        #{userIp,jdbcType=VARCHAR},
       </if>
-      <if test="operationtime != null">
-        #{operationtime,jdbcType=TIMESTAMP},
+      <if test="operationTime != null">
+        #{operationTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -164,23 +164,23 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.userid != null">
-        userId = #{record.userid,jdbcType=INTEGER},
+      <if test="record.userId != null">
+        userId = #{record.userId,jdbcType=INTEGER},
       </if>
-      <if test="record.username != null">
-        userName = #{record.username,jdbcType=VARCHAR},
+      <if test="record.userName != null">
+        userName = #{record.userName,jdbcType=VARCHAR},
       </if>
-      <if test="record.useroperation != null">
-        userOperation = #{record.useroperation,jdbcType=VARCHAR},
+      <if test="record.userOperation != null">
+        userOperation = #{record.userOperation,jdbcType=VARCHAR},
       </if>
       <if test="record.params != null">
         params = #{record.params,jdbcType=VARCHAR},
       </if>
-      <if test="record.userip != null">
-        userIp = #{record.userip,jdbcType=VARCHAR},
+      <if test="record.userIp != null">
+        userIp = #{record.userIp,jdbcType=VARCHAR},
       </if>
-      <if test="record.operationtime != null">
-        operationTime = #{record.operationtime,jdbcType=TIMESTAMP},
+      <if test="record.operationTime != null">
+        operationTime = #{record.operationTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -190,12 +190,12 @@
   <update id="updateByExample" parameterType="map">
     update userOperation
     set id = #{record.id,jdbcType=INTEGER},
-      userId = #{record.userid,jdbcType=INTEGER},
-      userName = #{record.username,jdbcType=VARCHAR},
-      userOperation = #{record.useroperation,jdbcType=VARCHAR},
+      userId = #{record.userId,jdbcType=INTEGER},
+      userName = #{record.userName,jdbcType=VARCHAR},
+      userOperation = #{record.userOperation,jdbcType=VARCHAR},
       params = #{record.params,jdbcType=VARCHAR},
-      userIp = #{record.userip,jdbcType=VARCHAR},
-      operationTime = #{record.operationtime,jdbcType=TIMESTAMP}
+      userIp = #{record.userIp,jdbcType=VARCHAR},
+      operationTime = #{record.operationTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -203,35 +203,35 @@
   <update id="updateByPrimaryKeySelective" parameterType="hci.artedu.pojo.Useroperation">
     update userOperation
     <set>
-      <if test="userid != null">
-        userId = #{userid,jdbcType=INTEGER},
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="username != null">
-        userName = #{username,jdbcType=VARCHAR},
+      <if test="userName != null">
+        userName = #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="useroperation != null">
-        userOperation = #{useroperation,jdbcType=VARCHAR},
+      <if test="userOperation != null">
+        userOperation = #{userOperation,jdbcType=VARCHAR},
       </if>
       <if test="params != null">
         params = #{params,jdbcType=VARCHAR},
       </if>
-      <if test="userip != null">
-        userIp = #{userip,jdbcType=VARCHAR},
+      <if test="userIp != null">
+        userIp = #{userIp,jdbcType=VARCHAR},
       </if>
-      <if test="operationtime != null">
-        operationTime = #{operationtime,jdbcType=TIMESTAMP},
+      <if test="operationTime != null">
+        operationTime = #{operationTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="hci.artedu.pojo.Useroperation">
     update userOperation
-    set userId = #{userid,jdbcType=INTEGER},
-      userName = #{username,jdbcType=VARCHAR},
-      userOperation = #{useroperation,jdbcType=VARCHAR},
+    set userId = #{userId,jdbcType=INTEGER},
+      userName = #{userName,jdbcType=VARCHAR},
+      userOperation = #{userOperation,jdbcType=VARCHAR},
       params = #{params,jdbcType=VARCHAR},
-      userIp = #{userip,jdbcType=VARCHAR},
-      operationTime = #{operationtime,jdbcType=TIMESTAMP}
+      userIp = #{userIp,jdbcType=VARCHAR},
+      operationTime = #{operationTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
