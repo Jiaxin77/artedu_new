@@ -50,6 +50,7 @@ public class EptServiceImpl implements EptService {
             eptInfo.put("eptId",ept.getId());
             eptInfo.put("eptName",ept.getEptName());
             eptInfo.put("eptTime",ept.getEptTime());
+            eptInfo.put("coverPic",ept.getCoverPic());
             eptList.add(eptInfo);
         }
 
@@ -76,6 +77,8 @@ public class EptServiceImpl implements EptService {
         eptInfo.put("eptId",experiment.getId());
         eptInfo.put("eptName",experiment.getEptName());
         eptInfo.put("eptPurpose",experiment.getPurpose());
+        eptInfo.put("purposePic",experiment.getPurposePic());
+
 
         return ServerResponse.createBySuccess("获取成功",eptInfo);
 

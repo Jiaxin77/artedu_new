@@ -19,6 +19,12 @@
     <result column="method" jdbcType="VARCHAR" property="method" />
     <result column="steps" jdbcType="VARCHAR" property="steps" />
     <result column="device" jdbcType="VARCHAR" property="device" />
+    <result column="coverPic" jdbcType="VARCHAR" property="coverPic" />
+    <result column="purposePic" jdbcType="VARCHAR" property="purposePic" />
+    <result column="principlePic" jdbcType="VARCHAR" property="principlePic" />
+    <result column="methodPic" jdbcType="VARCHAR" property="methodPic" />
+    <result column="stepPic" jdbcType="VARCHAR" property="stepPic" />
+    <result column="devicePic" jdbcType="VARCHAR" property="devicePic" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -80,7 +86,8 @@
   </sql>
   <sql id="Base_Column_List">
     id, eptName, eptTime, difficultDegree, eptType, passRate, participateRate, course, 
-    allCourseTime, content, des, purpose, requirement, principle, `method`, steps, device
+    allCourseTime, content, des, purpose, requirement, principle, `method`, steps, device, 
+    coverPic, purposePic, principlePic, methodPic, stepPic, devicePic
   </sql>
   <select id="selectByExample" parameterType="hci.artedu.pojo.ExperimentExample" resultMap="BaseResultMap">
     select
@@ -118,13 +125,17 @@
       course, allCourseTime, content, 
       des, purpose, requirement, 
       principle, `method`, steps, 
-      device)
+      device, coverPic, purposePic, 
+      principlePic, methodPic, stepPic, 
+      devicePic)
     values (#{eptName,jdbcType=VARCHAR}, #{eptTime,jdbcType=BIGINT}, #{difficultDegree,jdbcType=INTEGER}, 
       #{eptType,jdbcType=VARCHAR}, #{passRate,jdbcType=INTEGER}, #{participateRate,jdbcType=INTEGER}, 
       #{course,jdbcType=VARCHAR}, #{allCourseTime,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
       #{des,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, #{requirement,jdbcType=VARCHAR}, 
       #{principle,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{steps,jdbcType=VARCHAR}, 
-      #{device,jdbcType=VARCHAR})
+      #{device,jdbcType=VARCHAR}, #{coverPic,jdbcType=VARCHAR}, #{purposePic,jdbcType=VARCHAR}, 
+      #{principlePic,jdbcType=VARCHAR}, #{methodPic,jdbcType=VARCHAR}, #{stepPic,jdbcType=VARCHAR}, 
+      #{devicePic,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Experiment" useGeneratedKeys="true">
     insert into experiment
@@ -177,6 +188,24 @@
       <if test="device != null">
         device,
       </if>
+      <if test="coverPic != null">
+        coverPic,
+      </if>
+      <if test="purposePic != null">
+        purposePic,
+      </if>
+      <if test="principlePic != null">
+        principlePic,
+      </if>
+      <if test="methodPic != null">
+        methodPic,
+      </if>
+      <if test="stepPic != null">
+        stepPic,
+      </if>
+      <if test="devicePic != null">
+        devicePic,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="eptName != null">
@@ -226,6 +255,24 @@
       </if>
       <if test="device != null">
         #{device,jdbcType=VARCHAR},
+      </if>
+      <if test="coverPic != null">
+        #{coverPic,jdbcType=VARCHAR},
+      </if>
+      <if test="purposePic != null">
+        #{purposePic,jdbcType=VARCHAR},
+      </if>
+      <if test="principlePic != null">
+        #{principlePic,jdbcType=VARCHAR},
+      </if>
+      <if test="methodPic != null">
+        #{methodPic,jdbcType=VARCHAR},
+      </if>
+      <if test="stepPic != null">
+        #{stepPic,jdbcType=VARCHAR},
+      </if>
+      <if test="devicePic != null">
+        #{devicePic,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -289,6 +336,24 @@
       <if test="record.device != null">
         device = #{record.device,jdbcType=VARCHAR},
       </if>
+      <if test="record.coverPic != null">
+        coverPic = #{record.coverPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.purposePic != null">
+        purposePic = #{record.purposePic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.principlePic != null">
+        principlePic = #{record.principlePic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.methodPic != null">
+        methodPic = #{record.methodPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stepPic != null">
+        stepPic = #{record.stepPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.devicePic != null">
+        devicePic = #{record.devicePic,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -312,7 +377,13 @@
       principle = #{record.principle,jdbcType=VARCHAR},
       `method` = #{record.method,jdbcType=VARCHAR},
       steps = #{record.steps,jdbcType=VARCHAR},
-      device = #{record.device,jdbcType=VARCHAR}
+      device = #{record.device,jdbcType=VARCHAR},
+      coverPic = #{record.coverPic,jdbcType=VARCHAR},
+      purposePic = #{record.purposePic,jdbcType=VARCHAR},
+      principlePic = #{record.principlePic,jdbcType=VARCHAR},
+      methodPic = #{record.methodPic,jdbcType=VARCHAR},
+      stepPic = #{record.stepPic,jdbcType=VARCHAR},
+      devicePic = #{record.devicePic,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -368,6 +439,24 @@
       <if test="device != null">
         device = #{device,jdbcType=VARCHAR},
       </if>
+      <if test="coverPic != null">
+        coverPic = #{coverPic,jdbcType=VARCHAR},
+      </if>
+      <if test="purposePic != null">
+        purposePic = #{purposePic,jdbcType=VARCHAR},
+      </if>
+      <if test="principlePic != null">
+        principlePic = #{principlePic,jdbcType=VARCHAR},
+      </if>
+      <if test="methodPic != null">
+        methodPic = #{methodPic,jdbcType=VARCHAR},
+      </if>
+      <if test="stepPic != null">
+        stepPic = #{stepPic,jdbcType=VARCHAR},
+      </if>
+      <if test="devicePic != null">
+        devicePic = #{devicePic,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -388,7 +477,13 @@
       principle = #{principle,jdbcType=VARCHAR},
       `method` = #{method,jdbcType=VARCHAR},
       steps = #{steps,jdbcType=VARCHAR},
-      device = #{device,jdbcType=VARCHAR}
+      device = #{device,jdbcType=VARCHAR},
+      coverPic = #{coverPic,jdbcType=VARCHAR},
+      purposePic = #{purposePic,jdbcType=VARCHAR},
+      principlePic = #{principlePic,jdbcType=VARCHAR},
+      methodPic = #{methodPic,jdbcType=VARCHAR},
+      stepPic = #{stepPic,jdbcType=VARCHAR},
+      devicePic = #{devicePic,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/simulator</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="simulator@39.105.99.126" uuid="1f0d09a5-4dfa-48cf-9505-10ac614c1a91">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://39.105.99.126:3306/simulator</jdbc-url>
+    </data-source>
   </component>
 </project>
