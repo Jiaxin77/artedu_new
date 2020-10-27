@@ -21,7 +21,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("hci.dky.controller"))
+                .apis(RequestHandlerSelectors.basePackage("hci.artedu.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -37,7 +37,7 @@ public class SwaggerConfig {
                 .license("")
                 .licenseUrl("")
                 //接口作者联系方式
-                .contact(new Contact("cao","",""))
+                .contact(new Contact("HCI","",""))
                 .build();
     }
 
