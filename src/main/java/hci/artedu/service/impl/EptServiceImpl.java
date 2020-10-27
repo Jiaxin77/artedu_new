@@ -26,7 +26,7 @@ public class EptServiceImpl {
     @Autowired
     private ExperimentMapper experimentMapper;
 
-    @Override
+
     @Transactional(propagation = Propagation.SUPPORTS)
     public ServerResponse<ArrayList> getEptList()
     {
@@ -47,29 +47,29 @@ public class EptServiceImpl {
         {
             HashMap<String,Object> eptInfo = new HashMap<String, Object>();
             eptInfo.put("eptId",ept.getId());
-            eptInfo.put("eptName",ept.getEptname());
-            eptInfo.put("eptTime",ept.getEpttime());
+            eptInfo.put("eptName",ept.getEptName());
+            eptInfo.put("eptTime",ept.getEptTime());
             eptList.add(eptInfo);
         }
 
         return ServerResponse.createBySuccess("获取成功",eptList);
     }
 
-    public ServerResponse<HashMap<String,Object>> getOneEptPurpose(int eptId)
-    {
-        /**
-         * @Author jiaxin
-         * @Description 获取某实验目的//TODO
-         * @Date 11:14 上午 2020/10/27
-         * @Param [eptId]
-         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
-         **/
-
-        ExperimentExample experimentExample = new ExperimentExample();
-        ExperimentExample.Criteria
-
-
-    }
+//    public ServerResponse<HashMap<String,Object>> getOneEptPurpose(int eptId)
+//    {
+//        /**
+//         * @Author jiaxin
+//         * @Description 获取某实验目的//TODO
+//         * @Date 11:14 上午 2020/10/27
+//         * @Param [eptId]
+//         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+//         **/
+//
+//        ExperimentExample experimentExample = new ExperimentExample();
+//
+//        return ServerResponse.createBySuccess("获取成功");
+//
+//    }
 
 
 }

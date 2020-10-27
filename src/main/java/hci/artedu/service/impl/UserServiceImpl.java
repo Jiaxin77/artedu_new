@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(int id)
     {
-        User user = userMapper.selectByPrimaryKey((long)id);
+        User user = userMapper.selectByPrimaryKey(id);
         return user;
     }
 }

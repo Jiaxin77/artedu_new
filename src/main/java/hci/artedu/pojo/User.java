@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class User implements Serializable {
-    private Integer id;
+    private Integer userId;
 
     /**
      * 姓名
@@ -67,4 +67,5 @@ public class User implements Serializable {
     private Double userScore;
 
     private static final long serialVersionUID = 1L;
+
 }
