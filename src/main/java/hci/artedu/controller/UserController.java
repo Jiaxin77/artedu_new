@@ -52,9 +52,14 @@ public class UserController {
         return userService.delete(user);
     }
 
-    @GetMapping("/getalluser")
-    public ServerResponse<List<User>> getalluser()
+    @PostMapping("/modify")
+    public ServerResponse<String> modify(User user) {
+        return userService.modify(user);
+    }
+
+    @GetMapping("/getAllUser")
+    public ServerResponse<List<User>> getAllUser()
     {
-        return userService.getalluser();
+        return userService.getAllUser();
     }
 }

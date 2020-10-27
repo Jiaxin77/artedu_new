@@ -12,6 +12,7 @@ public interface UserService {
     ServerResponse<String> register(User user);
     int add(User user);
     ServerResponse<String> delete(User user);
-    ServerResponse<List<User>> getalluser();
+    ServerResponse<String> modify(User user);
+    ServerResponse<List<User>> getAllUser();
     public User findUserById(int id);
 }

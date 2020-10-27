@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServerResponse<HashMap<String,Object>> login(User user){
         /**
-         * @Author jiaxin
+         * @Author leaf
          * @Description 登录
          * @Date 11:12 上午 2019/11/15
          * @Param [username, password]
@@ -117,7 +117,17 @@ public class UserServiceImpl implements UserService {
         return ServerResponse.createBySuccessMessage("删除成功");
     }
 
-    public ServerResponse<List<User>> getalluser()
+    @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
+    public ServerResponse<String> modify(User user){
+        UserExample example = new UserExample();
+        example.createCriteria().andUserNameEqualTo(user.getUserName());
+        user.setUserPassword(encoder.encode(user.getUserPassword()));
+        userMapper.updateByExample(user,example);
+        return ServerResponse.createBySuccessMessage("修改成功");
+    }
+
+
+    public ServerResponse<List<User>> getAllUser()
     {
         UserExample userExample = new UserExample();
         List<User> userList = userMapper.selectByExample(userExample);
