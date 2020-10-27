@@ -3,7 +3,10 @@ package hci.artedu.dao;
 import hci.artedu.pojo.User;
 import hci.artedu.pojo.UserExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
 
 public interface UserMapper {
     long countByExample(UserExample example);
