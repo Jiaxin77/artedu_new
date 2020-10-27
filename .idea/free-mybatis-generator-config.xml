@@ -78,6 +78,31 @@
             </Config>
           </value>
         </entry>
+        <entry key="experiment">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="ExperimentMapper" />
+              <option name="daoPackage" value="hci.artedu.dao" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="Experiment" />
+              <option name="modelPackage" value="hci.artedu.pojo" />
+              <option name="name" value="experiment" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$" />
+              <option name="tableName" value="experiment" />
+              <option name="useExample" value="true" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources/mybatis" />
+              <option name="xmlPackage" value="mapper" />
+            </Config>
+          </value>
+        </entry>
         <entry key="expert_score">
           <value>
             <Config>
@@ -159,17 +184,42 @@
               <option name="comment" value="true" />
               <option name="daoMvnPath" value="src/main/java" />
               <option name="daoName" value="UserMapper" />
-              <option name="daoPackage" value="hci.dky.dao" />
+              <option name="daoPackage" value="hci.artedu.dao" />
               <option name="daoPostfix" value="Mapper" />
               <option name="modelMvnPath" value="src/main/java" />
               <option name="modelName" value="User" />
-              <option name="modelPackage" value="hci.dky.pojo" />
+              <option name="modelPackage" value="hci.artedu.pojo" />
               <option name="name" value="user" />
               <option name="overrideJava" value="true" />
               <option name="overrideXML" value="true" />
-              <option name="primaryKey" value="user_id" />
+              <option name="primaryKey" value="id" />
               <option name="projectFolder" value="$PROJECT_DIR$" />
               <option name="tableName" value="user" />
+              <option name="useExample" value="true" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="mapper" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="userOperation">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="UseroperationMapper" />
+              <option name="daoPackage" value="hci.artedu.dao" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="Useroperation" />
+              <option name="modelPackage" value="hci.artedu.pojo" />
+              <option name="name" value="userOperation" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$" />
+              <option name="tableName" value="userOperation" />
               <option name="useExample" value="true" />
               <option name="useLombokPlugin" value="true" />
               <option name="useSchemaPrefix" value="true" />

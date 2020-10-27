@@ -3,17 +3,14 @@ package hci.artedu.dao;
 import hci.artedu.pojo.User;
 import hci.artedu.pojo.UserExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 
 public interface UserMapper {
     long countByExample(UserExample example);
 
     int deleteByExample(UserExample example);
 
-    int deleteByPrimaryKey(Long userId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(User record);
 
@@ -21,7 +18,7 @@ public interface UserMapper {
 
     List<User> selectByExample(UserExample example);
 
-    User selectByPrimaryKey(Long userId);
+    User selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
 
