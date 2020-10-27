@@ -95,5 +95,37 @@ public class Experiment implements Serializable {
      */
     private String device;
 
+    /**
+     * 封面图片
+     */
+    private String coverPic;
+
+    /**
+     * 实验目的图片
+     */
+    private String purposePic;
+
+    /**
+     * 实验原理图片
+
+     */
+    private String principlePic;
+
+    /**
+     * 实验方法图片
+
+     */
+    private String methodPic;
+
+    /**
+     * 实验步骤图片
+     */
+    private String stepPic;
+
+    /**
+     * 实验设备图片
+     */
+    private String devicePic;
+
     private static final long serialVersionUID = 1L;
 }
