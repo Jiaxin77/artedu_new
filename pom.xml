@@ -12,8 +12,8 @@
     <artifactId>artedu</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>dky</name>
-    <description>Demo project for Spring Boot</description>
+    <name>artEdu</name>
+    <description>Simulation_Project</description>
 
     <properties>
         <java.version>1.8</java.version>
