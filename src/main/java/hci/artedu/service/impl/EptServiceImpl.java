@@ -58,7 +58,33 @@ public class EptServiceImpl implements EptService {
     }
 
 
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ServerResponse<HashMap<String,Object>> getOneEptInfo(int eptId)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 获取某实验的基本信息//TODO
+         * @Date 5:22 下午 2020/10/28
+         * @Param [eptId]
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         **/
+        Experiment experiment = experimentMapper.selectByPrimaryKey(eptId);
+        HashMap<String,Object> eptInfo = new HashMap<String, Object>();
+        eptInfo.put("eptId",experiment.getId());
+        eptInfo.put("eptName",experiment.getEptName());
+        eptInfo.put("eptPassRate",experiment.getPassRate());
+        eptInfo.put("eptParticipateRate",experiment.getParticipateRate());
+        eptInfo.put("eptTime",experiment.getEptTime());
+        eptInfo.put("totalTime",experiment.getAllCourseTime());
+        eptInfo.put("content",experiment.getContent());
+        eptInfo.put("course",experiment.getCourse());
+        eptInfo.put("eptDes",experiment.getDes());
 
+        return ServerResponse.createBySuccess("获取成功",eptInfo);
+
+
+    }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)

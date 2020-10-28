@@ -37,6 +37,21 @@ public class EptController {
         return response;
     }
 
+    @GetMapping("/getOneEptInfo")
+    public ServerResponse<HashMap<String,Object>> getOneEptInfo(int eptId)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 获取某实验的基本信息//TODO
+         * @Date 5:30 下午 2020/10/28
+         * @Param [eptId]
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         **/
+
+        ServerResponse<HashMap<String,Object>> response = eptService.getOneEptInfo(eptId);
+        return response;
+    }
+
     @GetMapping("/getEptPurpose")
     public ServerResponse<HashMap<String,Object>> getEptPurpose(int eptId)
     {
