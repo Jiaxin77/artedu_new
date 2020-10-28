@@ -76,8 +76,8 @@ public class EptServiceImpl implements EptService {
         HashMap<String,Object> eptInfo = new HashMap<String, Object>();
         eptInfo.put("eptId",experiment.getId());
         eptInfo.put("eptName",experiment.getEptName());
-        eptInfo.put("eptPurpose",experiment.getPurpose());
-        eptInfo.put("purposePic",experiment.getPurposePic());
+        eptInfo.put("eptContent",experiment.getPurpose());
+        eptInfo.put("eptPic",experiment.getPurposePic());
 
 
         return ServerResponse.createBySuccess("获取成功",eptInfo);
