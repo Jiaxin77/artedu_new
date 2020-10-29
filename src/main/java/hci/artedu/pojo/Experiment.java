@@ -18,47 +18,12 @@ public class Experiment implements Serializable {
     /**
      * 实验名称
      */
-    private String eptName;
+    private String name;
 
     /**
-     * 实验课时数
+     * 小实验英文名称
      */
-    private Long eptTime;
-
-    /**
-     * 难易程度
-     */
-    private Integer difficultDegree;
-
-    /**
-     * 实验类别
-     */
-    private String eptType;
-
-    /**
-     * 实验通过率
-     */
-    private Integer passRate;
-
-    /**
-     * 实验参与率
-     */
-    private Integer participateRate;
-
-    /**
-     * 实验课程
-     */
-    private String course;
-
-    /**
-     * 总课时数
-     */
-    private Integer allCourseTime;
-
-    /**
-     * 实验内容
-     */
-    private String content;
+    private String englishName;
 
     /**
      * 实验简介
@@ -66,34 +31,34 @@ public class Experiment implements Serializable {
     private String des;
 
     /**
-     * 实验目的
+     * 实验通过率
      */
-    private String purpose;
+    private Integer passRate;
 
     /**
-     * 实验要求
+     * 知识点
      */
-    private String requirement;
+    private String knowledgePoint;
 
     /**
-     * 实验原理
+     * 难度
      */
-    private String principle;
+    private String diffucultLevel;
 
     /**
-     * 实验方法
+     * 关卡数
      */
-    private String method;
+    private Integer step;
 
     /**
-     * 实验步骤
+     * 所属大实验
      */
-    private String steps;
+    private Integer bigEpt;
 
     /**
-     * 实验仪器设备
+     * 实验时间
      */
-    private String device;
+    private Integer time;
 
     /**
      * 封面图片
@@ -101,31 +66,14 @@ public class Experiment implements Serializable {
     private String coverPic;
 
     /**
-     * 实验目的图片
+     * 浏览量
      */
-    private String purposePic;
+    private Integer scanNum;
 
     /**
-     * 实验原理图片
-
+     * 参与量
      */
-    private String principlePic;
-
-    /**
-     * 实验方法图片
-
-     */
-    private String methodPic;
-
-    /**
-     * 实验步骤图片
-     */
-    private String stepPic;
-
-    /**
-     * 实验设备图片
-     */
-    private String devicePic;
+    private Integer participateNum;
 
     private static final long serialVersionUID = 1L;
 }

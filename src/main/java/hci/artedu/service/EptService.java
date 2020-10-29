@@ -7,7 +7,9 @@ import java.util.HashMap;
 
 public interface EptService {
     public ServerResponse<ArrayList> getEptList();
-    public ServerResponse<HashMap<String,Object>> getOneEptPurpose(int eptId);
-    public ServerResponse<HashMap<String,Object>> getOneEptInfo(int eptId);
+    public ServerResponse<HashMap<String,Object>> getBigEptPurpose();
+    public ServerResponse<HashMap<String,Object>> getBigEptInfo();
+    public ServerResponse<HashMap<String,Object>> getEptBasicInfo(int eptId);
+
 
 }

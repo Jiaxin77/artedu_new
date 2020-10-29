@@ -4,11 +4,15 @@
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/utils/UserLoginToken.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/dao/UseroperationMapper.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/config/InterceptorConfig.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/Bigexperiment.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/UseroperationExample.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/service/impl/UserServiceImpl.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/service/impl/TokenServiceImpl.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/dao/BigexperimentMapper.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/controller/EptController.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/dao/ExperimentstepMapper.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/common/ResponseCode.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/Experimentstep.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/common/Const.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/dao/ExperimentMapper.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/utils/TokenUtil.java
@@ -19,6 +23,7 @@
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/service/impl/EptServiceImpl.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/service/EptService.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/config/AuthenticationInterceptor.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/BigexperimentExample.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/ArtEduApplication.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/UserExample.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/aspect/HttpAspect.java
@@ -26,5 +31,6 @@
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/config/SwaggerConfig.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/dao/UserMapper.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/service/TokenService.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/ExperimentstepExample.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/utils/PassToken.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/common/ServerResponse.java
