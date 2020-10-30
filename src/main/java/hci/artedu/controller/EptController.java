@@ -112,7 +112,7 @@ public class EptController {
     public ServerResponse<HashMap<String, Object>> getEptMethod() {
         /**
          * @Author myz
-         * @Description 接口-获取大实验原理//TODO
+         * @Description 接口-获取大实验方法//TODO
          * @Date 10:17 上午 2020/10/30
          * @Param []
          * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
