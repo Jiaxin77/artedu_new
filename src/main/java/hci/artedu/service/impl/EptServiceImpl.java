@@ -73,8 +73,8 @@ public class EptServiceImpl implements EptService {
          * @Author jiaxin
          * @Description 获取大实验的基本信息//TODO
          * @Date 5:22 下午 2020/10/28
-         * @Param [eptId]
-         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Param []
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
          **/
         int eptId = 1;
         Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey(eptId);
@@ -151,28 +151,136 @@ public class EptServiceImpl implements EptService {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public ServerResponse<HashMap<String,Object>> getBigEptPurpose()
-    {
+    public ServerResponse<HashMap<String, Object>> getBigEptPurpose() {
         /**
          * @Author jiaxin
          * @Description 获取某实验目的//TODO
          * @Date 11:14 上午 2020/10/27
-         * @Param [eptId]
-         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Param []
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
          **/
 
         int eptId = 1;
-        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer)eptId);
-        HashMap<String,Object> eptInfo = new HashMap<String, Object>();
-        eptInfo.put("eptId",bigexperiment.getId());
-        eptInfo.put("eptName",bigexperiment.getName());
-        eptInfo.put("eptContent",bigexperiment.getPurpose());
-        eptInfo.put("eptPic",bigexperiment.getPurposePic());
+        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);
+        HashMap<String, Object> eptInfo = new HashMap<String, Object>();
+        eptInfo.put("eptId", bigexperiment.getId());
+        eptInfo.put("eptName", bigexperiment.getName());
+        eptInfo.put("eptContent", bigexperiment.getPurpose());
+        eptInfo.put("eptPic", bigexperiment.getPurposePic());
 
 
-        return ServerResponse.createBySuccess("获取成功",eptInfo);
+        return ServerResponse.createBySuccess("获取成功", eptInfo);
 
 
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ServerResponse<HashMap<String, Object>> getBigEptRequirement() {
+        /**
+         * @Author myz
+         * @Description 获取某实验要求//TODO
+         * @Date 9：50 上午 2020/10/30
+         * @Param []
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
+         **/
+        int eptId = 1;  //only one bigExpt
+        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);
+        HashMap<String, Object> eptInfo = new HashMap<String, Object>();
+        eptInfo.put("eptId", bigexperiment.getId());
+        eptInfo.put("eptName", bigexperiment.getName());
+        eptInfo.put("eptContent", bigexperiment.getRequirement());
+        eptInfo.put("eptPic", bigexperiment.getRequirementPic());
+
+        return ServerResponse.createBySuccess("获取成功", eptInfo);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ServerResponse<HashMap<String, Object>> getBigEptPrinciple() {
+        /**
+         * @Author myz
+         * @Description 获取某实验原理//TODO
+         * @Date 9：50 上午 2020/10/30
+         * @Param []
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
+         **/
+
+        int eptId = 1;
+        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);
+        HashMap<String, Object> eptInfo = new HashMap<String, Object>();
+        eptInfo.put("eptId", bigexperiment.getId());
+        eptInfo.put("eptName", bigexperiment.getName());
+        eptInfo.put("eptContent", bigexperiment.getPrinciple());
+        eptInfo.put("eptPic", bigexperiment.getPrinciplePic());
+
+        return ServerResponse.createBySuccess("获取成功", eptInfo);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ServerResponse<HashMap<String, Object>> getBigEptMethod() {
+        /**
+         * @Author myz
+         * @Description 获取某实验方法//TODO
+         * @Date 9：50 上午 2020/10/30
+         * @Param []
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
+         **/
+
+        int eptId = 1;
+        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);
+        HashMap<String, Object> eptInfo = new HashMap<String, Object>();
+        eptInfo.put("eptId", bigexperiment.getId());
+        eptInfo.put("eptName", bigexperiment.getName());
+        eptInfo.put("eptContent", bigexperiment.getMethod());
+        eptInfo.put("eptPic", bigexperiment.getMethodPic());
+
+        return ServerResponse.createBySuccess("获取成功", eptInfo);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ServerResponse<HashMap<String, Object>> getBigEptStep() {
+        /**
+         * @Author myz
+         * @Description 获取某实验步骤//TODO
+         * @Date 9：50 上午 2020/10/30
+         * @Param []
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
+         **/
+
+        int eptId = 1;
+        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);
+        HashMap<String, Object> eptInfo = new HashMap<String, Object>();
+        eptInfo.put("eptId", bigexperiment.getId());
+        eptInfo.put("eptName", bigexperiment.getName());
+        eptInfo.put("eptContent", bigexperiment.getSteps());
+        eptInfo.put("eptPic", bigexperiment.getStepPic());
+
+        return ServerResponse.createBySuccess("获取成功", eptInfo);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ServerResponse<HashMap<String, Object>> getBigEptDevice() {
+        /**
+         * @Author myz
+         * @Description 获取某实验仪器设备//TODO
+         * @Date 9：50 上午 2020/10/30
+         * @Param []
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
+         **/
+
+        int eptId = 1;
+        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);
+        HashMap<String, Object> eptInfo = new HashMap<String, Object>();
+        eptInfo.put("eptId", bigexperiment.getId());
+        eptInfo.put("eptName", bigexperiment.getName());
+        eptInfo.put("eptContent", bigexperiment.getDevice());
+        eptInfo.put("eptPic", bigexperiment.getDevicePic());
+
+        return ServerResponse.createBySuccess("获取成功", eptInfo);
     }
 
 }
