@@ -3,28 +3,18 @@
 <mapper namespace="hci.artedu.dao.ExperimentMapper">
   <resultMap id="BaseResultMap" type="hci.artedu.pojo.Experiment">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="eptName" jdbcType="VARCHAR" property="eptName" />
-    <result column="eptTime" jdbcType="BIGINT" property="eptTime" />
-    <result column="difficultDegree" jdbcType="INTEGER" property="difficultDegree" />
-    <result column="eptType" jdbcType="VARCHAR" property="eptType" />
-    <result column="passRate" jdbcType="INTEGER" property="passRate" />
-    <result column="participateRate" jdbcType="INTEGER" property="participateRate" />
-    <result column="course" jdbcType="VARCHAR" property="course" />
-    <result column="allCourseTime" jdbcType="INTEGER" property="allCourseTime" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="englishName" jdbcType="VARCHAR" property="englishName" />
     <result column="des" jdbcType="VARCHAR" property="des" />
-    <result column="purpose" jdbcType="VARCHAR" property="purpose" />
-    <result column="requirement" jdbcType="VARCHAR" property="requirement" />
-    <result column="principle" jdbcType="VARCHAR" property="principle" />
-    <result column="method" jdbcType="VARCHAR" property="method" />
-    <result column="steps" jdbcType="VARCHAR" property="steps" />
-    <result column="device" jdbcType="VARCHAR" property="device" />
+    <result column="passRate" jdbcType="INTEGER" property="passRate" />
+    <result column="knowledgePoint" jdbcType="VARCHAR" property="knowledgePoint" />
+    <result column="diffucultLevel" jdbcType="VARCHAR" property="diffucultLevel" />
+    <result column="step" jdbcType="INTEGER" property="step" />
+    <result column="bigEpt" jdbcType="INTEGER" property="bigEpt" />
+    <result column="time" jdbcType="INTEGER" property="time" />
     <result column="coverPic" jdbcType="VARCHAR" property="coverPic" />
-    <result column="purposePic" jdbcType="VARCHAR" property="purposePic" />
-    <result column="principlePic" jdbcType="VARCHAR" property="principlePic" />
-    <result column="methodPic" jdbcType="VARCHAR" property="methodPic" />
-    <result column="stepPic" jdbcType="VARCHAR" property="stepPic" />
-    <result column="devicePic" jdbcType="VARCHAR" property="devicePic" />
+    <result column="scanNum" jdbcType="INTEGER" property="scanNum" />
+    <result column="participateNum" jdbcType="INTEGER" property="participateNum" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -85,9 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, eptName, eptTime, difficultDegree, eptType, passRate, participateRate, course, 
-    allCourseTime, content, des, purpose, requirement, principle, `method`, steps, device, 
-    coverPic, purposePic, principlePic, methodPic, stepPic, devicePic
+    id, `name`, englishName, des, passRate, knowledgePoint, diffucultLevel, step, bigEpt, 
+    `time`, coverPic, scanNum, participateNum
   </sql>
   <select id="selectByExample" parameterType="hci.artedu.pojo.ExperimentExample" resultMap="BaseResultMap">
     select
@@ -120,159 +109,93 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Experiment" useGeneratedKeys="true">
-    insert into experiment (eptName, eptTime, difficultDegree, 
-      eptType, passRate, participateRate, 
-      course, allCourseTime, content, 
-      des, purpose, requirement, 
-      principle, `method`, steps, 
-      device, coverPic, purposePic, 
-      principlePic, methodPic, stepPic, 
-      devicePic)
-    values (#{eptName,jdbcType=VARCHAR}, #{eptTime,jdbcType=BIGINT}, #{difficultDegree,jdbcType=INTEGER}, 
-      #{eptType,jdbcType=VARCHAR}, #{passRate,jdbcType=INTEGER}, #{participateRate,jdbcType=INTEGER}, 
-      #{course,jdbcType=VARCHAR}, #{allCourseTime,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
-      #{des,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, #{requirement,jdbcType=VARCHAR}, 
-      #{principle,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{steps,jdbcType=VARCHAR}, 
-      #{device,jdbcType=VARCHAR}, #{coverPic,jdbcType=VARCHAR}, #{purposePic,jdbcType=VARCHAR}, 
-      #{principlePic,jdbcType=VARCHAR}, #{methodPic,jdbcType=VARCHAR}, #{stepPic,jdbcType=VARCHAR}, 
-      #{devicePic,jdbcType=VARCHAR})
+    insert into experiment (`name`, englishName, des, 
+      passRate, knowledgePoint, diffucultLevel, 
+      step, bigEpt, `time`, 
+      coverPic, scanNum, participateNum
+      )
+    values (#{name,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}, 
+      #{passRate,jdbcType=INTEGER}, #{knowledgePoint,jdbcType=VARCHAR}, #{diffucultLevel,jdbcType=VARCHAR}, 
+      #{step,jdbcType=INTEGER}, #{bigEpt,jdbcType=INTEGER}, #{time,jdbcType=INTEGER}, 
+      #{coverPic,jdbcType=VARCHAR}, #{scanNum,jdbcType=INTEGER}, #{participateNum,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Experiment" useGeneratedKeys="true">
     insert into experiment
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="eptName != null">
-        eptName,
+      <if test="name != null">
+        `name`,
       </if>
-      <if test="eptTime != null">
-        eptTime,
-      </if>
-      <if test="difficultDegree != null">
-        difficultDegree,
-      </if>
-      <if test="eptType != null">
-        eptType,
-      </if>
-      <if test="passRate != null">
-        passRate,
-      </if>
-      <if test="participateRate != null">
-        participateRate,
-      </if>
-      <if test="course != null">
-        course,
-      </if>
-      <if test="allCourseTime != null">
-        allCourseTime,
-      </if>
-      <if test="content != null">
-        content,
+      <if test="englishName != null">
+        englishName,
       </if>
       <if test="des != null">
         des,
       </if>
-      <if test="purpose != null">
-        purpose,
+      <if test="passRate != null">
+        passRate,
       </if>
-      <if test="requirement != null">
-        requirement,
+      <if test="knowledgePoint != null">
+        knowledgePoint,
       </if>
-      <if test="principle != null">
-        principle,
+      <if test="diffucultLevel != null">
+        diffucultLevel,
       </if>
-      <if test="method != null">
-        `method`,
+      <if test="step != null">
+        step,
       </if>
-      <if test="steps != null">
-        steps,
+      <if test="bigEpt != null">
+        bigEpt,
       </if>
-      <if test="device != null">
-        device,
+      <if test="time != null">
+        `time`,
       </if>
       <if test="coverPic != null">
         coverPic,
       </if>
-      <if test="purposePic != null">
-        purposePic,
+      <if test="scanNum != null">
+        scanNum,
       </if>
-      <if test="principlePic != null">
-        principlePic,
-      </if>
-      <if test="methodPic != null">
-        methodPic,
-      </if>
-      <if test="stepPic != null">
-        stepPic,
-      </if>
-      <if test="devicePic != null">
-        devicePic,
+      <if test="participateNum != null">
+        participateNum,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="eptName != null">
-        #{eptName,jdbcType=VARCHAR},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="eptTime != null">
-        #{eptTime,jdbcType=BIGINT},
-      </if>
-      <if test="difficultDegree != null">
-        #{difficultDegree,jdbcType=INTEGER},
-      </if>
-      <if test="eptType != null">
-        #{eptType,jdbcType=VARCHAR},
-      </if>
-      <if test="passRate != null">
-        #{passRate,jdbcType=INTEGER},
-      </if>
-      <if test="participateRate != null">
-        #{participateRate,jdbcType=INTEGER},
-      </if>
-      <if test="course != null">
-        #{course,jdbcType=VARCHAR},
-      </if>
-      <if test="allCourseTime != null">
-        #{allCourseTime,jdbcType=INTEGER},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=VARCHAR},
+      <if test="englishName != null">
+        #{englishName,jdbcType=VARCHAR},
       </if>
       <if test="des != null">
         #{des,jdbcType=VARCHAR},
       </if>
-      <if test="purpose != null">
-        #{purpose,jdbcType=VARCHAR},
+      <if test="passRate != null">
+        #{passRate,jdbcType=INTEGER},
       </if>
-      <if test="requirement != null">
-        #{requirement,jdbcType=VARCHAR},
+      <if test="knowledgePoint != null">
+        #{knowledgePoint,jdbcType=VARCHAR},
       </if>
-      <if test="principle != null">
-        #{principle,jdbcType=VARCHAR},
+      <if test="diffucultLevel != null">
+        #{diffucultLevel,jdbcType=VARCHAR},
       </if>
-      <if test="method != null">
-        #{method,jdbcType=VARCHAR},
+      <if test="step != null">
+        #{step,jdbcType=INTEGER},
       </if>
-      <if test="steps != null">
-        #{steps,jdbcType=VARCHAR},
+      <if test="bigEpt != null">
+        #{bigEpt,jdbcType=INTEGER},
       </if>
-      <if test="device != null">
-        #{device,jdbcType=VARCHAR},
+      <if test="time != null">
+        #{time,jdbcType=INTEGER},
       </if>
       <if test="coverPic != null">
         #{coverPic,jdbcType=VARCHAR},
       </if>
-      <if test="purposePic != null">
-        #{purposePic,jdbcType=VARCHAR},
+      <if test="scanNum != null">
+        #{scanNum,jdbcType=INTEGER},
       </if>
-      <if test="principlePic != null">
-        #{principlePic,jdbcType=VARCHAR},
-      </if>
-      <if test="methodPic != null">
-        #{methodPic,jdbcType=VARCHAR},
-      </if>
-      <if test="stepPic != null">
-        #{stepPic,jdbcType=VARCHAR},
-      </if>
-      <if test="devicePic != null">
-        #{devicePic,jdbcType=VARCHAR},
+      <if test="participateNum != null">
+        #{participateNum,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -288,71 +211,41 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.eptName != null">
-        eptName = #{record.eptName,jdbcType=VARCHAR},
+      <if test="record.name != null">
+        `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.eptTime != null">
-        eptTime = #{record.eptTime,jdbcType=BIGINT},
-      </if>
-      <if test="record.difficultDegree != null">
-        difficultDegree = #{record.difficultDegree,jdbcType=INTEGER},
-      </if>
-      <if test="record.eptType != null">
-        eptType = #{record.eptType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.passRate != null">
-        passRate = #{record.passRate,jdbcType=INTEGER},
-      </if>
-      <if test="record.participateRate != null">
-        participateRate = #{record.participateRate,jdbcType=INTEGER},
-      </if>
-      <if test="record.course != null">
-        course = #{record.course,jdbcType=VARCHAR},
-      </if>
-      <if test="record.allCourseTime != null">
-        allCourseTime = #{record.allCourseTime,jdbcType=INTEGER},
-      </if>
-      <if test="record.content != null">
-        content = #{record.content,jdbcType=VARCHAR},
+      <if test="record.englishName != null">
+        englishName = #{record.englishName,jdbcType=VARCHAR},
       </if>
       <if test="record.des != null">
         des = #{record.des,jdbcType=VARCHAR},
       </if>
-      <if test="record.purpose != null">
-        purpose = #{record.purpose,jdbcType=VARCHAR},
+      <if test="record.passRate != null">
+        passRate = #{record.passRate,jdbcType=INTEGER},
       </if>
-      <if test="record.requirement != null">
-        requirement = #{record.requirement,jdbcType=VARCHAR},
+      <if test="record.knowledgePoint != null">
+        knowledgePoint = #{record.knowledgePoint,jdbcType=VARCHAR},
       </if>
-      <if test="record.principle != null">
-        principle = #{record.principle,jdbcType=VARCHAR},
+      <if test="record.diffucultLevel != null">
+        diffucultLevel = #{record.diffucultLevel,jdbcType=VARCHAR},
       </if>
-      <if test="record.method != null">
-        `method` = #{record.method,jdbcType=VARCHAR},
+      <if test="record.step != null">
+        step = #{record.step,jdbcType=INTEGER},
       </if>
-      <if test="record.steps != null">
-        steps = #{record.steps,jdbcType=VARCHAR},
+      <if test="record.bigEpt != null">
+        bigEpt = #{record.bigEpt,jdbcType=INTEGER},
       </if>
-      <if test="record.device != null">
-        device = #{record.device,jdbcType=VARCHAR},
+      <if test="record.time != null">
+        `time` = #{record.time,jdbcType=INTEGER},
       </if>
       <if test="record.coverPic != null">
         coverPic = #{record.coverPic,jdbcType=VARCHAR},
       </if>
-      <if test="record.purposePic != null">
-        purposePic = #{record.purposePic,jdbcType=VARCHAR},
+      <if test="record.scanNum != null">
+        scanNum = #{record.scanNum,jdbcType=INTEGER},
       </if>
-      <if test="record.principlePic != null">
-        principlePic = #{record.principlePic,jdbcType=VARCHAR},
-      </if>
-      <if test="record.methodPic != null">
-        methodPic = #{record.methodPic,jdbcType=VARCHAR},
-      </if>
-      <if test="record.stepPic != null">
-        stepPic = #{record.stepPic,jdbcType=VARCHAR},
-      </if>
-      <if test="record.devicePic != null">
-        devicePic = #{record.devicePic,jdbcType=VARCHAR},
+      <if test="record.participateNum != null">
+        participateNum = #{record.participateNum,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -362,28 +255,18 @@
   <update id="updateByExample" parameterType="map">
     update experiment
     set id = #{record.id,jdbcType=INTEGER},
-      eptName = #{record.eptName,jdbcType=VARCHAR},
-      eptTime = #{record.eptTime,jdbcType=BIGINT},
-      difficultDegree = #{record.difficultDegree,jdbcType=INTEGER},
-      eptType = #{record.eptType,jdbcType=VARCHAR},
-      passRate = #{record.passRate,jdbcType=INTEGER},
-      participateRate = #{record.participateRate,jdbcType=INTEGER},
-      course = #{record.course,jdbcType=VARCHAR},
-      allCourseTime = #{record.allCourseTime,jdbcType=INTEGER},
-      content = #{record.content,jdbcType=VARCHAR},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      englishName = #{record.englishName,jdbcType=VARCHAR},
       des = #{record.des,jdbcType=VARCHAR},
-      purpose = #{record.purpose,jdbcType=VARCHAR},
-      requirement = #{record.requirement,jdbcType=VARCHAR},
-      principle = #{record.principle,jdbcType=VARCHAR},
-      `method` = #{record.method,jdbcType=VARCHAR},
-      steps = #{record.steps,jdbcType=VARCHAR},
-      device = #{record.device,jdbcType=VARCHAR},
+      passRate = #{record.passRate,jdbcType=INTEGER},
+      knowledgePoint = #{record.knowledgePoint,jdbcType=VARCHAR},
+      diffucultLevel = #{record.diffucultLevel,jdbcType=VARCHAR},
+      step = #{record.step,jdbcType=INTEGER},
+      bigEpt = #{record.bigEpt,jdbcType=INTEGER},
+      `time` = #{record.time,jdbcType=INTEGER},
       coverPic = #{record.coverPic,jdbcType=VARCHAR},
-      purposePic = #{record.purposePic,jdbcType=VARCHAR},
-      principlePic = #{record.principlePic,jdbcType=VARCHAR},
-      methodPic = #{record.methodPic,jdbcType=VARCHAR},
-      stepPic = #{record.stepPic,jdbcType=VARCHAR},
-      devicePic = #{record.devicePic,jdbcType=VARCHAR}
+      scanNum = #{record.scanNum,jdbcType=INTEGER},
+      participateNum = #{record.participateNum,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -391,99 +274,59 @@
   <update id="updateByPrimaryKeySelective" parameterType="hci.artedu.pojo.Experiment">
     update experiment
     <set>
-      <if test="eptName != null">
-        eptName = #{eptName,jdbcType=VARCHAR},
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="eptTime != null">
-        eptTime = #{eptTime,jdbcType=BIGINT},
-      </if>
-      <if test="difficultDegree != null">
-        difficultDegree = #{difficultDegree,jdbcType=INTEGER},
-      </if>
-      <if test="eptType != null">
-        eptType = #{eptType,jdbcType=VARCHAR},
-      </if>
-      <if test="passRate != null">
-        passRate = #{passRate,jdbcType=INTEGER},
-      </if>
-      <if test="participateRate != null">
-        participateRate = #{participateRate,jdbcType=INTEGER},
-      </if>
-      <if test="course != null">
-        course = #{course,jdbcType=VARCHAR},
-      </if>
-      <if test="allCourseTime != null">
-        allCourseTime = #{allCourseTime,jdbcType=INTEGER},
-      </if>
-      <if test="content != null">
-        content = #{content,jdbcType=VARCHAR},
+      <if test="englishName != null">
+        englishName = #{englishName,jdbcType=VARCHAR},
       </if>
       <if test="des != null">
         des = #{des,jdbcType=VARCHAR},
       </if>
-      <if test="purpose != null">
-        purpose = #{purpose,jdbcType=VARCHAR},
+      <if test="passRate != null">
+        passRate = #{passRate,jdbcType=INTEGER},
       </if>
-      <if test="requirement != null">
-        requirement = #{requirement,jdbcType=VARCHAR},
+      <if test="knowledgePoint != null">
+        knowledgePoint = #{knowledgePoint,jdbcType=VARCHAR},
       </if>
-      <if test="principle != null">
-        principle = #{principle,jdbcType=VARCHAR},
+      <if test="diffucultLevel != null">
+        diffucultLevel = #{diffucultLevel,jdbcType=VARCHAR},
       </if>
-      <if test="method != null">
-        `method` = #{method,jdbcType=VARCHAR},
+      <if test="step != null">
+        step = #{step,jdbcType=INTEGER},
       </if>
-      <if test="steps != null">
-        steps = #{steps,jdbcType=VARCHAR},
+      <if test="bigEpt != null">
+        bigEpt = #{bigEpt,jdbcType=INTEGER},
       </if>
-      <if test="device != null">
-        device = #{device,jdbcType=VARCHAR},
+      <if test="time != null">
+        `time` = #{time,jdbcType=INTEGER},
       </if>
       <if test="coverPic != null">
         coverPic = #{coverPic,jdbcType=VARCHAR},
       </if>
-      <if test="purposePic != null">
-        purposePic = #{purposePic,jdbcType=VARCHAR},
+      <if test="scanNum != null">
+        scanNum = #{scanNum,jdbcType=INTEGER},
       </if>
-      <if test="principlePic != null">
-        principlePic = #{principlePic,jdbcType=VARCHAR},
-      </if>
-      <if test="methodPic != null">
-        methodPic = #{methodPic,jdbcType=VARCHAR},
-      </if>
-      <if test="stepPic != null">
-        stepPic = #{stepPic,jdbcType=VARCHAR},
-      </if>
-      <if test="devicePic != null">
-        devicePic = #{devicePic,jdbcType=VARCHAR},
+      <if test="participateNum != null">
+        participateNum = #{participateNum,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="hci.artedu.pojo.Experiment">
     update experiment
-    set eptName = #{eptName,jdbcType=VARCHAR},
-      eptTime = #{eptTime,jdbcType=BIGINT},
-      difficultDegree = #{difficultDegree,jdbcType=INTEGER},
-      eptType = #{eptType,jdbcType=VARCHAR},
-      passRate = #{passRate,jdbcType=INTEGER},
-      participateRate = #{participateRate,jdbcType=INTEGER},
-      course = #{course,jdbcType=VARCHAR},
-      allCourseTime = #{allCourseTime,jdbcType=INTEGER},
-      content = #{content,jdbcType=VARCHAR},
+    set `name` = #{name,jdbcType=VARCHAR},
+      englishName = #{englishName,jdbcType=VARCHAR},
       des = #{des,jdbcType=VARCHAR},
-      purpose = #{purpose,jdbcType=VARCHAR},
-      requirement = #{requirement,jdbcType=VARCHAR},
-      principle = #{principle,jdbcType=VARCHAR},
-      `method` = #{method,jdbcType=VARCHAR},
-      steps = #{steps,jdbcType=VARCHAR},
-      device = #{device,jdbcType=VARCHAR},
+      passRate = #{passRate,jdbcType=INTEGER},
+      knowledgePoint = #{knowledgePoint,jdbcType=VARCHAR},
+      diffucultLevel = #{diffucultLevel,jdbcType=VARCHAR},
+      step = #{step,jdbcType=INTEGER},
+      bigEpt = #{bigEpt,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=INTEGER},
       coverPic = #{coverPic,jdbcType=VARCHAR},
-      purposePic = #{purposePic,jdbcType=VARCHAR},
-      principlePic = #{principlePic,jdbcType=VARCHAR},
-      methodPic = #{methodPic,jdbcType=VARCHAR},
-      stepPic = #{stepPic,jdbcType=VARCHAR},
-      devicePic = #{devicePic,jdbcType=VARCHAR}
+      scanNum = #{scanNum,jdbcType=INTEGER},
+      participateNum = #{participateNum,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
