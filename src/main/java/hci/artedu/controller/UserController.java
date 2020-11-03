@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,10 +36,10 @@ public class UserController {
      * @return
      */
     @PostMapping("/register")
-    public ServerResponse<String> register(User user){
+    public ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode){
 
 
-        ServerResponse<String> response = userService.register(user);
+        ServerResponse<String> response = userService.register(user, request, verifyCode);
         return response;
     }
 

@@ -66,6 +66,10 @@ public class User implements Serializable {
      */
     private Double userScore;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 手机号
+     */
+    private String phoneNumber;
 
+    private static final long serialVersionUID = 1L;
 }
