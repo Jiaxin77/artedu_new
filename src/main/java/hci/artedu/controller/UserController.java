@@ -2,12 +2,14 @@ package hci.artedu.controller;
 
 import hci.artedu.common.ServerResponse;
 import hci.artedu.pojo.User;
+import hci.artedu.pojo.UserExample;
 import hci.artedu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,8 +25,9 @@ public class UserController {
      * @return user信息
      */
     @PostMapping("/login")
-    public ServerResponse<HashMap<String,Object>>  login(User user){
-        ServerResponse<HashMap<String,Object>> response = userService.login(user);
+    public ServerResponse<HashMap<String,Object>>  login(User user, HttpSession session){
+        ServerResponse<HashMap<String,Object>> response = userService.login(user,session);
+
         return response;
     }
 
@@ -56,5 +59,11 @@ public class UserController {
     public ServerResponse<List<User>> getalluser()
     {
         return userService.getalluser();
+    }
+
+    @PostMapping("/logout")
+    public ServerResponse<String> logout(int uid,HttpSession session)
+    {
+        return userService.logout(uid,session);
     }
 }

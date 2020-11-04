@@ -2,16 +2,21 @@ package hci.artedu.service.impl;
 
 import hci.artedu.common.ServerResponse;
 import hci.artedu.dao.UserMapper;
+import hci.artedu.dao.UseroperationMapper;
 import hci.artedu.pojo.User;
 import hci.artedu.pojo.UserExample;
+import hci.artedu.pojo.Useroperation;
 import hci.artedu.service.TokenService;
 import hci.artedu.service.UserService;
+import hci.artedu.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,12 +31,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private UseroperationMapper useroperationMapper;
+
 
 
 
 
     @Override
-    public ServerResponse<HashMap<String,Object>> login(User user){
+    public ServerResponse<HashMap<String,Object>> login(User user, HttpSession session){
         /**
          * @Author jiaxin
          * @Description 登录
@@ -63,12 +71,17 @@ public class UserServiceImpl implements UserService {
                 res.put("token",token);
                 res.put("user",thisuser);
 
+                //session
+                session.setAttribute("user",thisuser);
+                session.setAttribute("status","login");
+
 
 
                 return ServerResponse.createBySuccess("登录成功",res);
             }
             else {
                 //密码错误
+                session.setAttribute("status","false");
                 return ServerResponse.createByErrorMessage("登录失败");
             }
         }
@@ -125,10 +138,73 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
     @Override
     public User findUserById(int id)
     {
         User user = userMapper.selectByPrimaryKey(id);
         return user;
+    }
+
+    @Override
+    public ServerResponse<String> logout(int uid,HttpSession session)
+    {
+        User user = userMapper.selectByPrimaryKey(uid);
+        String status = (String) session.getAttribute("status");
+        System.out.println(status);
+
+        if (status!= null &&status.equals("login")){//退出成功
+            session.invalidate();
+            return ServerResponse.createBySuccessMessage("成功登出");
+        }else {//退出失败
+            return ServerResponse.createByErrorMessage("未登录，登出失败");
+        }
+
+    }
+
+    @Override
+    public void insertLoginLog(int uid)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 加入登录进去的日志//TODO
+         * @Date 10:27 上午 2020/11/2
+         * @Param [uid]
+         * @return int userid
+         **/
+
+        Useroperation useroperation = new Useroperation();
+        User user = userMapper.selectByPrimaryKey(uid);
+        useroperation.setUserId(user.getId());
+        useroperation.setUserName(user.getUserName());
+        Timestamp loginTime = DateUtils.nowDateTime();
+        useroperation.setOperationTime(loginTime);
+        useroperation.setUserOperation("login");
+        useroperationMapper.insert(useroperation);
+
+
+    }
+
+
+
+    @Override
+    public void insertLogoutLog(int uid)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 加入登出的日志//TODO
+         * @Date 10:27 上午 2020/11/2
+         * @Param [uid]
+         * @return int userid
+         **/
+
+        Useroperation useroperation = new Useroperation();
+        User user = userMapper.selectByPrimaryKey(uid);
+        useroperation.setUserId(user.getId());
+        useroperation.setUserName(user.getUserName());
+        Timestamp logoutTime = DateUtils.nowDateTime();
+        useroperation.setOperationTime(logoutTime);
+        useroperation.setUserOperation("logout");
+        useroperationMapper.insert(useroperation);
     }
 }

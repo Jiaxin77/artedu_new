@@ -24,7 +24,7 @@ public class TokenServiceImpl implements TokenService {
         Date end = new Date(currentTime);
         String token = "";
 
-        token = JWT.create().withAudience(String.valueOf(user.getUserId())).withIssuedAt(start).withExpiresAt(end)
+        token = JWT.create().withAudience(String.valueOf(user.getId())).withIssuedAt(start).withExpiresAt(end)
                 .sign(Algorithm.HMAC256(user.getUserPassword()));
         return token;
     }

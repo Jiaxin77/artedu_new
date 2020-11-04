@@ -1,16 +1,16 @@
 package hci.artedu.service.impl;
 
 import hci.artedu.common.ServerResponse;
-import hci.artedu.dao.BigexperimentMapper;
-import hci.artedu.dao.ExperimentMapper;
-import hci.artedu.dao.ExperimentstepMapper;
+import hci.artedu.dao.*;
 import hci.artedu.pojo.*;
 import hci.artedu.service.EptService;
+import hci.artedu.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +33,12 @@ public class EptServiceImpl implements EptService {
 
     @Autowired
     private ExperimentstepMapper experimentstepMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UseroperationMapper useroperationMapper;
 
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -281,6 +287,35 @@ public class EptServiceImpl implements EptService {
         eptInfo.put("eptPic", bigexperiment.getDevicePic());
 
         return ServerResponse.createBySuccess("获取成功", eptInfo);
+    }
+
+
+    //开始实验
+    public ServerResponse<Boolean> beginExperiment(int userid,int expId)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 开始实验；记录实验开始的时间？【或许获取进度？】//TODO
+         * @Date 10:04 下午 2020/11/2
+         * @Param [userid用户id, expId实验id]
+         * @return hci.artedu.common.ServerResponse<java.lang.Boolean>
+         **/
+
+        //写日志
+        User user = userMapper.selectByPrimaryKey(userid);
+        Experiment experiment = experimentMapper.selectByPrimaryKey(expId);
+
+        Useroperation useroperation = new Useroperation();
+        useroperation.setUserId(user.getId());
+        useroperation.setUserOperation("beginEpt");
+        useroperation.setParams(Integer.toString(experiment.getId()));
+        useroperation.setUserName(user.getUserName());
+        Timestamp beginTime = DateUtils.nowDateTime();
+        useroperation.setOperationTime(beginTime);
+
+        return ServerResponse.createBySuccess("开始成功", true);
+
+
     }
 
 }

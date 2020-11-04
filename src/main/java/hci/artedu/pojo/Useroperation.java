@@ -2,13 +2,20 @@ package hci.artedu.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * userOperation
  * @author 
  */
 @Data
+@Component
+@NoArgsConstructor
+@AllArgsConstructor
 public class Useroperation implements Serializable {
     /**
      * 记录id
