@@ -40,6 +40,12 @@ public class EptServiceImpl implements EptService {
     @Autowired
     private UseroperationMapper useroperationMapper;
 
+    @Autowired
+    private PointExperimentMapper pointExperimentMapper;
+
+    @Autowired
+    private KnowledgepointMapper knowledgepointMapper;
+
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public ServerResponse<ArrayList> getEptList()
@@ -61,8 +67,8 @@ public class EptServiceImpl implements EptService {
         {
             HashMap<String,Object> eptInfo = new HashMap<String, Object>();
             eptInfo.put("eptId",ept.getId());
-            eptInfo.put("eptName",ept.getName());
-            eptInfo.put("eptTime",ept.getTime());
+            eptInfo.put("eptName",ept.getEptName());
+            eptInfo.put("eptTime",ept.getEptTime());
             eptInfo.put("coverPic",ept.getCoverPic());
             eptList.add(eptInfo);
         }
@@ -116,11 +122,11 @@ public class EptServiceImpl implements EptService {
         Experiment experiment = experimentMapper.selectByPrimaryKey(eptId);
         HashMap<String,Object> eptInfo = new HashMap<String, Object>();
         eptInfo.put("eptId",experiment.getId());
-        eptInfo.put("eptName",experiment.getName());
+        eptInfo.put("eptName",experiment.getEptName());
         eptInfo.put("eptDes",experiment.getDes());
-        eptInfo.put("difficultLevel",experiment.getDiffucultLevel());
+        eptInfo.put("difficultLevel",experiment.getDifficultDegree());
         eptInfo.put("passRate",experiment.getPassRate());
-        eptInfo.put("stepNum",experiment.getStep());
+        eptInfo.put("stepNum",experiment.getSteps());
         eptInfo.put("knowledgePoint",experiment.getKnowledgePoint());
         eptInfo.put("scanNum",experiment.getScanNum());
 
@@ -291,6 +297,7 @@ public class EptServiceImpl implements EptService {
 
 
     //开始实验
+
     public ServerResponse<Boolean> beginExperiment(int userid,int expId)
     {
         /**
@@ -317,5 +324,42 @@ public class EptServiceImpl implements EptService {
 
 
     }
+
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ServerResponse<ArrayList> getEptPoint(int eptId)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 获取某个实验对应的知识点列表//TODO
+         * @Date 4:58 下午 2020/11/4
+         * @Param [eptId]
+         * @return hci.artedu.common.ServerResponse<java.util.ArrayList>
+         **/
+
+        Experiment experiment = experimentMapper.selectByPrimaryKey(eptId);
+        PointExperimentExample pointExperimentExample = new PointExperimentExample();
+        PointExperimentExample.Criteria criteria = pointExperimentExample.createCriteria();
+        criteria.andEptIdEqualTo(experiment.getId());
+        List<PointExperiment> pointExperimentList = pointExperimentMapper.selectByExample(pointExperimentExample);
+
+        ArrayList<Object> pointList = new ArrayList<>();
+        for(PointExperiment pointExperiment:pointExperimentList)
+        {
+            Knowledgepoint knowledgepoint = knowledgepointMapper.selectByPrimaryKey(pointExperiment.getPointId());
+            HashMap<String,Object> map = new HashMap<String, Object>();
+            map.put("id",knowledgepoint.getId());
+            map.put("pointName",knowledgepoint.getName());
+            pointList.add(map);
+
+        }
+        return ServerResponse.createBySuccess("获取成功", pointList);
+
+
+
+    }
+
+
 
 }

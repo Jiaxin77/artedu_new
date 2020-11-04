@@ -24,5 +24,7 @@ public interface EptService {
 
     ServerResponse<HashMap<String, Object>> getEptBasicInfo(int eptId);
 
+    public ServerResponse<ArrayList> getEptPoint(int eptId);
+
 
 }
