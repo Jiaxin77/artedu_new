@@ -22,6 +22,7 @@ import java.util.List;
  * @Date 2020/11/2 9:33 下午
  * @Version 1.0
  **/
+
 @Service
 public class CourseServiceImpl implements CourseService {
     /**
@@ -205,7 +206,7 @@ public class CourseServiceImpl implements CourseService {
             Experiment experiment = experimentMapper.selectByPrimaryKey(pointExperiment.getEptId());
             HashMap<String,Object> map = new HashMap<String, Object>();
             map.put("eptId",experiment.getId());
-            map.put("eptName",experiment.getName());
+            map.put("eptName",experiment.getEptName());
 
             //实验涉及的知识点
             PointExperimentExample pointExperimentExample1 = new PointExperimentExample();

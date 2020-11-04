@@ -18,17 +18,22 @@ public class Experiment implements Serializable {
     /**
      * 实验名称
      */
-    private String name;
+    private String eptName;
 
     /**
-     * 小实验英文名称
+     * 实验课时数
      */
-    private String englishName;
+    private Long eptTime;
 
     /**
-     * 实验简介
+     * 难易程度
      */
-    private String des;
+    private Integer difficultDegree;
+
+    /**
+     * 实验类别
+     */
+    private String eptType;
 
     /**
      * 实验通过率
@@ -36,29 +41,59 @@ public class Experiment implements Serializable {
     private Integer passRate;
 
     /**
-     * 知识点
+     * 实验参与率
      */
-    private String knowledgePoint;
+    private Integer participateRate;
 
     /**
-     * 难度
+     * 实验课程
      */
-    private String diffucultLevel;
+    private String course;
 
     /**
-     * 关卡数
+     * 总课时数
      */
-    private Integer step;
+    private Integer allCourseTime;
 
     /**
-     * 所属大实验
+     * 实验内容
      */
-    private Integer bigEpt;
+    private String content;
 
     /**
-     * 实验时间
+     * 实验简介
      */
-    private Integer time;
+    private String des;
+
+    /**
+     * 实验目的
+     */
+    private String purpose;
+
+    /**
+     * 实验要求
+     */
+    private String requirement;
+
+    /**
+     * 实验原理
+     */
+    private String principle;
+
+    /**
+     * 实验方法
+     */
+    private String method;
+
+    /**
+     * 实验步骤
+     */
+    private String steps;
+
+    /**
+     * 实验仪器设备
+     */
+    private String device;
 
     /**
      * 封面图片
@@ -66,14 +101,41 @@ public class Experiment implements Serializable {
     private String coverPic;
 
     /**
+     * 实验目的图片
+     */
+    private String purposePic;
+
+    /**
+     * 实验原理图片
+
+     */
+    private String principlePic;
+
+    /**
+     * 实验方法图片
+
+     */
+    private String methodPic;
+
+    /**
+     * 实验步骤图片
+     */
+    private String stepPic;
+
+    /**
+     * 实验设备图片
+     */
+    private String devicePic;
+
+    /**
      * 浏览量
      */
     private Integer scanNum;
 
     /**
-     * 参与量
+     * 相关知识点
      */
-    private Integer participateNum;
+    private String knowledgePoint;
 
     private static final long serialVersionUID = 1L;
 }

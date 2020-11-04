@@ -147,4 +147,19 @@ public class EptController {
         return response;
     }
 
+    @GetMapping("/getEptPoint")
+    public ServerResponse<ArrayList> getEptPoint(int eptId)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 获取某实验下知识点信息//TODO
+         * @Date 8:07 下午 2020/11/4
+         * @Param [eptId]
+         * @return hci.artedu.common.ServerResponse<java.util.ArrayList>
+         **/
+        ServerResponse<ArrayList> response = eptService.getEptPoint(eptId);
+        return response;
+
+    }
+
 }

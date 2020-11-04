@@ -67,8 +67,8 @@ public class EptServiceImpl implements EptService {
         {
             HashMap<String,Object> eptInfo = new HashMap<String, Object>();
             eptInfo.put("eptId",ept.getId());
-            eptInfo.put("eptName",ept.getName());
-            eptInfo.put("eptTime",ept.getTime());
+            eptInfo.put("eptName",ept.getEptName());
+            eptInfo.put("eptTime",ept.getEptTime());
             eptInfo.put("coverPic",ept.getCoverPic());
             eptList.add(eptInfo);
         }
@@ -122,11 +122,11 @@ public class EptServiceImpl implements EptService {
         Experiment experiment = experimentMapper.selectByPrimaryKey(eptId);
         HashMap<String,Object> eptInfo = new HashMap<String, Object>();
         eptInfo.put("eptId",experiment.getId());
-        eptInfo.put("eptName",experiment.getName());
+        eptInfo.put("eptName",experiment.getEptName());
         eptInfo.put("eptDes",experiment.getDes());
-        eptInfo.put("difficultLevel",experiment.getDiffucultLevel());
+        eptInfo.put("difficultLevel",experiment.getDifficultDegree());
         eptInfo.put("passRate",experiment.getPassRate());
-        eptInfo.put("stepNum",experiment.getStep());
+        eptInfo.put("stepNum",experiment.getSteps());
         eptInfo.put("knowledgePoint",experiment.getKnowledgePoint());
         eptInfo.put("scanNum",experiment.getScanNum());
 
