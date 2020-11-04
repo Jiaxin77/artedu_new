@@ -10,10 +10,9 @@ import java.util.List;
 
 
 public interface UserService {
-    ServerResponse<HashMap<String,Object>> login(User user);
+
     ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode);
     ServerResponse<HashMap<String,Object>> login(User user, HttpSession session);
-    ServerResponse<String> register(User user);
     int add(User user);
     ServerResponse<String> delete(User user);
     ServerResponse<String> modify(User user);

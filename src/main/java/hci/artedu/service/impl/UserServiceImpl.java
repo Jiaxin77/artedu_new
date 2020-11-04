@@ -158,6 +158,8 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+
+
     @Override
     public ServerResponse<String> logout(int uid,HttpSession session)
     {
@@ -173,6 +175,8 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+
 
     @Override
     public void insertLoginLog(int uid)
@@ -219,4 +223,6 @@ public class UserServiceImpl implements UserService {
         useroperation.setUserOperation("logout");
         useroperationMapper.insert(useroperation);
     }
+
+
 }

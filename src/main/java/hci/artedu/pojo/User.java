@@ -1,7 +1,11 @@
 package hci.artedu.pojo;
 
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * user
