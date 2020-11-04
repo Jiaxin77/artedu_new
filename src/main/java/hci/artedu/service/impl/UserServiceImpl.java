@@ -1,5 +1,6 @@
 package hci.artedu.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import hci.artedu.common.ServerResponse;
 import hci.artedu.dao.UserMapper;
 import hci.artedu.dao.UseroperationMapper;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -41,24 +44,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServerResponse<HashMap<String,Object>> login(User user, HttpSession session){
         /**
-         * @Author jiaxin
+         * @Author leaf
          * @Description 登录
          * @Date 11:12 上午 2019/11/15
          * @Param [username, password]
          * @return com.example.demo.common.ServerResponse<com.example.demo.pojo.UserList>
          **/
-
-        //System.out.println("用户名：");
-        //System.out.println(username);
-        //User myuser = userMapper.selectByUserName(user.getUserName());
         UserExample example = new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
         criteria.andUserNameEqualTo(user.getUserName());
-      //  criteria.andUserPasswordEqualTo(user.getUserPassword());
 
         List<User> uList = userMapper.selectByExample(example);
-
-
 
         //if(!uList.isEmpty() && user.getUserPassword().equals(uList.get(0).getUserPassword())){
         if(!uList.isEmpty() && encoder.matches(user.getUserPassword(),uList.get(0).getUserPassword())){
@@ -87,7 +83,7 @@ public class UserServiceImpl implements UserService {
         }
 
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
-    public ServerResponse<String> register(User user){
+    public ServerResponse<String> register(User user, HttpServletRequest request,String verifyCode){
 
         /**
          * @Author jiaxin
@@ -101,7 +97,13 @@ public class UserServiceImpl implements UserService {
         UserExample example = new UserExample();
         example.createCriteria().andUserNameEqualTo(user.getUserName());
         List<User> uList = userMapper.selectByExample(example);
-
+        JSONObject json = (JSONObject)request.getSession().getAttribute("verifyCode");
+        if(!json.getString("verifyCode").equals(verifyCode)){
+            return ServerResponse.createBySuccessMessage("验证码错误");
+        }
+        if((System.currentTimeMillis() - json.getLong("createTime")) > 1000 * 60 * 5) {
+            return ServerResponse.createBySuccessMessage("验证码过期");
+        }
 
         if(!uList.isEmpty())
         {
@@ -130,7 +132,17 @@ public class UserServiceImpl implements UserService {
         return ServerResponse.createBySuccessMessage("删除成功");
     }
 
-    public ServerResponse<List<User>> getalluser()
+    @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
+    public ServerResponse<String> modify(User user){
+        UserExample example = new UserExample();
+        example.createCriteria().andUserNameEqualTo(user.getUserName());
+        user.setUserPassword(encoder.encode(user.getUserPassword()));
+        userMapper.updateByExample(user,example);
+        return ServerResponse.createBySuccessMessage("修改成功");
+    }
+
+
+    public ServerResponse<List<User>> getAllUser()
     {
         UserExample userExample = new UserExample();
         List<User> userList = userMapper.selectByExample(userExample);
