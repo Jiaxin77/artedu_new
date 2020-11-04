@@ -125,7 +125,7 @@
               <option name="useExample" value="true" />
               <option name="useLombokPlugin" value="true" />
               <option name="useSchemaPrefix" value="true" />
-              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlMvnPath" value="src/main/resources/mybatis/" />
               <option name="xmlPackage" value="mapper" />
             </Config>
           </value>
@@ -151,8 +151,8 @@
               <option name="useExample" value="true" />
               <option name="useLombokPlugin" value="true" />
               <option name="useSchemaPrefix" value="true" />
-              <option name="xmlMvnPath" value="src/main/resources" />
-              <option name="xmlPackage" value="generator" />
+              <option name="xmlMvnPath" value="src/main/resources/mybatis" />
+              <option name="xmlPackage" value="mapper" />
             </Config>
           </value>
         </entry>
