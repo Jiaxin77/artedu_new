@@ -3,6 +3,8 @@
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/ExperimentExample.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/utils/UserLoginToken.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/config/InterceptorConfig.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/service/impl/EqtServiceImpl.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/controller/EqtController.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/Bigexperiment.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/service/impl/UserServiceImpl.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/dao/BigexperimentMapper.java
@@ -25,9 +27,11 @@
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/ArtEduApplication.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/EqtRecordExample.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/aop/LogoutAop.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/EptRecordExample.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/Experiment.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/service/impl/CourseServiceImpl.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/dao/KnowledgepointMapper.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/dao/EptrecordMapper.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/dao/CourseMapper.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/dao/UserMapper.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/aop/endStudyAop.java
@@ -44,8 +48,10 @@
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/dao/UseroperationMapper.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/EqtRecord.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/UseroperationExample.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/EptRecord.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/service/impl/TokenServiceImpl.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/controller/EptController.java
+/Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/service/EqtService.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/common/ResponseCode.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/Experimentstep.java
 /Users/jiaxin/Documents/研二/新的仿真/代码/artedu/src/main/java/hci/artedu/pojo/User.java

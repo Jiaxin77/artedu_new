@@ -1,3 +1,4 @@
+hci/artedu/pojo/EptRecordExample$Criterion.class
 hci/artedu/pojo/KnowledgepointExample$Criteria.class
 hci/artedu/pojo/CourseExample$Criteria.class
 hci/artedu/service/UserService.class
@@ -7,11 +8,14 @@ hci/artedu/pojo/Experimentstep.class
 hci/artedu/service/impl/EptServiceImpl.class
 hci/artedu/pojo/Useroperation.class
 hci/artedu/dao/UseroperationMapper.class
+hci/artedu/controller/EqtController.class
 hci/artedu/common/Const.class
 hci/artedu/pojo/EquipmentExample$Criterion.class
 hci/artedu/dao/PointrecordMapper.class
 hci/artedu/dao/BigexperimentMapper.class
+hci/artedu/service/impl/EqtServiceImpl.class
 hci/artedu/aop/LoginAop.class
+hci/artedu/service/EqtService.class
 hci/artedu/controller/UserController.class
 hci/artedu/ArtEduApplication.class
 hci/artedu/pojo/Equipment.class
@@ -29,8 +33,11 @@ hci/artedu/dao/CourseMapper.class
 hci/artedu/pojo/ExperimentstepExample$Criterion.class
 hci/artedu/pojo/EquipmentExample.class
 hci/artedu/service/impl/UserServiceImpl.class
+hci/artedu/pojo/EptRecordExample$GeneratedCriteria.class
+hci/artedu/pojo/EptRecordExample$Criteria.class
 hci/artedu/pojo/ExperimentExample$Criterion.class
 hci/artedu/pojo/ExperimentstepExample$Criteria.class
+hci/artedu/dao/EptrecordMapper.class
 hci/artedu/pojo/PointrecordExample$Criterion.class
 hci/artedu/pojo/ExperimentstepExample.class
 hci/artedu/pojo/UseroperationExample$Criterion.class
@@ -44,6 +51,7 @@ hci/artedu/controller/CourseController.class
 hci/artedu/aop/LogoutAop.class
 hci/artedu/pojo/ExperimentExample$GeneratedCriteria.class
 hci/artedu/pojo/EqtRecordExample$Criterion.class
+hci/artedu/pojo/EptRecordExample.class
 hci/artedu/pojo/Bigexperiment.class
 hci/artedu/pojo/CourseExample$Criterion.class
 hci/artedu/utils/UserLoginToken.class
@@ -72,6 +80,7 @@ hci/artedu/dao/ExperimentMapper.class
 hci/artedu/pojo/UserExample.class
 hci/artedu/pojo/EqtRecordExample$GeneratedCriteria.class
 hci/artedu/service/TokenService.class
+hci/artedu/pojo/EptRecord.class
 hci/artedu/pojo/PointExperimentExample.class
 hci/artedu/pojo/UserExample$Criteria.class
 hci/artedu/pojo/UseroperationExample$Criteria.class

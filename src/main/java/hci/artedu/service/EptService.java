@@ -1,6 +1,7 @@
 package hci.artedu.service;
 
 import hci.artedu.common.ServerResponse;
+import hci.artedu.pojo.EptRecord;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,12 @@ public interface EptService {
     ServerResponse<HashMap<String, Object>> getEptBasicInfo(int eptId);
 
     public ServerResponse<ArrayList> getEptPoint(int eptId);
+
+    public ServerResponse endPostExperiment(EptRecord eptRecord);
+
+    public ServerResponse<ArrayList> getUserExperimentProcess(int userId);
+
+    public ServerResponse<Boolean> beginExperiment(int userid,int expId);
 
 
 }

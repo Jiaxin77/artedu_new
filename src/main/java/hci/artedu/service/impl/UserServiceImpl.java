@@ -82,6 +82,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+    @Override
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
     public ServerResponse<String> register(User user, HttpServletRequest request,String verifyCode){
 

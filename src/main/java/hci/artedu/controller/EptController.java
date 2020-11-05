@@ -1,9 +1,11 @@
 package hci.artedu.controller;
 
 import hci.artedu.common.ServerResponse;
+import hci.artedu.pojo.EptRecord;
 import hci.artedu.service.EptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -161,5 +163,54 @@ public class EptController {
         return response;
 
     }
+
+
+    @PostMapping("/endPostExperiment")
+    public ServerResponse endPostExperiment(EptRecord eptRecord)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 结束实验提交//TODO
+         * @Date 10:59 上午 2020/11/5
+         * @Param [eptRecord]
+         * @return hci.artedu.common.ServerResponse
+         **/
+
+        ServerResponse response = eptService.endPostExperiment(eptRecord);
+        return  response;
+
+    }
+
+    @GetMapping("/getUserExperimentProcess")
+    public ServerResponse<ArrayList> getUserExperimentProcess(int userId)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 获取用户实验进度//TODO
+         * @Date 11:00 上午 2020/11/5
+         * @Param [userId]
+         * @return hci.artedu.common.ServerResponse<java.util.ArrayList>
+         **/
+        ServerResponse response = eptService.getUserExperimentProcess(userId);
+        return response;
+
+    }
+
+    @PostMapping("/beginExperiment")
+    public ServerResponse<Boolean> beginExperiment(int userId,int expId)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 开始实验//TODO
+         * @Date 11:01 上午 2020/11/5
+         * @Param [userid, expId]
+         * @return hci.artedu.common.ServerResponse<java.lang.Boolean>
+         **/
+        ServerResponse<Boolean> response = eptService.beginExperiment(userId,expId);
+        return response;
+
+    }
+
+
 
 }

@@ -46,6 +46,9 @@ public class EptServiceImpl implements EptService {
     @Autowired
     private KnowledgepointMapper knowledgepointMapper;
 
+    @Autowired
+    private EptrecordMapper eptrecordMapper;
+
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public ServerResponse<ArrayList> getEptList()
@@ -298,6 +301,8 @@ public class EptServiceImpl implements EptService {
 
     //开始实验
 
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
     public ServerResponse<Boolean> beginExperiment(int userid,int expId)
     {
         /**
@@ -319,11 +324,79 @@ public class EptServiceImpl implements EptService {
         useroperation.setUserName(user.getUserName());
         Timestamp beginTime = DateUtils.nowDateTime();
         useroperation.setOperationTime(beginTime);
+        useroperationMapper.insert(useroperation);
 
         return ServerResponse.createBySuccess("开始成功", true);
 
 
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
+    public ServerResponse endPostExperiment(EptRecord eptRecord)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 实验结束后提交信息//TODO
+         * @Date 10:49 上午 2020/11/5
+         * @Param [eptRecord]
+         * @return hci.artedu.common.ServerResponse
+         **/
+
+        eptrecordMapper.insert(eptRecord);//记录实验相关
+        //写日志
+        //写日志
+        User user = userMapper.selectByPrimaryKey(eptRecord.getUserid());
+        Experiment experiment = experimentMapper.selectByPrimaryKey(eptRecord.getEptId());
+
+        Useroperation useroperation = new Useroperation();
+        useroperation.setUserId(user.getId());
+        useroperation.setUserOperation("endEpt");
+        useroperation.setParams(Integer.toString(experiment.getId()));
+        useroperation.setUserName(user.getUserName());
+        Timestamp endTime = DateUtils.nowDateTime();
+        useroperation.setOperationTime(endTime);
+
+        useroperationMapper.insert(useroperation);
+
+        return ServerResponse.createBySuccessMessage("记录成功");
+
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ServerResponse<ArrayList> getUserExperimentProcess(int userId)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 获取某用户的实验进度//TODO
+         * @Date 10:49 上午 2020/11/5
+         * @Param [userId]
+         * @return hci.artedu.common.ServerResponse<java.util.ArrayList>
+         **/
+
+        User user = userMapper.selectByPrimaryKey(userId);
+        EptRecordExample eptRecordExample = new EptRecordExample();
+        EptRecordExample.Criteria criteria = eptRecordExample.createCriteria();
+        criteria.andUseridEqualTo(user.getId());
+        List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);
+
+        ArrayList<Object> userProcess = new ArrayList<Object>();
+        for(EptRecord eptRecord:eptRecordList)
+        {
+            HashMap<String,Object> map = new HashMap<String, Object>();
+            map.put("eptId",eptRecord.getEptId());
+            Experiment experiment = experimentMapper.selectByPrimaryKey(eptRecord.getEptId());
+            map.put("eptName",experiment.getEptName());
+            map.put("process",eptRecord.getProgress());
+
+            userProcess.add(map);
+        }
+
+        return ServerResponse.createBySuccess("获取成功", userProcess);
+
+    }
+
 
 
     @Override
