@@ -2,6 +2,7 @@ package hci.artedu.service;
 
 import hci.artedu.common.ServerResponse;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -15,7 +16,7 @@ import java.util.HashMap;
 public interface EqtService {
     ServerResponse<HashMap<String, Object>> getEqtNumber();
     ServerResponse<String> reserveApply(int deviceId, Date reverseTime, Double reversePeriod);
-    ServerResponse<HashMap<String, Object>> getReserveApply();
+    ServerResponse<ArrayList<Object>> getReserveApply();
     ServerResponse<HashMap<String, Object>> toolInfo(int toolTpye);
     ServerResponse<String> checkApply(int result,String comment);
 }

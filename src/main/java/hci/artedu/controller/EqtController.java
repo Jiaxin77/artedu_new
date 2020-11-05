@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -22,18 +23,18 @@ public class EqtController {
     @Autowired
     private EqtService eqtService;
 
-//    @GetMapping("/getEqtNum")
-//    public ServerResponse<HashMap<String,Object>> getEqtNum() {
-//        /**
-//         * TODO
-//         * @return hci.artedu.common.ServerResponse<java.util.ArrayList>
-//         * @Description 获取设备数量
-//         * @Author Leaf
-//         * @Date 2020/11/4 4:28 下午
-//         **/
-//        ServerResponse<HashMap<String,Object>> response = EqtService.getEqtNumber();
-//        return null;
-//    }
+    @GetMapping("/getReserveApply")
+    public ServerResponse<ArrayList<Object>> getEqtNum() {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.util.ArrayList>
+         * @Description 获取设备数量
+         * @Author Leaf
+         * @Date 2020/11/4 4:28 下午
+         **/
+        ServerResponse<ArrayList<Object>> response = eqtService.getReserveApply();
+        return response;
+    }
 
     @PostMapping("/checkApply")
     public ServerResponse<String> checkApply(int result,String comment) {
