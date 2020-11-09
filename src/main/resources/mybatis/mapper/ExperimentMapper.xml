@@ -27,6 +27,7 @@
     <result column="devicePic" jdbcType="VARCHAR" property="devicePic" />
     <result column="scanNum" jdbcType="INTEGER" property="scanNum" />
     <result column="knowledgePoint" jdbcType="VARCHAR" property="knowledgePoint" />
+    <result column="englishName" jdbcType="VARCHAR" property="englishName" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -89,7 +90,8 @@
   <sql id="Base_Column_List">
     id, eptName, eptTime, difficultDegree, eptType, passRate, participateRate, course, 
     allCourseTime, content, des, purpose, requirement, principle, `method`, steps, device, 
-    coverPic, purposePic, principlePic, methodPic, stepPic, devicePic, scanNum, knowledgePoint
+    coverPic, purposePic, principlePic, methodPic, stepPic, devicePic, scanNum, knowledgePoint, 
+    englishName
   </sql>
   <select id="selectByExample" parameterType="hci.artedu.pojo.ExperimentExample" resultMap="BaseResultMap">
     select
@@ -129,8 +131,8 @@
       principle, `method`, steps, 
       device, coverPic, purposePic, 
       principlePic, methodPic, stepPic, 
-      devicePic, scanNum, knowledgePoint
-      )
+      devicePic, scanNum, knowledgePoint, 
+      englishName)
     values (#{eptName,jdbcType=VARCHAR}, #{eptTime,jdbcType=BIGINT}, #{difficultDegree,jdbcType=INTEGER}, 
       #{eptType,jdbcType=VARCHAR}, #{passRate,jdbcType=INTEGER}, #{participateRate,jdbcType=INTEGER}, 
       #{course,jdbcType=VARCHAR}, #{allCourseTime,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
@@ -138,8 +140,8 @@
       #{principle,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{steps,jdbcType=VARCHAR}, 
       #{device,jdbcType=VARCHAR}, #{coverPic,jdbcType=VARCHAR}, #{purposePic,jdbcType=VARCHAR}, 
       #{principlePic,jdbcType=VARCHAR}, #{methodPic,jdbcType=VARCHAR}, #{stepPic,jdbcType=VARCHAR}, 
-      #{devicePic,jdbcType=VARCHAR}, #{scanNum,jdbcType=INTEGER}, #{knowledgePoint,jdbcType=VARCHAR}
-      )
+      #{devicePic,jdbcType=VARCHAR}, #{scanNum,jdbcType=INTEGER}, #{knowledgePoint,jdbcType=VARCHAR}, 
+      #{englishName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Experiment" useGeneratedKeys="true">
     insert into experiment
@@ -216,6 +218,9 @@
       <if test="knowledgePoint != null">
         knowledgePoint,
       </if>
+      <if test="englishName != null">
+        englishName,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="eptName != null">
@@ -289,6 +294,9 @@
       </if>
       <if test="knowledgePoint != null">
         #{knowledgePoint,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null">
+        #{englishName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -376,6 +384,9 @@
       <if test="record.knowledgePoint != null">
         knowledgePoint = #{record.knowledgePoint,jdbcType=VARCHAR},
       </if>
+      <if test="record.englishName != null">
+        englishName = #{record.englishName,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -407,7 +418,8 @@
       stepPic = #{record.stepPic,jdbcType=VARCHAR},
       devicePic = #{record.devicePic,jdbcType=VARCHAR},
       scanNum = #{record.scanNum,jdbcType=INTEGER},
-      knowledgePoint = #{record.knowledgePoint,jdbcType=VARCHAR}
+      knowledgePoint = #{record.knowledgePoint,jdbcType=VARCHAR},
+      englishName = #{record.englishName,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -487,6 +499,9 @@
       <if test="knowledgePoint != null">
         knowledgePoint = #{knowledgePoint,jdbcType=VARCHAR},
       </if>
+      <if test="englishName != null">
+        englishName = #{englishName,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -515,7 +530,8 @@
       stepPic = #{stepPic,jdbcType=VARCHAR},
       devicePic = #{devicePic,jdbcType=VARCHAR},
       scanNum = #{scanNum,jdbcType=INTEGER},
-      knowledgePoint = #{knowledgePoint,jdbcType=VARCHAR}
+      knowledgePoint = #{knowledgePoint,jdbcType=VARCHAR},
+      englishName = #{englishName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

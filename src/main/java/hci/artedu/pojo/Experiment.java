@@ -137,5 +137,10 @@ public class Experiment implements Serializable {
      */
     private String knowledgePoint;
 
+    /**
+     * 英文名
+     */
+    private String englishName;
+
     private static final long serialVersionUID = 1L;
 }

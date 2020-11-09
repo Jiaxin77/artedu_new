@@ -1323,6 +1323,76 @@ public class CourseExample {
             addCriterion("content_three not between", value1, value2, "content_three");
             return (Criteria) this;
         }
+
+        public Criteria andCoverPicIsNull() {
+            addCriterion("coverPic is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicIsNotNull() {
+            addCriterion("coverPic is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicEqualTo(String value) {
+            addCriterion("coverPic =", value, "coverPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicNotEqualTo(String value) {
+            addCriterion("coverPic <>", value, "coverPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicGreaterThan(String value) {
+            addCriterion("coverPic >", value, "coverPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicGreaterThanOrEqualTo(String value) {
+            addCriterion("coverPic >=", value, "coverPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicLessThan(String value) {
+            addCriterion("coverPic <", value, "coverPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicLessThanOrEqualTo(String value) {
+            addCriterion("coverPic <=", value, "coverPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicLike(String value) {
+            addCriterion("coverPic like", value, "coverPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicNotLike(String value) {
+            addCriterion("coverPic not like", value, "coverPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicIn(List<String> values) {
+            addCriterion("coverPic in", values, "coverPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicNotIn(List<String> values) {
+            addCriterion("coverPic not in", values, "coverPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicBetween(String value1, String value2) {
+            addCriterion("coverPic between", value1, value2, "coverPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverPicNotBetween(String value1, String value2) {
+            addCriterion("coverPic not between", value1, value2, "coverPic");
+            return (Criteria) this;
+        }
     }
 
     /**

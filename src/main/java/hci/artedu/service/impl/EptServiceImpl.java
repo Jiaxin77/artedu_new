@@ -127,12 +127,14 @@ public class EptServiceImpl implements EptService {
         HashMap<String,Object> eptInfo = new HashMap<String, Object>();
         eptInfo.put("eptId",experiment.getId());
         eptInfo.put("eptName",experiment.getEptName());
+        eptInfo.put("englishName",experiment.getEnglishName());
         eptInfo.put("eptDes",experiment.getDes());
         eptInfo.put("difficultLevel",experiment.getDifficultDegree());
         eptInfo.put("passRate",experiment.getPassRate());
         eptInfo.put("stepNum",experiment.getSteps());
         eptInfo.put("knowledgePoint",experiment.getKnowledgePoint());
         eptInfo.put("scanNum",experiment.getScanNum());
+        eptInfo.put("coverPic",experiment.getCoverPic());
 
         //获取步骤图
         ExperimentstepExample experimentstepExample = new ExperimentstepExample();

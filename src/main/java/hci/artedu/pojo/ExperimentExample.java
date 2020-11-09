@@ -1783,6 +1783,76 @@ public class ExperimentExample {
             addCriterion("knowledgePoint not between", value1, value2, "knowledgePoint");
             return (Criteria) this;
         }
+
+        public Criteria andEnglishNameIsNull() {
+            addCriterion("englishName is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameIsNotNull() {
+            addCriterion("englishName is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameEqualTo(String value) {
+            addCriterion("englishName =", value, "englishName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameNotEqualTo(String value) {
+            addCriterion("englishName <>", value, "englishName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameGreaterThan(String value) {
+            addCriterion("englishName >", value, "englishName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameGreaterThanOrEqualTo(String value) {
+            addCriterion("englishName >=", value, "englishName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameLessThan(String value) {
+            addCriterion("englishName <", value, "englishName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameLessThanOrEqualTo(String value) {
+            addCriterion("englishName <=", value, "englishName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameLike(String value) {
+            addCriterion("englishName like", value, "englishName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameNotLike(String value) {
+            addCriterion("englishName not like", value, "englishName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameIn(List<String> values) {
+            addCriterion("englishName in", values, "englishName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameNotIn(List<String> values) {
+            addCriterion("englishName not in", values, "englishName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameBetween(String value1, String value2) {
+            addCriterion("englishName between", value1, value2, "englishName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnglishNameNotBetween(String value1, String value2) {
+            addCriterion("englishName not between", value1, value2, "englishName");
+            return (Criteria) this;
+        }
     }
 
     /**

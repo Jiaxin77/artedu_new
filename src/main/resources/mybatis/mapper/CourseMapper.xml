@@ -20,6 +20,7 @@
     <result column="content_one" jdbcType="VARCHAR" property="content_one" />
     <result column="content_two" jdbcType="VARCHAR" property="content_two" />
     <result column="content_three" jdbcType="VARCHAR" property="content_three" />
+    <result column="coverPic" jdbcType="VARCHAR" property="coverPic" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -82,7 +83,7 @@
   <sql id="Base_Column_List">
     id, `name`, englishName, `number`, studyScore, studyTime, isMust, openTerm, category, 
     major, beforeCourse, target, title_one, title_two, title_three, content_one, content_two, 
-    content_three
+    content_three, coverPic
   </sql>
   <select id="selectByExample" parameterType="hci.artedu.pojo.CourseExample" resultMap="BaseResultMap">
     select
@@ -120,13 +121,15 @@
       openTerm, category, major, 
       beforeCourse, target, title_one, 
       title_two, title_three, content_one, 
-      content_two, content_three)
+      content_two, content_three, coverPic
+      )
     values (#{name,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, 
       #{studyScore,jdbcType=INTEGER}, #{studyTime,jdbcType=INTEGER}, #{isMust,jdbcType=BOOLEAN}, 
       #{openTerm,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, 
       #{beforeCourse,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, #{title_one,jdbcType=VARCHAR}, 
       #{title_two,jdbcType=VARCHAR}, #{title_three,jdbcType=VARCHAR}, #{content_one,jdbcType=VARCHAR}, 
-      #{content_two,jdbcType=VARCHAR}, #{content_three,jdbcType=VARCHAR})
+      #{content_two,jdbcType=VARCHAR}, #{content_three,jdbcType=VARCHAR}, #{coverPic,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Course" useGeneratedKeys="true">
     insert into course
@@ -182,6 +185,9 @@
       <if test="content_three != null">
         content_three,
       </if>
+      <if test="coverPic != null">
+        coverPic,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="name != null">
@@ -234,6 +240,9 @@
       </if>
       <if test="content_three != null">
         #{content_three,jdbcType=VARCHAR},
+      </if>
+      <if test="coverPic != null">
+        #{coverPic,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -300,6 +309,9 @@
       <if test="record.content_three != null">
         content_three = #{record.content_three,jdbcType=VARCHAR},
       </if>
+      <if test="record.coverPic != null">
+        coverPic = #{record.coverPic,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -324,7 +336,8 @@
       title_three = #{record.title_three,jdbcType=VARCHAR},
       content_one = #{record.content_one,jdbcType=VARCHAR},
       content_two = #{record.content_two,jdbcType=VARCHAR},
-      content_three = #{record.content_three,jdbcType=VARCHAR}
+      content_three = #{record.content_three,jdbcType=VARCHAR},
+      coverPic = #{record.coverPic,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -383,6 +396,9 @@
       <if test="content_three != null">
         content_three = #{content_three,jdbcType=VARCHAR},
       </if>
+      <if test="coverPic != null">
+        coverPic = #{coverPic,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -404,7 +420,8 @@
       title_three = #{title_three,jdbcType=VARCHAR},
       content_one = #{content_one,jdbcType=VARCHAR},
       content_two = #{content_two,jdbcType=VARCHAR},
-      content_three = #{content_three,jdbcType=VARCHAR}
+      content_three = #{content_three,jdbcType=VARCHAR},
+      coverPic = #{coverPic,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

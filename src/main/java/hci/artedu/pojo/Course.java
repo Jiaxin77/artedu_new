@@ -96,5 +96,10 @@ public class Course implements Serializable {
      */
     private String content_three;
 
+    /**
+     * 封面图片
+     */
+    private String coverPic;
+
     private static final long serialVersionUID = 1L;
 }
