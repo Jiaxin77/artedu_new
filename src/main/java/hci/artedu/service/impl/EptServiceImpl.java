@@ -103,6 +103,7 @@ public class EptServiceImpl implements EptService {
         eptInfo.put("content",bigexperiment.getContent());
         eptInfo.put("course",bigexperiment.getCourse());
         eptInfo.put("eptDes",bigexperiment.getDes());
+        eptInfo.put("eptPic",bigexperiment.getCoverPic());
 
         return ServerResponse.createBySuccess("获取成功",eptInfo);
 
