@@ -3,16 +3,18 @@ package hci.artedu.service.impl;
 import hci.artedu.common.ServerResponse;
 import hci.artedu.dao.EqtRecordMapper;
 import hci.artedu.dao.EquipmentMapper;
+import hci.artedu.dao.UserMapper;
 import hci.artedu.pojo.*;
 import hci.artedu.service.EqtService;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @program: artedu
@@ -25,8 +27,12 @@ import java.util.HashMap;
 public class EqtServiceImpl implements EqtService {
     @Autowired
     private EqtRecordMapper eqtRecordMapper;
+
     @Autowired
     private EquipmentMapper equipmentMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
 
     @Override
@@ -77,7 +83,7 @@ public class EqtServiceImpl implements EqtService {
     }
 
     @Override
-    public ServerResponse<HashMap<String, Object>> getReserveApply() {
+    public ServerResponse<ArrayList<Object>> getReserveApply() {
         /**
          * TODO 获取设备租借申请的相关信息
          * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
@@ -85,7 +91,33 @@ public class EqtServiceImpl implements EqtService {
          * @Author Leaf
          * @Date 2020/11/4 6:27 下午
          **/
-        return null;
+        EqtRecordExample eqtRecordExample = new EqtRecordExample();
+        List<EqtRecord> eqtRecordList = eqtRecordMapper.selectByExample(eqtRecordExample);
+
+        ArrayList<Object> getEqtRecordList = new ArrayList<>();
+        for (EqtRecord eqtRecord: eqtRecordList) {
+
+            Integer userId = eqtRecord.getUserId();
+            UserExample example = new UserExample();
+            example.createCriteria().andIdEqualTo(userId);
+            List<User> userList = userMapper.selectByExample(example);
+            String userName = null;
+            String userClass = null;
+            if (!userList.isEmpty()){
+                User thisUser = userList.get(0);
+                userName = thisUser.getUserName();
+                userClass = thisUser.getClassName();
+            }
+            Integer toolInfo = eqtRecord.getState();
+            Date useTime = eqtRecord.getUseTime();
+            HashMap<String,Object> map = new HashMap<String, Object>();
+            map.put("userName", userName);
+            map.put("userClass", userClass);
+            map.put("toolInfo", toolInfo);
+            map.put("useTime", useTime);
+            getEqtRecordList.add(map);
+        }
+        return ServerResponse.createBySuccess("获取成功", getEqtRecordList);
     }
 
     @Override

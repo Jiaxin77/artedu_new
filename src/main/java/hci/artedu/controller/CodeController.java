@@ -1,23 +1,29 @@
 package hci.artedu.controller;
 import com.alibaba.fastjson.JSONObject;
+import com.aliyuncs.utils.StringUtils;
 import com.zhenzi.sms.ZhenziSmsClient;
+import hci.artedu.common.ServerResponse;
+import hci.artedu.service.CodeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 public class CodeController {
-    //短信平台相关参数
+    /*//短信平台相关参数
     //这个不用改
     private String apiUrl = "https://sms_developer.zhenzikj.com";
     //榛子云系统上获取
     private String appId = "107057";
+
     private String appSecret = "22785fd4-019e-41c5-8a27-e2628b06044f";
     @GetMapping("/code")
     public String getCode(@RequestParam("memPhone") String memPhone, HttpSession httpSession){
@@ -55,5 +61,22 @@ public class CodeController {
             e.printStackTrace();
             return "False";
         }
+    }*/
+
+    @Autowired
+    private CodeService sendMessage;
+
+    //RestFul风格请求
+    @GetMapping("/send/{phone}")
+    public String send(@PathVariable("phone") String phone) {
+        String code = String.valueOf(new Random().nextInt(999999)); //generate random verification code
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("code", code);
+        ServerResponse flag = sendMessage.sendMessage(phone, map);
+        if (flag.getStatus() == 0) {
+            return phone + ":" + "验证码" + "发送成功！";
+        }
+        return "发送失败";
     }
+
 }
