@@ -48,11 +48,11 @@ public interface EptService {
 
     ServerResponse<HashMap<String, Object>> getStudentScore(String studentName);
 
-    ServerResponse<String> postAnswer(int userId, int eptId, int id, double progress, Date time,  Date startTime, Date endTime, Date date);
+    ServerResponse<String> postAnswer(int userId, int eptId, int progress, Date time,  Date startTime, Date endTime, Date date);
 
     ServerResponse<HashMap<String, Object>> getRank(int userId, int id);
 
-    ServerResponse<String> postFeedback(int userId, int id, int difficultLevel, int exerciseLevel, int masteryLevel);
+    ServerResponse<String> postFeedback(int id, int difficultLevel, int exerciseLevel, int masteryLevel);
 
     ServerResponse<HashMap<String, Object>> getScore(int userId, int eptId);
 

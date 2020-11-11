@@ -312,7 +312,7 @@ public class EptController {
     }
 
     @PostMapping("/postAnswer")
-    public ServerResponse<String> postAnswer(int userId, int eptId, int id, double progress, Date time, Date startTime, Date endTime, Date date)
+    public ServerResponse<String> postAnswer(int userId, int eptId, int progress, Date time, Date startTime, Date endTime, Date date)
     {
         /**
          * TODO
@@ -321,7 +321,7 @@ public class EptController {
          * @Author Leaf
          * @Date 2020/11/11 4:51 下午
          **/
-        ServerResponse<String> response = eptService.postAnswer(userId, eptId, id, progress, time, startTime, endTime, date);
+        ServerResponse<String> response = eptService.postAnswer(userId, eptId, progress, time, startTime, endTime, date);
         return response;
 
     }
@@ -342,7 +342,7 @@ public class EptController {
     }
 
     @PostMapping("/postFeedback")
-    public ServerResponse<String> postFeedback(int userId, int id, int difficultLevel, int exerciseLevel, int masteryLevel)
+    public ServerResponse<String> postFeedback( int id, int difficultLevel, int exerciseLevel, int masteryLevel)
     {
         /**
          * TODO
@@ -351,7 +351,7 @@ public class EptController {
          * @Author Leaf
          * @Date 2020/11/11 4:52 下午
          **/
-        ServerResponse<String> response = eptService.postFeedback(userId, id, difficultLevel, exerciseLevel, masteryLevel);
+        ServerResponse<String> response = eptService.postFeedback(id, difficultLevel, exerciseLevel, masteryLevel);
         return response;
 
     }

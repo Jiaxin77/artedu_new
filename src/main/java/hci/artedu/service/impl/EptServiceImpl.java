@@ -6,15 +6,13 @@ import hci.artedu.pojo.*;
 import hci.artedu.service.EptService;
 import hci.artedu.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.hash.HashMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ClassName EptServiceImpl
@@ -442,11 +440,127 @@ public class EptServiceImpl implements EptService {
 
     @Override
     public ServerResponse<HashMap<String, Object>> getStudentMasterAttitude() {
-        return null;
+        UserExample example = new UserExample();
+        UserExample.Criteria criteria =  example.createCriteria();
+        criteria.andUserTypeEqualTo(0);
+        criteria.andUserAttitudeIsNotNull();
+        criteria.andLevelOfMasteryIsNotNull();
+        int averageLike = 0;
+        int averageNormal = 0;
+        int averageDislike = 0;
+        List<User> uList = userMapper.selectByExample(example);
+        for(User u:uList){
+            if(u.getUserAttitude() == 0){
+                averageLike ++;
+            }
+            else if(u.getUserAttitude() == 1){
+                averageNormal++;
+            }
+            else if(u.getUserAttitude() == 2){
+                averageDislike++;
+            }
+        }
+        HashMap<String,Object> averInfo = new HashMap<String, Object>();
+        averInfo.put("averageLike",averageLike);
+        averInfo.put("averageNormal",averageNormal);
+        averInfo.put("averageDislike",averageDislike);
+
+        UserExample example1 = new UserExample();
+        UserExample.Criteria criteria1 =  example1.createCriteria();
+        criteria1.andUserTypeEqualTo(0);
+        criteria1.andUserAttitudeIsNotNull();
+        criteria1.andLevelOfMasteryIsNotNull();
+        criteria1.andUserGenderEqualTo(Boolean.TRUE);
+        int maleLike = 0;
+        int maleNormal = 0;
+        int maleDislike = 0;
+        List<User> uList1 = userMapper.selectByExample(example1);
+        for(User u:uList1){
+            if(u.getUserAttitude() == 0){
+                maleLike ++;
+            }
+            else if(u.getUserAttitude() == 1){
+                maleNormal++;
+            }
+            else if(u.getUserAttitude() == 2){
+                maleDislike++;
+            }
+        }
+        HashMap<String,Object> maleInfo = new HashMap<String, Object>();
+        averInfo.put("maleLike",maleLike);
+        averInfo.put("maleNormal",maleNormal);
+        averInfo.put("maleDislike",maleDislike);
+
+        UserExample example2 = new UserExample();
+        UserExample.Criteria criteria2 =  example2.createCriteria();
+        criteria2.andUserTypeEqualTo(0);
+        criteria2.andUserAttitudeIsNotNull();
+        criteria2.andLevelOfMasteryIsNotNull();
+        criteria2.andUserGenderEqualTo(Boolean.FALSE);
+        int femaleLike = 0;
+        int femaleNormal = 0;
+        int femaleDislike = 0;
+        List<User> uList2 = userMapper.selectByExample(example2);
+        for(User u:uList2){
+            if(u.getUserAttitude() == 0){
+                femaleLike ++;
+            }
+            else if(u.getUserAttitude() == 1){
+                femaleNormal++;
+            }
+            else if(u.getUserAttitude() == 2){
+                femaleDislike++;
+            }
+        }
+        HashMap<String,Object> femaleInfo = new HashMap<String, Object>();
+        averInfo.put("femaleLike",femaleLike);
+        averInfo.put("femaleNormal",femaleNormal);
+        averInfo.put("femaleDislike",femaleDislike);
+
+        HashMap<String, Object> res= new HashMap<>();
+        res.put("aver", averInfo);
+        res.put("male", maleInfo);
+        res.put("female",femaleInfo);
+
+        return ServerResponse.createBySuccess("获取成功", res);
     }
 
     @Override
     public ServerResponse<HashMap<String, Object>> getStudentInfo(String studentName) {
+        UserExample example = new UserExample();
+        UserExample.Criteria criteria = example.createCriteria();
+        criteria.andUserNameEqualTo(studentName);
+        List<User> userList = userMapper.selectByExample(example);
+        User user =userList.get(0);
+        HashMap<String,Object> studentInfo = new HashMap<>();//基本信息
+        studentInfo.put("userGender", user.getUserGender());
+        studentInfo.put("userEmail", user.getUserEmail());
+        studentInfo.put("schoolName", user.getSchoolName());
+        studentInfo.put("className", user.getClassName());
+        studentInfo.put("phoneNumber", user.getPhoneNumber());
+        studentInfo.put("userAttitude", user.getUserAttitude());
+        studentInfo.put("levelOfMastery", user.getLevelOfMastery());
+        studentInfo.put("userEmail", user.getUserEmail());
+
+        HashMap<String,Object> studentScore = new HashMap<>();
+//        EptRecordExample eptRecordExample = new EptRecordExample();
+//        EptRecordExample.Criteria criteria1 =eptRecordExample.createCriteria();
+//        criteria1.andUseridEqualTo(user.getId());
+
+        HashMap<String,Object> eptTime = new HashMap<>();//实验时长
+        EptRecordExample eptRecordExample1 = new EptRecordExample();
+        EptRecordExample.Criteria criteria2 =eptRecordExample1.createCriteria();
+        criteria2.andUseridEqualTo(user.getId());
+        List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample1);
+        long[] temp=new long[6];
+        for (int i = 0; i < 6; i++) {
+            for (EptRecord e: eptRecordList) {
+                if (e.getEptId() == i){
+                    temp[i] += e.getEndTime().getTime() - e.getStartTime().getTime();
+                }
+            }
+            eptTime.put("ept"+i, temp[i]);
+        }
         return null;
     }
 
@@ -471,7 +585,22 @@ public class EptServiceImpl implements EptService {
     }
 
     @Override
-    public ServerResponse<String> postAnswer(int userId, int eptId, int id, double progress, Date time, Date startTime, Date endTime, Date date) {
+    public ServerResponse<String> postAnswer(int userId, int eptId, int progress, Date time, Date startTime, Date endTime, Date date) {
+        /**
+         * TODO 好像没啥用
+         * @return hci.artedu.common.ServerResponse<java.lang.String>
+         * @Description 
+         * @Author Leaf
+         * @Date 2020/11/11 8:24 下午
+         **/
+        EptRecord eptRecord = new EptRecord();
+        eptRecord.setUserid(userId);
+        eptRecord.setEptId(eptId);
+        eptRecord.setProgress(progress);
+        eptRecord.setEptDate(date);
+        eptRecord.setStartTime(startTime);
+        eptRecord.setEndTime(endTime);
+        eptRecord.setDurTime(time);
         return null;
     }
 
@@ -481,7 +610,22 @@ public class EptServiceImpl implements EptService {
     }
 
     @Override
-    public ServerResponse<String> postFeedback(int userId, int id, int difficultLevel, int exerciseLevel, int masteryLevel) {
+    public ServerResponse<String> postFeedback(int id, int difficultLevel, int exerciseLevel, int masteryLevel) {
+        /**
+         * TODO 提交实验 看结果 应该返回记录id  然后这里重写那个记录
+         * @return hci.artedu.common.ServerResponse<java.lang.String>
+         * @Description 
+         * @Author Leaf
+         * @Date 2020/11/11 8:30 下午
+         **/
+        EptRecordExample eptRecordExample = new EptRecordExample();
+        EptRecordExample.Criteria critrtia = eptRecordExample.createCriteria();
+        critrtia.andIdEqualTo(id);
+        List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);
+        EptRecord eptRecord =eptRecordList.get(0);
+        eptRecord.setDifficultyLevel(difficultLevel);
+        eptRecord.setExerciseLevel(exerciseLevel);
+        eptRecord.setMasteryLevel(masteryLevel);
         return null;
     }
 
