@@ -4,6 +4,7 @@ import hci.artedu.common.ServerResponse;
 import hci.artedu.pojo.EptRecord;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public interface EptService {
@@ -25,14 +26,33 @@ public interface EptService {
 
     ServerResponse<HashMap<String, Object>> getEptBasicInfo(int eptId);
 
-    public ServerResponse<ArrayList> getEptPoint(int eptId);
+    ServerResponse<ArrayList> getEptPoint(int eptId);
 
-    public ServerResponse endPostExperiment(EptRecord eptRecord,int[] process);
+    ServerResponse endPostExperiment(EptRecord eptRecord);
 
-    public ServerResponse<ArrayList> getUserExperimentProcess(int userId);
+    ServerResponse<ArrayList> getUserExperimentProcess(int userId);
 
-    public ServerResponse<Boolean> beginExperiment(int userid,int expId);
+    ServerResponse<Boolean> beginExperiment(int userid, int expId);
 
-    public ServerResponse<int[]> getEptProcess(int eptId,int userId);
+    ServerResponse<HashMap<String, Object>> getAllTimeLength();
 
+    ServerResponse<HashMap<String, Object>> getStudentMasterAttitude();
+
+    ServerResponse<HashMap<String, Object>> getStudentInfo(String studentName);
+
+
+    ServerResponse<HashMap<String, Object>> getClassInfo(int classNumber);
+    ServerResponse<HashMap<String, Object>> getSchoolInfo(String SchoolName);
+    ServerResponse<HashMap<String, Object>> getEptCondition();
+    ServerResponse<HashMap<String, Object>> getStudentScore(String studentName);
+
+    ServerResponse<String> postAnswer(int userId, int eptId, int id, double progress, Date time,  Date startTime, Date endTime, Date date);
+
+    ServerResponse<HashMap<String, Object>> getRank(int userId, int id);
+
+    ServerResponse<String> postFeedback(int userId, int id, int difficultLevel, int exerciseLevel, int masteryLevel);
+
+    ServerResponse<HashMap<String, Object>> getScore(int userId, int eptId);
+
+    ServerResponse<HashMap<String, Object>> getReport(int userId);
 }

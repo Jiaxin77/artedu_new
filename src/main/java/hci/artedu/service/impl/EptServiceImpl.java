@@ -11,6 +11,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.*;
 
 /**
@@ -307,6 +311,7 @@ public class EptServiceImpl implements EptService {
 
 
     //开始实验
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
     public ServerResponse<Boolean> beginExperiment(int userid,int expId)
@@ -450,6 +455,68 @@ public class EptServiceImpl implements EptService {
 
 
     }
+
+    @Override
+    public ServerResponse<HashMap<String, Object>> getAllTimeLength() {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<HashMap<String, Object>> getStudentMasterAttitude() {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<HashMap<String, Object>> getStudentInfo(String studentName) {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<HashMap<String, Object>> getClassInfo(int classNumber) {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<HashMap<String, Object>> getSchoolInfo(String SchoolName) {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<HashMap<String, Object>> getEptCondition() {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<HashMap<String, Object>> getStudentScore(String studentName) {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<String> postAnswer(int userId, int eptId, int id, double progress, Date time, Date startTime, Date endTime, Date date) {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<HashMap<String, Object>> getRank(int userId, int id) {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<String> postFeedback(int userId, int id, int difficultLevel, int exerciseLevel, int masteryLevel) {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<HashMap<String, Object>> getScore(int userId, int eptId) {
+        return null;
+    }
+
+    @Override
+    public ServerResponse<HashMap<String, Object>> getReport(int userId) {
+        return null;
+    }
+
+
 
 
     //获取该用户该实验进度
