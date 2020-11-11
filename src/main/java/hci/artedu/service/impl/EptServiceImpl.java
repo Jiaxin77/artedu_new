@@ -532,6 +532,7 @@ public class EptServiceImpl implements EptService {
         criteria.andUserNameEqualTo(studentName);
         List<User> userList = userMapper.selectByExample(example);
         User user =userList.get(0);
+        
         HashMap<String,Object> studentInfo = new HashMap<>();//基本信息
         studentInfo.put("userGender", user.getUserGender());
         studentInfo.put("userEmail", user.getUserEmail());
