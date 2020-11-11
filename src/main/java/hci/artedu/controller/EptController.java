@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -25,8 +26,7 @@ public class EptController {
     private EptService eptService;
 
     @GetMapping("/getEptList")
-    public ServerResponse<ArrayList> getEptList()
-    {
+    public ServerResponse<ArrayList> getEptList() {
         /**
          * @Author jiaxin
          * @Description 接口-获取实验列表//TODO
@@ -40,32 +40,30 @@ public class EptController {
     }
 
     @GetMapping("/getBigEptInfo")
-    public ServerResponse<HashMap<String,Object>> getBigEptInfo()
-    {
+    public ServerResponse<HashMap<String, Object>> getBigEptInfo() {
         /**
          * @Author jiaxin
          * @Description 获取大实验的基本信息//TODO
          * @Date 5:30 下午 2020/10/28
          * @Param [eptId]
-         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
          **/
 
-        ServerResponse<HashMap<String,Object>> response = eptService.getBigEptInfo();
+        ServerResponse<HashMap<String, Object>> response = eptService.getBigEptInfo();
         return response;
     }
 
     @GetMapping("/getEptBasicInfo")
-    public ServerResponse<HashMap<String,Object>> getEptBasicInfo(int eptId)
-    {
+    public ServerResponse<HashMap<String, Object>> getEptBasicInfo(int eptId) {
         /**
          * @Author jiaxin
          * @Description 获取某小实验基本信息//TODO
          * @Date 11:17 上午 2020/10/29
          * @Param [eptId]
-         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
          **/
-        ServerResponse<HashMap<String,Object>> response = eptService.getEptBasicInfo(eptId);
-        return  response;
+        ServerResponse<HashMap<String, Object>> response = eptService.getEptBasicInfo(eptId);
+        return response;
 
     }
 
@@ -150,8 +148,7 @@ public class EptController {
     }
 
     @GetMapping("/getEptPoint")
-    public ServerResponse<ArrayList> getEptPoint(int eptId)
-    {
+    public ServerResponse<ArrayList> getEptPoint(int eptId) {
         /**
          * @Author jiaxin
          * @Description 获取某实验下知识点信息//TODO
@@ -166,8 +163,7 @@ public class EptController {
 
 
     @PostMapping("/endPostExperiment")
-    public ServerResponse endPostExperiment(EptRecord eptRecord)
-    {
+    public ServerResponse endPostExperiment(EptRecord eptRecord) {
         /**
          * @Author jiaxin
          * @Description 结束实验提交//TODO
@@ -177,13 +173,12 @@ public class EptController {
          **/
 
         ServerResponse response = eptService.endPostExperiment(eptRecord);
-        return  response;
+        return response;
 
     }
 
     @GetMapping("/getUserExperimentProcess")
-    public ServerResponse<ArrayList> getUserExperimentProcess(int userId)
-    {
+    public ServerResponse<ArrayList> getUserExperimentProcess(int userId) {
         /**
          * @Author jiaxin
          * @Description 获取用户实验进度//TODO
@@ -197,8 +192,7 @@ public class EptController {
     }
 
     @PostMapping("/beginExperiment")
-    public ServerResponse<Boolean> beginExperiment(int userId,int expId)
-    {
+    public ServerResponse<Boolean> beginExperiment(int userId, int expId) {
         /**
          * @Author jiaxin
          * @Description 开始实验//TODO
@@ -206,11 +200,191 @@ public class EptController {
          * @Param [userid, expId]
          * @return hci.artedu.common.ServerResponse<java.lang.Boolean>
          **/
-        ServerResponse<Boolean> response = eptService.beginExperiment(userId,expId);
+        ServerResponse<Boolean> response = eptService.beginExperiment(userId, expId);
         return response;
 
     }
 
+    @GetMapping("/getAllTimeLength")
+    public ServerResponse<HashMap<String, Object>> getAllTimeLength() {
+        /**
+         * TODO 
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 获取学生总体时长统计
+         * @Author Leaf
+         * @Date 2020/11/11 4:40 下午
+         **/
 
+        ServerResponse<HashMap<String, Object>> response = eptService.getAllTimeLength();
+        return response;
+
+    }
+
+    @GetMapping("/getStudentMasterAttitude")
+    public ServerResponse<HashMap<String, Object>> getStudentMasterAttitude()
+    {
+        /**
+         * TODO 
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 用于获取所有学生的喜好度和掌握程度
+         * @Author Leaf
+         * @Date 2020/11/11 4:44 下午
+         **/
+
+        ServerResponse<HashMap<String, Object>> response = eptService.getStudentMasterAttitude();
+        return response;
+
+    }
+
+    @PostMapping("/getStudentInfo")
+    public ServerResponse<HashMap<String, Object>> getStudentInfo(String studentName)
+    {
+        /**
+         * TODO 用于获取所有学生的喜好度和掌握程度
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 通过学生姓名查询学生基本信息
+         * @Author Leaf
+         * @Date 2020/11/11 4:47 下午
+         **/
+        ServerResponse<HashMap<String, Object>> response = eptService.getStudentInfo(studentName);
+        return response;
+
+    }
+
+    @PostMapping("/getClassInfo")
+    public ServerResponse<HashMap<String, Object>> getClassInfo(int classNumber)
+    {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 获取某班级的整体统计信息
+         * @Author Leaf
+         * @Date 2020/11/11 4:47 下午
+         **/
+        ServerResponse<HashMap<String, Object>> response = eptService.getClassInfo(classNumber);
+        return response;
+
+    }
+
+    @PostMapping("/getSchoolInfo")
+    public ServerResponse<HashMap<String, Object>> getSchoolInfo(String SchoolName)
+    {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 获取某院校的整体统计信息
+         * @Author Leaf
+         * @Date 2020/11/11 4:50 下午
+         **/
+        ServerResponse<HashMap<String, Object>> response = eptService.getSchoolInfo(SchoolName);
+        return response;
+
+    }
+
+    @GetMapping("/getEptCondition")
+    public ServerResponse<HashMap<String, Object>> getEptCondition()
+    {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 获取整体实验情况
+         * @Author Leaf
+         * @Date 2020/11/11 4:50 下午
+         **/
+        ServerResponse<HashMap<String, Object>> response = eptService.getEptCondition();
+        return response;
+
+    }
+
+    @PostMapping("/getStudentScore")
+    public ServerResponse<HashMap<String, Object>> getStudentScore(String studentName)
+    {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 搜索学生姓名，获取某学生分数
+         * @Author Leaf
+         * @Date 2020/11/11 4:51 下午
+         **/
+        ServerResponse<HashMap<String, Object>> response = eptService.getStudentScore(studentName);
+        return response;
+
+    }
+
+    @PostMapping("/postAnswer")
+    public ServerResponse<String> postAnswer(int userId, int eptId, int id, double progress, Date time, Date startTime, Date endTime, Date date)
+    {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.lang.String>
+         * @Description 提交练习结果
+         * @Author Leaf
+         * @Date 2020/11/11 4:51 下午
+         **/
+        ServerResponse<String> response = eptService.postAnswer(userId, eptId, id, progress, time, startTime, endTime, date);
+        return response;
+
+    }
+
+    @PostMapping("/getRank")
+    public ServerResponse<HashMap<String, Object>> getRank(int userId, int id)
+    {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 结束后获取完成度排名
+         * @Author Leaf
+         * @Date 2020/11/11 4:52 下午
+         **/
+        ServerResponse<HashMap<String, Object>> response = eptService.getRank(userId, id);
+        return response;
+
+    }
+
+    @PostMapping("/postFeedback")
+    public ServerResponse<String> postFeedback(int userId, int id, int difficultLevel, int exerciseLevel, int masteryLevel)
+    {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.lang.String>
+         * @Description 结束后提交实验体验反馈
+         * @Author Leaf
+         * @Date 2020/11/11 4:52 下午
+         **/
+        ServerResponse<String> response = eptService.postFeedback(userId, id, difficultLevel, exerciseLevel, masteryLevel);
+        return response;
+
+    }
+
+    @PostMapping("/getScore")
+    public ServerResponse<HashMap<String, Object>> getScore(int userId, int eptId)
+    {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 获取实验成绩
+         * @Author Leaf
+         * @Date 2020/11/11 4:52 下午
+         **/
+        ServerResponse<HashMap<String, Object>> response = eptService.getScore(userId, eptId);
+        return response;
+
+    }
+
+    @PostMapping("/getReport")
+    public ServerResponse<HashMap<String, Object>> getReport(int userId)
+    {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 获取实验报告
+         * @Author Leaf
+         * @Date 2020/11/11 4:52 下午
+         **/
+
+        ServerResponse<HashMap<String, Object>> response = eptService.getReport(userId);
+        return response;
+
+    }
 
 }
