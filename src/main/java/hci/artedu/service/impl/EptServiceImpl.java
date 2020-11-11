@@ -11,9 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ClassName EptServiceImpl
@@ -48,6 +46,9 @@ public class EptServiceImpl implements EptService {
 
     @Autowired
     private EptrecordMapper eptrecordMapper;
+
+    @Autowired
+    private UserprocessMapper userprocessMapper;
 
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -302,8 +303,10 @@ public class EptServiceImpl implements EptService {
     }
 
 
-    //开始实验
 
+
+
+    //开始实验
     @Override
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
     public ServerResponse<Boolean> beginExperiment(int userid,int expId)
@@ -334,9 +337,11 @@ public class EptServiceImpl implements EptService {
 
     }
 
+
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
-    public ServerResponse endPostExperiment(EptRecord eptRecord)
+    public ServerResponse endPostExperiment(EptRecord eptRecord,int[] process)
     {
         /**
          * @Author jiaxin
@@ -348,9 +353,19 @@ public class EptServiceImpl implements EptService {
 
         eptrecordMapper.insert(eptRecord);//记录实验相关
         //写日志
-        //写日志
         User user = userMapper.selectByPrimaryKey(eptRecord.getUserid());
         Experiment experiment = experimentMapper.selectByPrimaryKey(eptRecord.getEptId());
+
+        //记录实验进度
+        for(int i =0;i<process.length;i++)
+        {
+            Userprocess userprocess = new Userprocess();
+            userprocess.setUserId(eptRecord.getUserid());
+            userprocess.setEptId(eptRecord.getEptId());
+            userprocess.setStageNum(process[i]);
+            userprocessMapper.insert(userprocess);
+        }
+
 
         Useroperation useroperation = new Useroperation();
         useroperation.setUserId(user.getId());
@@ -435,6 +450,35 @@ public class EptServiceImpl implements EptService {
 
 
     }
+
+
+    //获取该用户该实验进度
+    public ServerResponse<int[]> getEptProcess(int eptId,int userId)
+    {
+        UserprocessExample userprocessExample = new UserprocessExample();
+        UserprocessExample.Criteria criteria = userprocessExample.createCriteria();
+        criteria.andEptIdEqualTo(eptId);
+        criteria.andUserIdEqualTo(userId);
+        List<Userprocess> userprocessList = userprocessMapper.selectByExample(userprocessExample);
+        Set set = new HashSet(userprocessList);
+        List tempList = new ArrayList(set);
+        userprocessList = tempList;
+
+        int[] stageList = new int[userprocessList.size()];
+        int count = 0;
+        for(Userprocess userprocess:userprocessList)
+        {
+            stageList[count] = userprocess.getStageNum();
+        }
+
+        return ServerResponse.createBySuccess("获取成功", stageList);
+
+
+    }
+
+
+
+
 
 
 

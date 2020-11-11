@@ -166,7 +166,7 @@ public class EptController {
 
 
     @PostMapping("/endPostExperiment")
-    public ServerResponse endPostExperiment(EptRecord eptRecord)
+    public ServerResponse endPostExperiment(EptRecord eptRecord,int[] process)
     {
         /**
          * @Author jiaxin
@@ -176,7 +176,7 @@ public class EptController {
          * @return hci.artedu.common.ServerResponse
          **/
 
-        ServerResponse response = eptService.endPostExperiment(eptRecord);
+        ServerResponse response = eptService.endPostExperiment(eptRecord,process);
         return  response;
 
     }
@@ -207,6 +207,22 @@ public class EptController {
          * @return hci.artedu.common.ServerResponse<java.lang.Boolean>
          **/
         ServerResponse<Boolean> response = eptService.beginExperiment(userId,expId);
+        return response;
+
+    }
+
+    @GetMapping("/getUserProcess")
+    public ServerResponse<int[]> getUserProcess(int userId,int expId)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 获取某用户实验进度//TODO
+         * @Date 4:53 下午 2020/11/11
+         * @Param [userId, expId]
+         * @return hci.artedu.common.ServerResponse<int[]>
+         **/
+
+        ServerResponse<int[]> response = eptService.getEptProcess(expId,userId);
         return response;
 
     }

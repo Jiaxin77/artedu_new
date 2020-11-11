@@ -27,11 +27,12 @@ public interface EptService {
 
     public ServerResponse<ArrayList> getEptPoint(int eptId);
 
-    public ServerResponse endPostExperiment(EptRecord eptRecord);
+    public ServerResponse endPostExperiment(EptRecord eptRecord,int[] process);
 
     public ServerResponse<ArrayList> getUserExperimentProcess(int userId);
 
     public ServerResponse<Boolean> beginExperiment(int userid,int expId);
 
+    public ServerResponse<int[]> getEptProcess(int eptId,int userId);
 
 }

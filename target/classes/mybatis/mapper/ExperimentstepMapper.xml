@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hci.artedu.dao.ExperimentstepMapper">
+  <resultMap id="BaseResultMap" type="hci.artedu.pojo.Experimentstep">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="eptId" jdbcType="INTEGER" property="eptId" />
+    <result column="stepNum" jdbcType="INTEGER" property="stepNum" />
+    <result column="stepName" jdbcType="VARCHAR" property="stepName" />
+    <result column="stepDes" jdbcType="VARCHAR" property="stepDes" />
+    <result column="stepPic" jdbcType="VARCHAR" property="stepPic" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, eptId, stepNum, stepName, stepDes, stepPic
+  </sql>
+  <select id="selectByExample" parameterType="hci.artedu.pojo.ExperimentstepExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from experimentStep
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from experimentStep
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from experimentStep
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="hci.artedu.pojo.ExperimentstepExample">
+    delete from experimentStep
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Experimentstep" useGeneratedKeys="true">
+    insert into experimentStep (eptId, stepNum, stepName, 
+      stepDes, stepPic)
+    values (#{eptId,jdbcType=INTEGER}, #{stepNum,jdbcType=INTEGER}, #{stepName,jdbcType=VARCHAR}, 
+      #{stepDes,jdbcType=VARCHAR}, #{stepPic,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Experimentstep" useGeneratedKeys="true">
+    insert into experimentStep
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eptId != null">
+        eptId,
+      </if>
+      <if test="stepNum != null">
+        stepNum,
+      </if>
+      <if test="stepName != null">
+        stepName,
+      </if>
+      <if test="stepDes != null">
+        stepDes,
+      </if>
+      <if test="stepPic != null">
+        stepPic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eptId != null">
+        #{eptId,jdbcType=INTEGER},
+      </if>
+      <if test="stepNum != null">
+        #{stepNum,jdbcType=INTEGER},
+      </if>
+      <if test="stepName != null">
+        #{stepName,jdbcType=VARCHAR},
+      </if>
+      <if test="stepDes != null">
+        #{stepDes,jdbcType=VARCHAR},
+      </if>
+      <if test="stepPic != null">
+        #{stepPic,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="hci.artedu.pojo.ExperimentstepExample" resultType="java.lang.Long">
+    select count(*) from experimentStep
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update experimentStep
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.eptId != null">
+        eptId = #{record.eptId,jdbcType=INTEGER},
+      </if>
+      <if test="record.stepNum != null">
+        stepNum = #{record.stepNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.stepName != null">
+        stepName = #{record.stepName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stepDes != null">
+        stepDes = #{record.stepDes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stepPic != null">
+        stepPic = #{record.stepPic,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update experimentStep
+    set id = #{record.id,jdbcType=INTEGER},
+      eptId = #{record.eptId,jdbcType=INTEGER},
+      stepNum = #{record.stepNum,jdbcType=INTEGER},
+      stepName = #{record.stepName,jdbcType=VARCHAR},
+      stepDes = #{record.stepDes,jdbcType=VARCHAR},
+      stepPic = #{record.stepPic,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="hci.artedu.pojo.Experimentstep">
+    update experimentStep
+    <set>
+      <if test="eptId != null">
+        eptId = #{eptId,jdbcType=INTEGER},
+      </if>
+      <if test="stepNum != null">
+        stepNum = #{stepNum,jdbcType=INTEGER},
+      </if>
+      <if test="stepName != null">
+        stepName = #{stepName,jdbcType=VARCHAR},
+      </if>
+      <if test="stepDes != null">
+        stepDes = #{stepDes,jdbcType=VARCHAR},
+      </if>
+      <if test="stepPic != null">
+        stepPic = #{stepPic,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hci.artedu.pojo.Experimentstep">
+    update experimentStep
+    set eptId = #{eptId,jdbcType=INTEGER},
+      stepNum = #{stepNum,jdbcType=INTEGER},
+      stepName = #{stepName,jdbcType=VARCHAR},
+      stepDes = #{stepDes,jdbcType=VARCHAR},
+      stepPic = #{stepPic,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
