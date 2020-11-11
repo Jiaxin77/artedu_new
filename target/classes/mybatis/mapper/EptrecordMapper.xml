@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hci.artedu.dao.EptrecordMapper">
+  <resultMap id="BaseResultMap" type="hci.artedu.pojo.EptRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="eptId" jdbcType="INTEGER" property="eptId" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="durTime" jdbcType="TIME" property="durTime" />
+    <result column="progress" jdbcType="INTEGER" property="progress" />
+    <result column="difficultyLevel" jdbcType="INTEGER" property="difficultyLevel" />
+    <result column="exerciseLevel" jdbcType="INTEGER" property="exerciseLevel" />
+    <result column="masteryLevel" jdbcType="INTEGER" property="masteryLevel" />
+    <result column="eptDate" jdbcType="DATE" property="eptDate" />
+    <result column="startTime" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, userid, eptId, score, durTime, progress, difficultyLevel, exerciseLevel, masteryLevel, 
+    eptDate, startTime, endTime
+  </sql>
+  <select id="selectByExample" parameterType="hci.artedu.pojo.EptRecordExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from EptRecord
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from EptRecord
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from EptRecord
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="hci.artedu.pojo.EptRecordExample">
+    delete from EptRecord
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.EptRecord" useGeneratedKeys="true">
+    insert into EptRecord (userid, eptId, score, 
+      durTime, progress, difficultyLevel, 
+      exerciseLevel, masteryLevel, eptDate, 
+      startTime, endTime)
+    values (#{userid,jdbcType=INTEGER}, #{eptId,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, 
+      #{durTime,jdbcType=TIME}, #{progress,jdbcType=INTEGER}, #{difficultyLevel,jdbcType=INTEGER}, 
+      #{exerciseLevel,jdbcType=INTEGER}, #{masteryLevel,jdbcType=INTEGER}, #{eptDate,jdbcType=DATE}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.EptRecord" useGeneratedKeys="true">
+    insert into EptRecord
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="eptId != null">
+        eptId,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="durTime != null">
+        durTime,
+      </if>
+      <if test="progress != null">
+        progress,
+      </if>
+      <if test="difficultyLevel != null">
+        difficultyLevel,
+      </if>
+      <if test="exerciseLevel != null">
+        exerciseLevel,
+      </if>
+      <if test="masteryLevel != null">
+        masteryLevel,
+      </if>
+      <if test="eptDate != null">
+        eptDate,
+      </if>
+      <if test="startTime != null">
+        startTime,
+      </if>
+      <if test="endTime != null">
+        endTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="eptId != null">
+        #{eptId,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="durTime != null">
+        #{durTime,jdbcType=TIME},
+      </if>
+      <if test="progress != null">
+        #{progress,jdbcType=INTEGER},
+      </if>
+      <if test="difficultyLevel != null">
+        #{difficultyLevel,jdbcType=INTEGER},
+      </if>
+      <if test="exerciseLevel != null">
+        #{exerciseLevel,jdbcType=INTEGER},
+      </if>
+      <if test="masteryLevel != null">
+        #{masteryLevel,jdbcType=INTEGER},
+      </if>
+      <if test="eptDate != null">
+        #{eptDate,jdbcType=DATE},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="hci.artedu.pojo.EptRecordExample" resultType="java.lang.Long">
+    select count(*) from EptRecord
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update EptRecord
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null">
+        userid = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.eptId != null">
+        eptId = #{record.eptId,jdbcType=INTEGER},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score,jdbcType=INTEGER},
+      </if>
+      <if test="record.durTime != null">
+        durTime = #{record.durTime,jdbcType=TIME},
+      </if>
+      <if test="record.progress != null">
+        progress = #{record.progress,jdbcType=INTEGER},
+      </if>
+      <if test="record.difficultyLevel != null">
+        difficultyLevel = #{record.difficultyLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.exerciseLevel != null">
+        exerciseLevel = #{record.exerciseLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.masteryLevel != null">
+        masteryLevel = #{record.masteryLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.eptDate != null">
+        eptDate = #{record.eptDate,jdbcType=DATE},
+      </if>
+      <if test="record.startTime != null">
+        startTime = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        endTime = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update EptRecord
+    set id = #{record.id,jdbcType=INTEGER},
+      userid = #{record.userid,jdbcType=INTEGER},
+      eptId = #{record.eptId,jdbcType=INTEGER},
+      score = #{record.score,jdbcType=INTEGER},
+      durTime = #{record.durTime,jdbcType=TIME},
+      progress = #{record.progress,jdbcType=INTEGER},
+      difficultyLevel = #{record.difficultyLevel,jdbcType=INTEGER},
+      exerciseLevel = #{record.exerciseLevel,jdbcType=INTEGER},
+      masteryLevel = #{record.masteryLevel,jdbcType=INTEGER},
+      eptDate = #{record.eptDate,jdbcType=DATE},
+      startTime = #{record.startTime,jdbcType=TIMESTAMP},
+      endTime = #{record.endTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="hci.artedu.pojo.EptRecord">
+    update EptRecord
+    <set>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="eptId != null">
+        eptId = #{eptId,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="durTime != null">
+        durTime = #{durTime,jdbcType=TIME},
+      </if>
+      <if test="progress != null">
+        progress = #{progress,jdbcType=INTEGER},
+      </if>
+      <if test="difficultyLevel != null">
+        difficultyLevel = #{difficultyLevel,jdbcType=INTEGER},
+      </if>
+      <if test="exerciseLevel != null">
+        exerciseLevel = #{exerciseLevel,jdbcType=INTEGER},
+      </if>
+      <if test="masteryLevel != null">
+        masteryLevel = #{masteryLevel,jdbcType=INTEGER},
+      </if>
+      <if test="eptDate != null">
+        eptDate = #{eptDate,jdbcType=DATE},
+      </if>
+      <if test="startTime != null">
+        startTime = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        endTime = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hci.artedu.pojo.EptRecord">
+    update EptRecord
+    set userid = #{userid,jdbcType=INTEGER},
+      eptId = #{eptId,jdbcType=INTEGER},
+      score = #{score,jdbcType=INTEGER},
+      durTime = #{durTime,jdbcType=TIME},
+      progress = #{progress,jdbcType=INTEGER},
+      difficultyLevel = #{difficultyLevel,jdbcType=INTEGER},
+      exerciseLevel = #{exerciseLevel,jdbcType=INTEGER},
+      masteryLevel = #{masteryLevel,jdbcType=INTEGER},
+      eptDate = #{eptDate,jdbcType=DATE},
+      startTime = #{startTime,jdbcType=TIMESTAMP},
+      endTime = #{endTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

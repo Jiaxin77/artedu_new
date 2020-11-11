@@ -148,7 +148,8 @@ public class EptController {
     }
 
     @GetMapping("/getEptPoint")
-    public ServerResponse<ArrayList> getEptPoint(int eptId) {
+    public ServerResponse<ArrayList> getEptPoint(int eptId)
+    {
         /**
          * @Author jiaxin
          * @Description 获取某实验下知识点信息//TODO
@@ -163,7 +164,8 @@ public class EptController {
 
 
     @PostMapping("/endPostExperiment")
-    public ServerResponse endPostExperiment(EptRecord eptRecord) {
+    public ServerResponse endPostExperiment(EptRecord eptRecord,int[] process)
+    {
         /**
          * @Author jiaxin
          * @Description 结束实验提交//TODO
@@ -172,13 +174,15 @@ public class EptController {
          * @return hci.artedu.common.ServerResponse
          **/
 
+
         ServerResponse response = eptService.endPostExperiment(eptRecord);
         return response;
 
     }
 
     @GetMapping("/getUserExperimentProcess")
-    public ServerResponse<ArrayList> getUserExperimentProcess(int userId) {
+    public ServerResponse<ArrayList> getUserExperimentProcess(int userId)
+    {
         /**
          * @Author jiaxin
          * @Description 获取用户实验进度//TODO
@@ -192,7 +196,8 @@ public class EptController {
     }
 
     @PostMapping("/beginExperiment")
-    public ServerResponse<Boolean> beginExperiment(int userId, int expId) {
+    public ServerResponse<Boolean> beginExperiment(int userId,int expId)
+    {
         /**
          * @Author jiaxin
          * @Description 开始实验//TODO
@@ -200,7 +205,23 @@ public class EptController {
          * @Param [userid, expId]
          * @return hci.artedu.common.ServerResponse<java.lang.Boolean>
          **/
-        ServerResponse<Boolean> response = eptService.beginExperiment(userId, expId);
+        ServerResponse<Boolean> response = eptService.beginExperiment(userId,expId);
+        return response;
+
+    }
+
+    @GetMapping("/getUserProcess")
+    public ServerResponse<int[]> getUserProcess(int userId,int expId)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 获取某用户实验进度//TODO
+         * @Date 4:53 下午 2020/11/11
+         * @Param [userId, expId]
+         * @return hci.artedu.common.ServerResponse<int[]>
+         **/
+
+        ServerResponse<int[]> response = eptService.getEptProcess(expId,userId);
         return response;
 
     }
@@ -208,7 +229,7 @@ public class EptController {
     @GetMapping("/getAllTimeLength")
     public ServerResponse<HashMap<String, Object>> getAllTimeLength() {
         /**
-         * TODO 
+         * TODO
          * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
          * @Description 获取学生总体时长统计
          * @Author Leaf
@@ -224,7 +245,7 @@ public class EptController {
     public ServerResponse<HashMap<String, Object>> getStudentMasterAttitude()
     {
         /**
-         * TODO 
+         * TODO
          * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
          * @Description 用于获取所有学生的喜好度和掌握程度
          * @Author Leaf

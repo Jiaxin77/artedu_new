@@ -40,12 +40,10 @@ public interface EptService {
 
     ServerResponse<HashMap<String, Object>> getStudentInfo(String studentName);
 
+
     ServerResponse<HashMap<String, Object>> getClassInfo(int classNumber);
-
     ServerResponse<HashMap<String, Object>> getSchoolInfo(String SchoolName);
-
     ServerResponse<HashMap<String, Object>> getEptCondition();
-
     ServerResponse<HashMap<String, Object>> getStudentScore(String studentName);
 
     ServerResponse<String> postAnswer(int userId, int eptId, int progress, Date time,  Date startTime, Date endTime, Date date);
