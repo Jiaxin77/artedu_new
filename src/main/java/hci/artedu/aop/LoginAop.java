@@ -91,7 +91,8 @@ public class LoginAop {
             User user = (User) session.getAttribute("user");
             Integer uid = user.getId();
             System.out.println("uid"+uid);
-            userService.insertLoginLog(uid);
+            int logid = userService.insertLoginLog(uid);
+            session.setAttribute("logId",logid);
         }
 
         System.out.println("环绕通知完——————————");

@@ -3,13 +3,14 @@ package hci.artedu.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import hci.artedu.common.ServerResponse;
 import hci.artedu.dao.UserMapper;
-import hci.artedu.dao.UseroperationMapper;
+import hci.artedu.dao.UserloginlogMapper;
 import hci.artedu.pojo.User;
 import hci.artedu.pojo.UserExample;
-import hci.artedu.pojo.Useroperation;
+import hci.artedu.pojo.Userloginlog;
 import hci.artedu.service.TokenService;
 import hci.artedu.service.UserService;
 import hci.artedu.utils.DateUtils;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,7 +38,7 @@ public class UserServiceImpl implements UserService {
     private TokenService tokenService;
 
     @Autowired
-    private UseroperationMapper useroperationMapper;
+    private UserloginlogMapper userloginlogMapper;
 
 
 
@@ -180,24 +183,24 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void insertLoginLog(int uid)
+    public int insertLoginLog(int uid)
     {
         /**
          * @Author jiaxin
          * @Description 加入登录进去的日志//TODO
          * @Date 10:27 上午 2020/11/2
          * @Param [uid]
-         * @return int userid
+         * @return logid
          **/
 
-        Useroperation useroperation = new Useroperation();
+        Userloginlog userloginlog = new Userloginlog();
         User user = userMapper.selectByPrimaryKey(uid);
-        useroperation.setUserId(user.getId());
-        useroperation.setUserName(user.getUserName());
+        userloginlog.setUserId(user.getId());
+        userloginlog.setUserName(user.getUserName());
         Timestamp loginTime = DateUtils.nowDateTime();
-        useroperation.setOperationTime(loginTime);
-        useroperation.setUserOperation("login");
-        useroperationMapper.insert(useroperation);
+        userloginlog.setBeginTime(loginTime);
+        userloginlogMapper.insert(userloginlog);
+        return userloginlog.getId();
 
 
     }
@@ -205,16 +208,44 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void insertLogoutLog(int uid)
-    {
+    public void insertLogoutLog(int id) {
         /**
          * @Author jiaxin
          * @Description 加入登出的日志//TODO
          * @Date 10:27 上午 2020/11/2
-         * @Param [uid]
+         * @Param [id] 记录id
          * @return int userid
          **/
 
+
+        Userloginlog userloginlog = userloginlogMapper.selectByPrimaryKey(id);
+        Timestamp logoutTime = DateUtils.nowDateTime();
+        userloginlog.setEndTime(logoutTime);
+        userloginlogMapper.updateByPrimaryKey(userloginlog);
+        //时间差计算
+        Date beginTime = userloginlog.getBeginTime();
+        Date endTime = userloginlog.getEndTime();
+        long l = endTime.getTime() - beginTime.getTime();
+
+        long day = l / (24 * 60 * 60 * 1000);
+        long hour = (l / (60 * 60 * 1000) - day * 24);
+        long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
+        long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+        try {
+            String during_str = hour + ":" + min + ":" + s;
+            Date duringTime = df.parse(during_str);
+            userloginlog.setDuringTime(duringTime);
+            userloginlogMapper.updateByPrimaryKey(userloginlog);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+/*
         Useroperation useroperation = new Useroperation();
         User user = userMapper.selectByPrimaryKey(uid);
         useroperation.setUserId(user.getId());
@@ -223,7 +254,9 @@ public class UserServiceImpl implements UserService {
         useroperation.setOperationTime(logoutTime);
         useroperation.setUserOperation("logout");
         useroperationMapper.insert(useroperation);
-    }
+
+ */
+
 
 
 }

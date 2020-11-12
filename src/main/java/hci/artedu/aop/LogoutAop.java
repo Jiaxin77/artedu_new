@@ -32,6 +32,7 @@ public class LogoutAop {
     private Integer uid;
     private HttpSession session;
     private String status = "";
+    private  int logId;
     @Pointcut("execution(* hci.artedu.controller.UserController.logout(..))")
     public void pointCut(){}
     //前置通知
@@ -52,6 +53,7 @@ public class LogoutAop {
         uid = (int)args[0];
         session = (HttpSession)args[1];
         status = (String) session.getAttribute("status");
+        logId = (Integer) session.getAttribute("logId");
         System.out.println("前置通知完——————");
     }
 
@@ -64,7 +66,7 @@ public class LogoutAop {
 
         if(status!= null && status.equals("login"))
         {
-            userService.insertLogoutLog(uid);
+            userService.insertLogoutLog(logId);
         }
 
         System.out.println("执行的方法后的返回值"+proceed+"");

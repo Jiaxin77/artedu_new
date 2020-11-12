@@ -36,8 +36,6 @@ public class EptServiceImpl implements EptService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private UseroperationMapper useroperationMapper;
 
     @Autowired
     private PointExperimentMapper pointExperimentMapper;
@@ -326,14 +324,14 @@ public class EptServiceImpl implements EptService {
         User user = userMapper.selectByPrimaryKey(userid);
         Experiment experiment = experimentMapper.selectByPrimaryKey(expId);
 
-        Useroperation useroperation = new Useroperation();
-        useroperation.setUserId(user.getId());
-        useroperation.setUserOperation("beginEpt");
-        useroperation.setParams(Integer.toString(experiment.getId()));
-        useroperation.setUserName(user.getUserName());
-        Timestamp beginTime = DateUtils.nowDateTime();
-        useroperation.setOperationTime(beginTime);
-        useroperationMapper.insert(useroperation);
+//        Useroperation useroperation = new Useroperation();
+//        useroperation.setUserId(user.getId());
+//        useroperation.setUserOperation("beginEpt");
+//        useroperation.setParams(Integer.toString(experiment.getId()));
+//        useroperation.setUserName(user.getUserName());
+//        Timestamp beginTime = DateUtils.nowDateTime();
+//        useroperation.setOperationTime(beginTime);
+//        useroperationMapper.insert(useroperation);
 
         return ServerResponse.createBySuccess("开始成功", true);
 
@@ -357,16 +355,16 @@ public class EptServiceImpl implements EptService {
         //写日志
         User user = userMapper.selectByPrimaryKey(eptRecord.getUserid());
         Experiment experiment = experimentMapper.selectByPrimaryKey(eptRecord.getEptId());
-
-        Useroperation useroperation = new Useroperation();
-        useroperation.setUserId(user.getId());
-        useroperation.setUserOperation("endEpt");
-        useroperation.setParams(Integer.toString(experiment.getId()));
-        useroperation.setUserName(user.getUserName());
-        Timestamp endTime = DateUtils.nowDateTime();
-        useroperation.setOperationTime(endTime);
-
-        useroperationMapper.insert(useroperation);
+//
+//        Useroperation useroperation = new Useroperation();
+//        useroperation.setUserId(user.getId());
+//        useroperation.setUserOperation("endEpt");
+//        useroperation.setParams(Integer.toString(experiment.getId()));
+//        useroperation.setUserName(user.getUserName());
+//        Timestamp endTime = DateUtils.nowDateTime();
+//        useroperation.setOperationTime(endTime);
+//
+//        useroperationMapper.insert(useroperation);
 
         return ServerResponse.createBySuccessMessage("记录成功");
 

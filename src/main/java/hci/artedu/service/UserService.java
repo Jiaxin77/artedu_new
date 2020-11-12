@@ -5,6 +5,7 @@ import hci.artedu.pojo.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,6 +20,6 @@ public interface UserService {
     ServerResponse<List<User>> getAllUser();
     User findUserById(int id);
     ServerResponse<String> logout(int uid, HttpSession session);
-    void insertLoginLog(int uid);
-    void insertLogoutLog(int uid);
+    int insertLoginLog(int uid);
+    void insertLogoutLog(int uid) throws ParseException;
 }
