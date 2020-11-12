@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @program: artedu
@@ -41,6 +42,9 @@ public class LearningServiceImpl implements LearningService {
         LearningRecord record = learningRecordMapper.selectByExample(learningRecordExample).get(0);
         Timestamp endTime = DateUtils.nowDateTime();
         record.setEndTime(endTime);
+        Date startTime =  record.getStartTime();
+        long duringTime = endTime.getTime() - startTime.getTime();
+        record.setDuringTime(duringTime);
         learningRecordMapper.updateByExample(record,learningRecordExample);
         return ServerResponse.createBySuccess("插入成功");
     }

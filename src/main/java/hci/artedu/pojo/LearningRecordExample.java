@@ -355,52 +355,52 @@ public class LearningRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeEqualTo(Date value) {
+        public Criteria andDuringTimeEqualTo(Long value) {
             addCriterion("duringTime =", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeNotEqualTo(Date value) {
+        public Criteria andDuringTimeNotEqualTo(Long value) {
             addCriterion("duringTime <>", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeGreaterThan(Date value) {
+        public Criteria andDuringTimeGreaterThan(Long value) {
             addCriterion("duringTime >", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeGreaterThanOrEqualTo(Date value) {
+        public Criteria andDuringTimeGreaterThanOrEqualTo(Long value) {
             addCriterion("duringTime >=", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeLessThan(Date value) {
+        public Criteria andDuringTimeLessThan(Long value) {
             addCriterion("duringTime <", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeLessThanOrEqualTo(Date value) {
+        public Criteria andDuringTimeLessThanOrEqualTo(Long value) {
             addCriterion("duringTime <=", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeIn(List<Date> values) {
+        public Criteria andDuringTimeIn(List<Long> values) {
             addCriterion("duringTime in", values, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeNotIn(List<Date> values) {
+        public Criteria andDuringTimeNotIn(List<Long> values) {
             addCriterion("duringTime not in", values, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeBetween(Date value1, Date value2) {
+        public Criteria andDuringTimeBetween(Long value1, Long value2) {
             addCriterion("duringTime between", value1, value2, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeNotBetween(Date value1, Date value2) {
+        public Criteria andDuringTimeNotBetween(Long value1, Long value2) {
             addCriterion("duringTime not between", value1, value2, "duringTime");
             return (Criteria) this;
         }

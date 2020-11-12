@@ -30,7 +30,7 @@ public class LearningRecord implements Serializable {
      */
     private Date endTime;
 
-    private Date duringTime;
+    private Long duringTime;
 
     private static final long serialVersionUID = 1L;
 }
