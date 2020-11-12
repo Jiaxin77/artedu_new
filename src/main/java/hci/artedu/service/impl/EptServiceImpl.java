@@ -760,7 +760,7 @@ public class EptServiceImpl implements EptService {
     //用户过了某一关
     @Override
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
-    public ServerResponse postUserStageNum(int userId,int eptId,int stageNum)
+    public ServerResponse<Boolean> postUserStageNum(int userId,int eptId,int stageNum)
     {
         /**
          * @Author jiaxin
@@ -790,7 +790,7 @@ public class EptServiceImpl implements EptService {
             Timestamp nowTime = DateUtils.nowDateTime();
             userprocess.setCompletetime(nowTime);
             userprocessMapper.insert(userprocess);
-            return ServerResponse.createBySuccess("记录成功");
+            return ServerResponse.createBySuccess("记录成功",Boolean.TRUE);
         }
     }
 

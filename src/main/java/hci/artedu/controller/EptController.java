@@ -409,9 +409,9 @@ public class EptController {
     }
 
     @PostMapping("/postUserStageNum")
-    public ServerResponse postUserStageNum(int userId,int eptId,int stageNum)
+    public ServerResponse<Boolean> postUserStageNum(int userId,int eptId,int stageNum)
     {
-        ServerResponse response = eptService.postUserStageNum(userId,eptId,stageNum);
+        ServerResponse<Boolean> response = eptService.postUserStageNum(userId,eptId,stageNum);
         return response;
     }
 
