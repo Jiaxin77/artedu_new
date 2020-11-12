@@ -55,4 +55,8 @@ public interface EptService {
     ServerResponse<HashMap<String, Object>> getScore(int userId, int eptId);
 
     ServerResponse<HashMap<String, Object>> getReport(int userId);
+
+    ServerResponse<int[]> getEptProcess(int expId, int userId);
+
+    public ServerResponse postUserStageNum(int userId,int eptId,int stageNum);
 }

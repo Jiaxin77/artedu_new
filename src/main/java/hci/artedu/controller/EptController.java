@@ -408,4 +408,11 @@ public class EptController {
 
     }
 
+    @PostMapping("/postUserStageNum")
+    public ServerResponse postUserStageNum(int userId,int eptId,int stageNum)
+    {
+        ServerResponse response = eptService.postUserStageNum(userId,eptId,stageNum);
+        return response;
+    }
+
 }
