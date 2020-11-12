@@ -221,8 +221,9 @@ public class EptController {
          * @return hci.artedu.common.ServerResponse<int[]>
          **/
 
-        ServerResponse<int[]> response = eptService.getEptProcess(expId,userId);
-        return response;
+//        ServerResponse<int[]> response = eptService.getEptProcess(expId,userId);
+//        return response;
+        return null;
 
     }
 
