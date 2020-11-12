@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hci.artedu.dao.EquipmentMapper">
-  <resultMap id="BaseResultMap" type="hci.artedu.pojo.Equipment">
+<mapper namespace="hci.artedu.dao.LearningRecordMapper">
+  <resultMap id="BaseResultMap" type="hci.artedu.pojo.LearningRecord">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="startTime" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="duringTime" jdbcType="TIMESTAMP" property="duringTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,15 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, `type`, `state`
+    id, userId, startTime, endTime, duringTime
   </sql>
-  <select id="selectByExample" parameterType="hci.artedu.pojo.EquipmentExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="hci.artedu.pojo.LearningRecordExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from equipment
+    from learningRecord
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -85,70 +86,79 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from equipment
+    from learningRecord
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from equipment
+    delete from learningRecord
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="hci.artedu.pojo.EquipmentExample">
-    delete from equipment
+  <delete id="deleteByExample" parameterType="hci.artedu.pojo.LearningRecordExample">
+    delete from learningRecord
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Equipment" useGeneratedKeys="true">
-    insert into equipment (`name`, `type`, `state`
-      )
-    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}
-      )
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.LearningRecord" useGeneratedKeys="true">
+    insert into learningRecord (userId, startTime, endTime, 
+      duringTime)
+    values (#{userId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{duringTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Equipment" useGeneratedKeys="true">
-    insert into equipment
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.LearningRecord" useGeneratedKeys="true">
+    insert into learningRecord
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        `name`,
+      <if test="userId != null">
+        userId,
       </if>
-      <if test="type != null">
-        `type`,
+      <if test="startTime != null">
+        startTime,
       </if>
-      <if test="state != null">
-        `state`,
+      <if test="endTime != null">
+        endTime,
+      </if>
+      <if test="duringTime != null">
+        duringTime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
-        #{type,jdbcType=INTEGER},
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="state != null">
-        #{state,jdbcType=INTEGER},
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="duringTime != null">
+        #{duringTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="hci.artedu.pojo.EquipmentExample" resultType="java.lang.Long">
-    select count(*) from equipment
+  <select id="countByExample" parameterType="hci.artedu.pojo.LearningRecordExample" resultType="java.lang.Long">
+    select count(*) from learningRecord
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update equipment
+    update learningRecord
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null">
-        `name` = #{record.name,jdbcType=VARCHAR},
+      <if test="record.userId != null">
+        userId = #{record.userId,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null">
-        `type` = #{record.type,jdbcType=INTEGER},
+      <if test="record.startTime != null">
+        startTime = #{record.startTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.state != null">
-        `state` = #{record.state,jdbcType=INTEGER},
+      <if test="record.endTime != null">
+        endTime = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.duringTime != null">
+        duringTime = #{record.duringTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -156,35 +166,40 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update equipment
+    update learningRecord
     set id = #{record.id,jdbcType=INTEGER},
-      `name` = #{record.name,jdbcType=VARCHAR},
-      `type` = #{record.type,jdbcType=INTEGER},
-      `state` = #{record.state,jdbcType=INTEGER}
+      userId = #{record.userId,jdbcType=INTEGER},
+      startTime = #{record.startTime,jdbcType=TIMESTAMP},
+      endTime = #{record.endTime,jdbcType=TIMESTAMP},
+      duringTime = #{record.duringTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="hci.artedu.pojo.Equipment">
-    update equipment
+  <update id="updateByPrimaryKeySelective" parameterType="hci.artedu.pojo.LearningRecord">
+    update learningRecord
     <set>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
-        `type` = #{type,jdbcType=INTEGER},
+      <if test="startTime != null">
+        startTime = #{startTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="state != null">
-        `state` = #{state,jdbcType=INTEGER},
+      <if test="endTime != null">
+        endTime = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="duringTime != null">
+        duringTime = #{duringTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hci.artedu.pojo.Equipment">
-    update equipment
-    set `name` = #{name,jdbcType=VARCHAR},
-      `type` = #{type,jdbcType=INTEGER},
-      `state` = #{state,jdbcType=INTEGER}
+  <update id="updateByPrimaryKey" parameterType="hci.artedu.pojo.LearningRecord">
+    update learningRecord
+    set userId = #{userId,jdbcType=INTEGER},
+      startTime = #{startTime,jdbcType=TIMESTAMP},
+      endTime = #{endTime,jdbcType=TIMESTAMP},
+      duringTime = #{duringTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
