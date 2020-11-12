@@ -164,7 +164,7 @@ public class EptController {
 
 
     @PostMapping("/endPostExperiment")
-    public ServerResponse endPostExperiment(EptRecord eptRecord,int[] process)
+    public ServerResponse endPostExperiment(EptRecord eptRecord)
     {
         /**
          * @Author jiaxin

@@ -741,15 +741,13 @@ public class EptServiceImpl implements EptService {
         criteria.andEptIdEqualTo(eptId);
         criteria.andUserIdEqualTo(userId);
         List<Userprocess> userprocessList = userprocessMapper.selectByExample(userprocessExample);
-        Set set = new HashSet(userprocessList);
-        List tempList = new ArrayList(set);
-        userprocessList = tempList;
 
         int[] stageList = new int[userprocessList.size()];
         int count = 0;
         for(Userprocess userprocess:userprocessList)
         {
             stageList[count] = userprocess.getStageNum();
+            count++;
         }
 
         return ServerResponse.createBySuccess("获取成功", stageList);
