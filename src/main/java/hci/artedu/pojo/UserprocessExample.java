@@ -1,6 +1,7 @@
 package hci.artedu.pojo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserprocessExample {
@@ -341,6 +342,66 @@ public class UserprocessExample {
 
         public Criteria andStageNumNotBetween(Integer value1, Integer value2) {
             addCriterion("stageNum not between", value1, value2, "stageNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeIsNull() {
+            addCriterion("completetime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeIsNotNull() {
+            addCriterion("completetime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeEqualTo(Date value) {
+            addCriterion("completetime =", value, "completetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeNotEqualTo(Date value) {
+            addCriterion("completetime <>", value, "completetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeGreaterThan(Date value) {
+            addCriterion("completetime >", value, "completetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("completetime >=", value, "completetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeLessThan(Date value) {
+            addCriterion("completetime <", value, "completetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeLessThanOrEqualTo(Date value) {
+            addCriterion("completetime <=", value, "completetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeIn(List<Date> values) {
+            addCriterion("completetime in", values, "completetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeNotIn(List<Date> values) {
+            addCriterion("completetime not in", values, "completetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeBetween(Date value1, Date value2) {
+            addCriterion("completetime between", value1, value2, "completetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompletetimeNotBetween(Date value1, Date value2) {
+            addCriterion("completetime not between", value1, value2, "completetime");
             return (Criteria) this;
         }
     }

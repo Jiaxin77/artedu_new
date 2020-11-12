@@ -24,20 +24,10 @@ public class EptRecord implements Serializable {
     private Integer eptId;
 
     /**
-     * 实验成绩
-     */
-    private Integer score;
-
-    /**
      * 实验时长
      */
     @DateTimeFormat(pattern = "HH:mm:ss")
     private Date durTime;
-
-    /**
-     * 实验进度 %
-     */
-    private Integer progress;
 
     /**
      * 操作难度反馈

@@ -8,9 +8,9 @@
             <Config>
               <option name="comment" value="true" />
               <option name="daoMvnPath" value="src/main/java" />
-              <option name="daoName" value="EptrecordEptrecordMapper" />
+              <option name="daoName" value="EptrecordMapper" />
               <option name="daoPackage" value="hci.artedu.dao" />
-              <option name="daoPostfix" value="EptrecordEptrecordMapper" />
+              <option name="daoPostfix" value="EptrecordMapper" />
               <option name="modelMvnPath" value="src/main/java" />
               <option name="modelName" value="EptRecord" />
               <option name="modelPackage" value="hci.artedu.pojo" />

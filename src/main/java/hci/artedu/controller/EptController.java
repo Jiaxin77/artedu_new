@@ -164,7 +164,7 @@ public class EptController {
 
 
     @PostMapping("/endPostExperiment")
-    public ServerResponse endPostExperiment(EptRecord eptRecord,int[] process)
+    public ServerResponse endPostExperiment(EptRecord eptRecord)
     {
         /**
          * @Author jiaxin
@@ -407,6 +407,13 @@ public class EptController {
         ServerResponse<HashMap<String, Object>> response = eptService.getReport(userId);
         return response;
 
+    }
+
+    @PostMapping("/postUserStageNum")
+    public ServerResponse<Boolean> postUserStageNum(int userId,int eptId,int stageNum)
+    {
+        ServerResponse<Boolean> response = eptService.postUserStageNum(userId,eptId,stageNum);
+        return response;
     }
 
 }

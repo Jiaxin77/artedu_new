@@ -1,6 +1,7 @@
 package hci.artedu.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 import lombok.Data;
 
 /**
@@ -25,6 +26,11 @@ public class Userprocess implements Serializable {
      * 关卡序号
      */
     private Integer stageNum;
+
+    /**
+     * 第一次过关时间
+     */
+    private Date completetime;
 
     private static final long serialVersionUID = 1L;
 }

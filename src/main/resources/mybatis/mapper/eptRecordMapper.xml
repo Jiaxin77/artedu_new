@@ -5,9 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="userid" jdbcType="INTEGER" property="userid" />
     <result column="eptId" jdbcType="INTEGER" property="eptId" />
-    <result column="score" jdbcType="INTEGER" property="score" />
     <result column="durTime" jdbcType="TIME" property="durTime" />
-    <result column="progress" jdbcType="INTEGER" property="progress" />
     <result column="difficultyLevel" jdbcType="INTEGER" property="difficultyLevel" />
     <result column="exerciseLevel" jdbcType="INTEGER" property="exerciseLevel" />
     <result column="masteryLevel" jdbcType="INTEGER" property="masteryLevel" />
@@ -74,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, userid, eptId, score, durTime, progress, difficultyLevel, exerciseLevel, masteryLevel, 
-    eptDate, startTime, endTime
+    id, userid, eptId, durTime, difficultyLevel, exerciseLevel, masteryLevel, eptDate, 
+    startTime, endTime
   </sql>
   <select id="selectByExample" parameterType="hci.artedu.pojo.EptRecordExample" resultMap="BaseResultMap">
     select
@@ -108,14 +106,14 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.EptRecord" useGeneratedKeys="true">
-    insert into EptRecord (userid, eptId, score, 
-      durTime, progress, difficultyLevel, 
-      exerciseLevel, masteryLevel, eptDate, 
-      startTime, endTime)
-    values (#{userid,jdbcType=INTEGER}, #{eptId,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, 
-      #{durTime,jdbcType=TIME}, #{progress,jdbcType=INTEGER}, #{difficultyLevel,jdbcType=INTEGER}, 
-      #{exerciseLevel,jdbcType=INTEGER}, #{masteryLevel,jdbcType=INTEGER}, #{eptDate,jdbcType=DATE}, 
-      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP})
+    insert into EptRecord (userid, eptId, durTime, 
+      difficultyLevel, exerciseLevel, masteryLevel, 
+      eptDate, startTime, endTime
+      )
+    values (#{userid,jdbcType=INTEGER}, #{eptId,jdbcType=INTEGER}, #{durTime,jdbcType=TIME}, 
+      #{difficultyLevel,jdbcType=INTEGER}, #{exerciseLevel,jdbcType=INTEGER}, #{masteryLevel,jdbcType=INTEGER}, 
+      #{eptDate,jdbcType=DATE}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.EptRecord" useGeneratedKeys="true">
     insert into EptRecord
@@ -126,14 +124,8 @@
       <if test="eptId != null">
         eptId,
       </if>
-      <if test="score != null">
-        score,
-      </if>
       <if test="durTime != null">
         durTime,
-      </if>
-      <if test="progress != null">
-        progress,
       </if>
       <if test="difficultyLevel != null">
         difficultyLevel,
@@ -161,14 +153,8 @@
       <if test="eptId != null">
         #{eptId,jdbcType=INTEGER},
       </if>
-      <if test="score != null">
-        #{score,jdbcType=INTEGER},
-      </if>
       <if test="durTime != null">
         #{durTime,jdbcType=TIME},
-      </if>
-      <if test="progress != null">
-        #{progress,jdbcType=INTEGER},
       </if>
       <if test="difficultyLevel != null">
         #{difficultyLevel,jdbcType=INTEGER},
@@ -208,14 +194,8 @@
       <if test="record.eptId != null">
         eptId = #{record.eptId,jdbcType=INTEGER},
       </if>
-      <if test="record.score != null">
-        score = #{record.score,jdbcType=INTEGER},
-      </if>
       <if test="record.durTime != null">
         durTime = #{record.durTime,jdbcType=TIME},
-      </if>
-      <if test="record.progress != null">
-        progress = #{record.progress,jdbcType=INTEGER},
       </if>
       <if test="record.difficultyLevel != null">
         difficultyLevel = #{record.difficultyLevel,jdbcType=INTEGER},
@@ -245,9 +225,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       userid = #{record.userid,jdbcType=INTEGER},
       eptId = #{record.eptId,jdbcType=INTEGER},
-      score = #{record.score,jdbcType=INTEGER},
       durTime = #{record.durTime,jdbcType=TIME},
-      progress = #{record.progress,jdbcType=INTEGER},
       difficultyLevel = #{record.difficultyLevel,jdbcType=INTEGER},
       exerciseLevel = #{record.exerciseLevel,jdbcType=INTEGER},
       masteryLevel = #{record.masteryLevel,jdbcType=INTEGER},
@@ -267,14 +245,8 @@
       <if test="eptId != null">
         eptId = #{eptId,jdbcType=INTEGER},
       </if>
-      <if test="score != null">
-        score = #{score,jdbcType=INTEGER},
-      </if>
       <if test="durTime != null">
         durTime = #{durTime,jdbcType=TIME},
-      </if>
-      <if test="progress != null">
-        progress = #{progress,jdbcType=INTEGER},
       </if>
       <if test="difficultyLevel != null">
         difficultyLevel = #{difficultyLevel,jdbcType=INTEGER},
@@ -301,9 +273,7 @@
     update EptRecord
     set userid = #{userid,jdbcType=INTEGER},
       eptId = #{eptId,jdbcType=INTEGER},
-      score = #{score,jdbcType=INTEGER},
       durTime = #{durTime,jdbcType=TIME},
-      progress = #{progress,jdbcType=INTEGER},
       difficultyLevel = #{difficultyLevel,jdbcType=INTEGER},
       exerciseLevel = #{exerciseLevel,jdbcType=INTEGER},
       masteryLevel = #{masteryLevel,jdbcType=INTEGER},

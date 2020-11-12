@@ -6,6 +6,7 @@
     <result column="userId" jdbcType="INTEGER" property="userId" />
     <result column="eptId" jdbcType="INTEGER" property="eptId" />
     <result column="stageNum" jdbcType="INTEGER" property="stageNum" />
+    <result column="completetime" jdbcType="TIMESTAMP" property="completetime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, userId, eptId, stageNum
+    id, userId, eptId, stageNum, completetime
   </sql>
   <select id="selectByExample" parameterType="hci.artedu.pojo.UserprocessExample" resultMap="BaseResultMap">
     select
@@ -99,10 +100,10 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Userprocess" useGeneratedKeys="true">
-    insert into userProcess (userId, eptId, stageNum
-      )
-    values (#{userId,jdbcType=INTEGER}, #{eptId,jdbcType=INTEGER}, #{stageNum,jdbcType=INTEGER}
-      )
+    insert into userProcess (userId, eptId, stageNum, 
+      completetime)
+    values (#{userId,jdbcType=INTEGER}, #{eptId,jdbcType=INTEGER}, #{stageNum,jdbcType=INTEGER}, 
+      #{completetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Userprocess" useGeneratedKeys="true">
     insert into userProcess
@@ -116,6 +117,9 @@
       <if test="stageNum != null">
         stageNum,
       </if>
+      <if test="completetime != null">
+        completetime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -126,6 +130,9 @@
       </if>
       <if test="stageNum != null">
         #{stageNum,jdbcType=INTEGER},
+      </if>
+      <if test="completetime != null">
+        #{completetime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -150,6 +157,9 @@
       <if test="record.stageNum != null">
         stageNum = #{record.stageNum,jdbcType=INTEGER},
       </if>
+      <if test="record.completetime != null">
+        completetime = #{record.completetime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -160,7 +170,8 @@
     set id = #{record.id,jdbcType=INTEGER},
       userId = #{record.userId,jdbcType=INTEGER},
       eptId = #{record.eptId,jdbcType=INTEGER},
-      stageNum = #{record.stageNum,jdbcType=INTEGER}
+      stageNum = #{record.stageNum,jdbcType=INTEGER},
+      completetime = #{record.completetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -177,6 +188,9 @@
       <if test="stageNum != null">
         stageNum = #{stageNum,jdbcType=INTEGER},
       </if>
+      <if test="completetime != null">
+        completetime = #{completetime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -184,7 +198,8 @@
     update userProcess
     set userId = #{userId,jdbcType=INTEGER},
       eptId = #{eptId,jdbcType=INTEGER},
-      stageNum = #{stageNum,jdbcType=INTEGER}
+      stageNum = #{stageNum,jdbcType=INTEGER},
+      completetime = #{completetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

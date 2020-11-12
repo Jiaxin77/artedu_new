@@ -338,66 +338,6 @@ public class EptRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andScoreIsNull() {
-            addCriterion("score is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreIsNotNull() {
-            addCriterion("score is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreEqualTo(Integer value) {
-            addCriterion("score =", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreNotEqualTo(Integer value) {
-            addCriterion("score <>", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreGreaterThan(Integer value) {
-            addCriterion("score >", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreGreaterThanOrEqualTo(Integer value) {
-            addCriterion("score >=", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreLessThan(Integer value) {
-            addCriterion("score <", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreLessThanOrEqualTo(Integer value) {
-            addCriterion("score <=", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreIn(List<Integer> values) {
-            addCriterion("score in", values, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreNotIn(List<Integer> values) {
-            addCriterion("score not in", values, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreBetween(Integer value1, Integer value2) {
-            addCriterion("score between", value1, value2, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreNotBetween(Integer value1, Integer value2) {
-            addCriterion("score not between", value1, value2, "score");
-            return (Criteria) this;
-        }
-
         public Criteria andDurTimeIsNull() {
             addCriterion("durTime is null");
             return (Criteria) this;
@@ -455,66 +395,6 @@ public class EptRecordExample {
 
         public Criteria andDurTimeNotBetween(Date value1, Date value2) {
             addCriterionForJDBCTime("durTime not between", value1, value2, "durTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressIsNull() {
-            addCriterion("progress is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressIsNotNull() {
-            addCriterion("progress is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressEqualTo(Integer value) {
-            addCriterion("progress =", value, "progress");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressNotEqualTo(Integer value) {
-            addCriterion("progress <>", value, "progress");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressGreaterThan(Integer value) {
-            addCriterion("progress >", value, "progress");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressGreaterThanOrEqualTo(Integer value) {
-            addCriterion("progress >=", value, "progress");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressLessThan(Integer value) {
-            addCriterion("progress <", value, "progress");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressLessThanOrEqualTo(Integer value) {
-            addCriterion("progress <=", value, "progress");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressIn(List<Integer> values) {
-            addCriterion("progress in", values, "progress");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressNotIn(List<Integer> values) {
-            addCriterion("progress not in", values, "progress");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressBetween(Integer value1, Integer value2) {
-            addCriterion("progress between", value1, value2, "progress");
-            return (Criteria) this;
-        }
-
-        public Criteria andProgressNotBetween(Integer value1, Integer value2) {
-            addCriterion("progress not between", value1, value2, "progress");
             return (Criteria) this;
         }
 

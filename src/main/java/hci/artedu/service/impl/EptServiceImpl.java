@@ -51,6 +51,10 @@ public class EptServiceImpl implements EptService {
     @Autowired
     private  PointrecordMapper pointrecordMapper;
 
+    @Autowired
+    private UserprocessMapper userprocessMapper;
+
+
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public ServerResponse<ArrayList> getEptList()
@@ -374,7 +378,7 @@ public class EptServiceImpl implements EptService {
     {
         /**
          * @Author jiaxin
-         * @Description 获取某用户的实验进度//TODO
+         * @Description 获取某用户的实验进度-不用了//TODO
          * @Date 10:49 上午 2020/11/5
          * @Param [userId]
          * @return hci.artedu.common.ServerResponse<java.util.ArrayList>
@@ -393,7 +397,6 @@ public class EptServiceImpl implements EptService {
             map.put("eptId",eptRecord.getEptId());
             Experiment experiment = experimentMapper.selectByPrimaryKey(eptRecord.getEptId());
             map.put("eptName",experiment.getEptName());
-            map.put("process",eptRecord.getProgress());
 
             userProcess.add(map);
         }
@@ -677,7 +680,6 @@ public class EptServiceImpl implements EptService {
         EptRecord eptRecord = new EptRecord();
         eptRecord.setUserid(userId);
         eptRecord.setEptId(eptId);
-        eptRecord.setProgress(progress);
         eptRecord.setEptDate(date);
         eptRecord.setStartTime(startTime);
         eptRecord.setEndTime(endTime);
@@ -718,6 +720,76 @@ public class EptServiceImpl implements EptService {
     @Override
     public ServerResponse<HashMap<String, Object>> getReport(int userId) {
         return null;
+    }
+
+
+//    @Override
+//    public ServerResponse<int[]> getEptProcess(int expId, int userId)
+//    {
+//        UserprocessExample userprocessExample = new UserprocessExample();
+//        UserprocessExample.Criteria criteria = userprocessExample.createCriteria();
+//        criteria.andEptIdEqualTo(expId);
+//        criteria.andUserIdEqualTo(userId);
+//
+//    }
+
+    //获取该用户该实验进度
+    public ServerResponse<int[]> getEptProcess(int eptId,int userId)
+    {
+        UserprocessExample userprocessExample = new UserprocessExample();
+        UserprocessExample.Criteria criteria = userprocessExample.createCriteria();
+        criteria.andEptIdEqualTo(eptId);
+        criteria.andUserIdEqualTo(userId);
+        List<Userprocess> userprocessList = userprocessMapper.selectByExample(userprocessExample);
+
+        int[] stageList = new int[userprocessList.size()];
+        int count = 0;
+        for(Userprocess userprocess:userprocessList)
+        {
+            stageList[count] = userprocess.getStageNum();
+            count++;
+        }
+
+        return ServerResponse.createBySuccess("获取成功", stageList);
+
+
+    }
+
+    //用户过了某一关
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
+    public ServerResponse<Boolean> postUserStageNum(int userId,int eptId,int stageNum)
+    {
+        /**
+         * @Author jiaxin
+         * @Description 用户过了某一关//TODO
+         * @Date 3:34 下午 2020/11/12
+         * @Param [userId, eptId, stageNum]
+         * @return hci.artedu.common.ServerResponse<int[]>
+         **/
+         //先查有没有此关的记录
+
+        UserprocessExample userprocessExample = new UserprocessExample();
+        UserprocessExample.Criteria criteria = userprocessExample.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        criteria.andEptIdEqualTo(eptId);
+        criteria.andStageNumEqualTo(stageNum);
+        List<Userprocess> userprocessList = userprocessMapper.selectByExample(userprocessExample);
+        if(userprocessList.size()!=0)
+        {
+            return ServerResponse.createByErrorMessage("已存在该记录");
+        }
+        else
+        {
+            Userprocess userprocess = new Userprocess();
+            userprocess.setStageNum(stageNum);
+            userprocess.setEptId(eptId);
+            userprocess.setUserId(userId);
+            Timestamp nowTime = DateUtils.nowDateTime();
+            userprocess.setCompletetime(nowTime);
+            userprocessMapper.insert(userprocess);
+            return ServerResponse.createBySuccess("记录成功",Boolean.TRUE);
+        }
     }
 
 
