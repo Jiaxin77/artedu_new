@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hci.artedu.dao.UserloginlogMapper">
-  <resultMap id="BaseResultMap" type="hci.artedu.pojo.Userloginlog">
+<mapper namespace="hci.artedu.dao.LearningRecordMapper">
+  <resultMap id="BaseResultMap" type="hci.artedu.pojo.LearningRecord">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="userId" jdbcType="INTEGER" property="userId" />
-    <result column="userName" jdbcType="VARCHAR" property="userName" />
-    <result column="beginTime" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="startTime" jdbcType="TIMESTAMP" property="startTime" />
     <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
-    <result column="duringTime" jdbcType="BIGINT" property="duringTime" />
-    <result column="userIp" jdbcType="VARCHAR" property="userIp" />
+    <result column="duringTime" jdbcType="TIMESTAMP" property="duringTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,15 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, userId, userName, beginTime, endTime, duringTime, userIp
+    id, userId, startTime, endTime, duringTime
   </sql>
-  <select id="selectByExample" parameterType="hci.artedu.pojo.UserloginlogExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="hci.artedu.pojo.LearningRecordExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from userLoginLog
+    from learningRecord
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,38 +86,33 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from userLoginLog
+    from learningRecord
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from userLoginLog
+    delete from learningRecord
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="hci.artedu.pojo.UserloginlogExample">
-    delete from userLoginLog
+  <delete id="deleteByExample" parameterType="hci.artedu.pojo.LearningRecordExample">
+    delete from learningRecord
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Userloginlog" useGeneratedKeys="true">
-    insert into userLoginLog (userId, userName, beginTime, 
-      endTime, duringTime, userIp
-      )
-    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{duringTime,jdbcType=BIGINT}, #{userIp,jdbcType=VARCHAR}
-      )
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.LearningRecord" useGeneratedKeys="true">
+    insert into learningRecord (userId, startTime, endTime, 
+      duringTime)
+    values (#{userId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{duringTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Userloginlog" useGeneratedKeys="true">
-    insert into userLoginLog
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.LearningRecord" useGeneratedKeys="true">
+    insert into learningRecord
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">
         userId,
       </if>
-      <if test="userName != null">
-        userName,
-      </if>
-      <if test="beginTime != null">
-        beginTime,
+      <if test="startTime != null">
+        startTime,
       </if>
       <if test="endTime != null">
         endTime,
@@ -127,39 +120,30 @@
       <if test="duringTime != null">
         duringTime,
       </if>
-      <if test="userIp != null">
-        userIp,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="beginTime != null">
-        #{beginTime,jdbcType=TIMESTAMP},
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
       </if>
       <if test="endTime != null">
         #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="duringTime != null">
-        #{duringTime,jdbcType=BIGINT},
-      </if>
-      <if test="userIp != null">
-        #{userIp,jdbcType=VARCHAR},
+        #{duringTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="hci.artedu.pojo.UserloginlogExample" resultType="java.lang.Long">
-    select count(*) from userLoginLog
+  <select id="countByExample" parameterType="hci.artedu.pojo.LearningRecordExample" resultType="java.lang.Long">
+    select count(*) from learningRecord
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update userLoginLog
+    update learningRecord
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -167,20 +151,14 @@
       <if test="record.userId != null">
         userId = #{record.userId,jdbcType=INTEGER},
       </if>
-      <if test="record.userName != null">
-        userName = #{record.userName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.beginTime != null">
-        beginTime = #{record.beginTime,jdbcType=TIMESTAMP},
+      <if test="record.startTime != null">
+        startTime = #{record.startTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.endTime != null">
         endTime = #{record.endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.duringTime != null">
-        duringTime = #{record.duringTime,jdbcType=BIGINT},
-      </if>
-      <if test="record.userIp != null">
-        userIp = #{record.userIp,jdbcType=VARCHAR},
+        duringTime = #{record.duringTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -188,50 +166,40 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update userLoginLog
+    update learningRecord
     set id = #{record.id,jdbcType=INTEGER},
       userId = #{record.userId,jdbcType=INTEGER},
-      userName = #{record.userName,jdbcType=VARCHAR},
-      beginTime = #{record.beginTime,jdbcType=TIMESTAMP},
+      startTime = #{record.startTime,jdbcType=TIMESTAMP},
       endTime = #{record.endTime,jdbcType=TIMESTAMP},
-      duringTime = #{record.duringTime,jdbcType=BIGINT},
-      userIp = #{record.userIp,jdbcType=VARCHAR}
+      duringTime = #{record.duringTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="hci.artedu.pojo.Userloginlog">
-    update userLoginLog
+  <update id="updateByPrimaryKeySelective" parameterType="hci.artedu.pojo.LearningRecord">
+    update learningRecord
     <set>
       <if test="userId != null">
         userId = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="userName != null">
-        userName = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="beginTime != null">
-        beginTime = #{beginTime,jdbcType=TIMESTAMP},
+      <if test="startTime != null">
+        startTime = #{startTime,jdbcType=TIMESTAMP},
       </if>
       <if test="endTime != null">
         endTime = #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="duringTime != null">
-        duringTime = #{duringTime,jdbcType=BIGINT},
-      </if>
-      <if test="userIp != null">
-        userIp = #{userIp,jdbcType=VARCHAR},
+        duringTime = #{duringTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hci.artedu.pojo.Userloginlog">
-    update userLoginLog
+  <update id="updateByPrimaryKey" parameterType="hci.artedu.pojo.LearningRecord">
+    update learningRecord
     set userId = #{userId,jdbcType=INTEGER},
-      userName = #{userName,jdbcType=VARCHAR},
-      beginTime = #{beginTime,jdbcType=TIMESTAMP},
+      startTime = #{startTime,jdbcType=TIMESTAMP},
       endTime = #{endTime,jdbcType=TIMESTAMP},
-      duringTime = #{duringTime,jdbcType=BIGINT},
-      userIp = #{userIp,jdbcType=VARCHAR}
+      duringTime = #{duringTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

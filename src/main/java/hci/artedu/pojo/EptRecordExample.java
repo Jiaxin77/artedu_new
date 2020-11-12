@@ -132,32 +132,6 @@ public class EptRecordExample {
             addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
-        protected void addCriterionForJDBCTime(String condition, Date value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Time(value.getTime()), property);
-        }
-
-        protected void addCriterionForJDBCTime(String condition, List<Date> values, String property) {
-            if (values == null || values.size() == 0) {
-                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
-            }
-            List<java.sql.Time> timeList = new ArrayList<>();
-            Iterator<Date> iter = values.iterator();
-            while (iter.hasNext()) {
-                timeList.add(new java.sql.Time(iter.next().getTime()));
-            }
-            addCriterion(condition, timeList, property);
-        }
-
-        protected void addCriterionForJDBCTime(String condition, Date value1, Date value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Time(value1.getTime()), new java.sql.Time(value2.getTime()), property);
-        }
-
         public Criteria andIdIsNull() {
             addCriterion("id is null");
             return (Criteria) this;
@@ -348,53 +322,53 @@ public class EptRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andDurTimeEqualTo(Date value) {
-            addCriterionForJDBCTime("durTime =", value, "durTime");
+        public Criteria andDurTimeEqualTo(Long value) {
+            addCriterion("durTime =", value, "durTime");
             return (Criteria) this;
         }
 
-        public Criteria andDurTimeNotEqualTo(Date value) {
-            addCriterionForJDBCTime("durTime <>", value, "durTime");
+        public Criteria andDurTimeNotEqualTo(Long value) {
+            addCriterion("durTime <>", value, "durTime");
             return (Criteria) this;
         }
 
-        public Criteria andDurTimeGreaterThan(Date value) {
-            addCriterionForJDBCTime("durTime >", value, "durTime");
+        public Criteria andDurTimeGreaterThan(Long value) {
+            addCriterion("durTime >", value, "durTime");
             return (Criteria) this;
         }
 
-        public Criteria andDurTimeGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCTime("durTime >=", value, "durTime");
+        public Criteria andDurTimeGreaterThanOrEqualTo(Long value) {
+            addCriterion("durTime >=", value, "durTime");
             return (Criteria) this;
         }
 
-        public Criteria andDurTimeLessThan(Date value) {
-            addCriterionForJDBCTime("durTime <", value, "durTime");
+        public Criteria andDurTimeLessThan(Long value) {
+            addCriterion("durTime <", value, "durTime");
             return (Criteria) this;
         }
 
-        public Criteria andDurTimeLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCTime("durTime <=", value, "durTime");
+        public Criteria andDurTimeLessThanOrEqualTo(Long value) {
+            addCriterion("durTime <=", value, "durTime");
             return (Criteria) this;
         }
 
-        public Criteria andDurTimeIn(List<Date> values) {
-            addCriterionForJDBCTime("durTime in", values, "durTime");
+        public Criteria andDurTimeIn(List<Long> values) {
+            addCriterion("durTime in", values, "durTime");
             return (Criteria) this;
         }
 
-        public Criteria andDurTimeNotIn(List<Date> values) {
-            addCriterionForJDBCTime("durTime not in", values, "durTime");
+        public Criteria andDurTimeNotIn(List<Long> values) {
+            addCriterion("durTime not in", values, "durTime");
             return (Criteria) this;
         }
 
-        public Criteria andDurTimeBetween(Date value1, Date value2) {
-            addCriterionForJDBCTime("durTime between", value1, value2, "durTime");
+        public Criteria andDurTimeBetween(Long value1, Long value2) {
+            addCriterion("durTime between", value1, value2, "durTime");
             return (Criteria) this;
         }
 
-        public Criteria andDurTimeNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCTime("durTime not between", value1, value2, "durTime");
+        public Criteria andDurTimeNotBetween(Long value1, Long value2) {
+            addCriterion("durTime not between", value1, value2, "durTime");
             return (Criteria) this;
         }
 

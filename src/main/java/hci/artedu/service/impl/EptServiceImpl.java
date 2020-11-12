@@ -6,7 +6,6 @@ import hci.artedu.pojo.*;
 import hci.artedu.service.EptService;
 import hci.artedu.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.hash.HashMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -338,7 +337,6 @@ public class EptServiceImpl implements EptService {
 
     }
 
-    @Override
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
     public ServerResponse endPostExperiment(EptRecord eptRecord)
     {
@@ -681,7 +679,7 @@ public class EptServiceImpl implements EptService {
         eptRecord.setEptDate(date);
         eptRecord.setStartTime(startTime);
         eptRecord.setEndTime(endTime);
-        eptRecord.setDurTime(time);
+        //eptRecord.setDurTime(time);
         return null;
     }
 

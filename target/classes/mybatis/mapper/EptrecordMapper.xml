@@ -5,7 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="userid" jdbcType="INTEGER" property="userid" />
     <result column="eptId" jdbcType="INTEGER" property="eptId" />
-    <result column="durTime" jdbcType="TIME" property="durTime" />
+    <result column="durTime" jdbcType="BIGINT" property="durTime" />
     <result column="difficultyLevel" jdbcType="INTEGER" property="difficultyLevel" />
     <result column="exerciseLevel" jdbcType="INTEGER" property="exerciseLevel" />
     <result column="masteryLevel" jdbcType="INTEGER" property="masteryLevel" />
@@ -110,7 +110,7 @@
       difficultyLevel, exerciseLevel, masteryLevel, 
       eptDate, startTime, endTime
       )
-    values (#{userid,jdbcType=INTEGER}, #{eptId,jdbcType=INTEGER}, #{durTime,jdbcType=TIME}, 
+    values (#{userid,jdbcType=INTEGER}, #{eptId,jdbcType=INTEGER}, #{durTime,jdbcType=BIGINT}, 
       #{difficultyLevel,jdbcType=INTEGER}, #{exerciseLevel,jdbcType=INTEGER}, #{masteryLevel,jdbcType=INTEGER}, 
       #{eptDate,jdbcType=DATE}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}
       )
@@ -154,7 +154,7 @@
         #{eptId,jdbcType=INTEGER},
       </if>
       <if test="durTime != null">
-        #{durTime,jdbcType=TIME},
+        #{durTime,jdbcType=BIGINT},
       </if>
       <if test="difficultyLevel != null">
         #{difficultyLevel,jdbcType=INTEGER},
@@ -195,7 +195,7 @@
         eptId = #{record.eptId,jdbcType=INTEGER},
       </if>
       <if test="record.durTime != null">
-        durTime = #{record.durTime,jdbcType=TIME},
+        durTime = #{record.durTime,jdbcType=BIGINT},
       </if>
       <if test="record.difficultyLevel != null">
         difficultyLevel = #{record.difficultyLevel,jdbcType=INTEGER},
@@ -225,7 +225,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       userid = #{record.userid,jdbcType=INTEGER},
       eptId = #{record.eptId,jdbcType=INTEGER},
-      durTime = #{record.durTime,jdbcType=TIME},
+      durTime = #{record.durTime,jdbcType=BIGINT},
       difficultyLevel = #{record.difficultyLevel,jdbcType=INTEGER},
       exerciseLevel = #{record.exerciseLevel,jdbcType=INTEGER},
       masteryLevel = #{record.masteryLevel,jdbcType=INTEGER},
@@ -246,7 +246,7 @@
         eptId = #{eptId,jdbcType=INTEGER},
       </if>
       <if test="durTime != null">
-        durTime = #{durTime,jdbcType=TIME},
+        durTime = #{durTime,jdbcType=BIGINT},
       </if>
       <if test="difficultyLevel != null">
         difficultyLevel = #{difficultyLevel,jdbcType=INTEGER},
@@ -273,7 +273,7 @@
     update EptRecord
     set userid = #{userid,jdbcType=INTEGER},
       eptId = #{eptId,jdbcType=INTEGER},
-      durTime = #{durTime,jdbcType=TIME},
+      durTime = #{durTime,jdbcType=BIGINT},
       difficultyLevel = #{difficultyLevel,jdbcType=INTEGER},
       exerciseLevel = #{exerciseLevel,jdbcType=INTEGER},
       masteryLevel = #{masteryLevel,jdbcType=INTEGER},
