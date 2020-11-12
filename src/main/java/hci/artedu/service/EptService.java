@@ -42,7 +42,7 @@ public interface EptService {
 
 
     ServerResponse<HashMap<String, Object>> getClassInfo(int classNumber);
-    ServerResponse<HashMap<String, Object>> getSchoolInfo(String SchoolName);
+    ServerResponse<HashMap<String, Object>> getSchoolInfo(String schoolName);
     ServerResponse<HashMap<String, Object>> getEptCondition();
     ServerResponse<HashMap<String, Object>> getStudentScore(String studentName);
 

@@ -48,6 +48,9 @@ public class EptServiceImpl implements EptService {
     @Autowired
     private EptrecordMapper eptrecordMapper;
 
+    @Autowired
+    private  PointrecordMapper pointrecordMapper;
+
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public ServerResponse<ArrayList> getEptList()
@@ -562,16 +565,93 @@ public class EptServiceImpl implements EptService {
             }
             eptTime.put("ept"+i, temp[i]);
         }
+        HashMap<String,Object> pointTime = new HashMap<>();//知识点时长 存在问题 现在就一个知识点
+        PointrecordExample pointrecordExample = new PointrecordExample();
+        PointrecordExample.Criteria criteria3 =pointrecordExample.createCriteria();
+        criteria3.andUserIdEqualTo(user.getId());
+        List<Pointrecord> pointrecordList = pointrecordMapper.selectByExample(pointrecordExample);
+        long[] temp1=new long[6];
+        for (int i = 0; i < 6; i++) {
+            for (Pointrecord p: pointrecordList) {
+                if (p.getPointId() == i){
+                    temp[i] += p.getCompleteTime().getTime();
+                }
+            }
+            pointTime.put("point"+i, temp1[i]);
+        }
         return null;
+
     }
 
     @Override
     public ServerResponse<HashMap<String, Object>> getClassInfo(int classNumber) {
-        return null;
+       return null;
     }
 
     @Override
-    public ServerResponse<HashMap<String, Object>> getSchoolInfo(String SchoolName) {
+    public ServerResponse<HashMap<String, Object>> getSchoolInfo(String schoolName) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andSchoolNameEqualTo(schoolName);
+        criteria.andUserTypeEqualTo(0);
+        int male = 0, female = 0, maleMastery0 = 0, maleMastery1 = 0, maleMastery2 = 0, femaleMastery0 = 0,
+                femaleMastery1 = 0, femaleMastery2 = 0, maleAttitude0 = 0, maleAttitude1 = 0,
+                maleAttitude2 = 0, femaleAttitude0 = 0,femaleAttitude1 = 0,femaleAttitude2 =0,averAttitude0 = 0,
+                averAttitude1 = 0, averAttitude2 = 0, averMastery0 = 0, averMastery1 = 0, averMastery2 = 0;
+        List<User> userList = userMapper.selectByExample(userExample);
+        for (User u:
+             userList) {
+            if(u.getUserGender()==Boolean.TRUE){
+                male += 1;
+                if(u.getUserAttitude() == 0){
+                    maleAttitude0 += 1;
+                }
+                if(u.getUserAttitude() == 1){
+                    maleAttitude1 += 1;
+                }
+                if(u.getUserAttitude() == 2){
+                    maleAttitude2 += 1;
+                }
+                if(u.getLevelOfMastery() ==0){
+                    maleMastery0 += 1;
+                }
+                if(u.getLevelOfMastery() == 1){
+                    maleMastery1 += 1;
+                }
+                if(u.getLevelOfMastery() == 2){
+                    maleMastery2 += 1;
+                }
+            }
+            else if(u.getUserGender()==Boolean.FALSE){
+                female += 1;
+                if(u.getUserAttitude() == 0){
+                    femaleAttitude0 += 1;
+                }
+                if(u.getUserAttitude() == 1){
+                    femaleAttitude1 += 1;
+                }
+                if(u.getUserAttitude() == 2){
+                    femaleAttitude2 += 1;
+                }
+                if(u.getLevelOfMastery() ==0){
+                    femaleMastery0 += 1;
+                }
+                if(u.getLevelOfMastery() == 1){
+                    femaleMastery1 += 1;
+                }
+                if(u.getLevelOfMastery() == 2){
+                    femaleMastery2 += 1;
+                }
+            }
+        }
+        int malePercent = male/userList.size();
+        int femalePercent = female/userList.size();
+        averAttitude0 = maleAttitude0 * malePercent + femaleAttitude0 * femalePercent;
+        averAttitude1 = maleAttitude1 * malePercent + femaleAttitude1 * femalePercent;
+        averAttitude2 = maleAttitude2 * malePercent + femaleAttitude2 * femalePercent;
+        averMastery0 = maleMastery0 * malePercent + femaleMastery0 * femalePercent;
+        averMastery1 = maleMastery1 * malePercent + femaleMastery1 * femalePercent;
+        averMastery2 = maleMastery2 * malePercent + femaleMastery2 * femalePercent;
         return null;
     }
 
