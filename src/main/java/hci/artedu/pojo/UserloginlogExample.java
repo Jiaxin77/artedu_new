@@ -2,7 +2,6 @@ package hci.artedu.pojo;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class UserloginlogExample {
@@ -104,32 +103,6 @@ public class UserloginlogExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
-        }
-
-        protected void addCriterionForJDBCTime(String condition, Date value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Time(value.getTime()), property);
-        }
-
-        protected void addCriterionForJDBCTime(String condition, List<Date> values, String property) {
-            if (values == null || values.size() == 0) {
-                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
-            }
-            List<java.sql.Time> timeList = new ArrayList<>();
-            Iterator<Date> iter = values.iterator();
-            while (iter.hasNext()) {
-                timeList.add(new java.sql.Time(iter.next().getTime()));
-            }
-            addCriterion(condition, timeList, property);
-        }
-
-        protected void addCriterionForJDBCTime(String condition, Date value1, Date value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Time(value1.getTime()), new java.sql.Time(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -452,53 +425,53 @@ public class UserloginlogExample {
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeEqualTo(Date value) {
-            addCriterionForJDBCTime("duringTime =", value, "duringTime");
+        public Criteria andDuringTimeEqualTo(Long value) {
+            addCriterion("duringTime =", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeNotEqualTo(Date value) {
-            addCriterionForJDBCTime("duringTime <>", value, "duringTime");
+        public Criteria andDuringTimeNotEqualTo(Long value) {
+            addCriterion("duringTime <>", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeGreaterThan(Date value) {
-            addCriterionForJDBCTime("duringTime >", value, "duringTime");
+        public Criteria andDuringTimeGreaterThan(Long value) {
+            addCriterion("duringTime >", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCTime("duringTime >=", value, "duringTime");
+        public Criteria andDuringTimeGreaterThanOrEqualTo(Long value) {
+            addCriterion("duringTime >=", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeLessThan(Date value) {
-            addCriterionForJDBCTime("duringTime <", value, "duringTime");
+        public Criteria andDuringTimeLessThan(Long value) {
+            addCriterion("duringTime <", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCTime("duringTime <=", value, "duringTime");
+        public Criteria andDuringTimeLessThanOrEqualTo(Long value) {
+            addCriterion("duringTime <=", value, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeIn(List<Date> values) {
-            addCriterionForJDBCTime("duringTime in", values, "duringTime");
+        public Criteria andDuringTimeIn(List<Long> values) {
+            addCriterion("duringTime in", values, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeNotIn(List<Date> values) {
-            addCriterionForJDBCTime("duringTime not in", values, "duringTime");
+        public Criteria andDuringTimeNotIn(List<Long> values) {
+            addCriterion("duringTime not in", values, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeBetween(Date value1, Date value2) {
-            addCriterionForJDBCTime("duringTime between", value1, value2, "duringTime");
+        public Criteria andDuringTimeBetween(Long value1, Long value2) {
+            addCriterion("duringTime between", value1, value2, "duringTime");
             return (Criteria) this;
         }
 
-        public Criteria andDuringTimeNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCTime("duringTime not between", value1, value2, "duringTime");
+        public Criteria andDuringTimeNotBetween(Long value1, Long value2) {
+            addCriterion("duringTime not between", value1, value2, "duringTime");
             return (Criteria) this;
         }
 

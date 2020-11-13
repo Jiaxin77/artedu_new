@@ -8,9 +8,9 @@
             <Config>
               <option name="comment" value="true" />
               <option name="daoMvnPath" value="src/main/java" />
-              <option name="daoName" value="EptrecordMapper" />
+              <option name="daoName" value="EptrecordEptrecordEptrecordMapper" />
               <option name="daoPackage" value="hci.artedu.dao" />
-              <option name="daoPostfix" value="EptrecordMapper" />
+              <option name="daoPostfix" value="EptrecordEptrecordEptrecordMapper" />
               <option name="modelMvnPath" value="src/main/java" />
               <option name="modelName" value="EptRecord" />
               <option name="modelPackage" value="hci.artedu.pojo" />
@@ -24,7 +24,7 @@
               <option name="useExample" value="true" />
               <option name="useLombokPlugin" value="true" />
               <option name="useSchemaPrefix" value="true" />
-              <option name="xmlMvnPath" value="src/main/resources/mybatis/" />
+              <option name="xmlMvnPath" value="src/main/resources/mybatis" />
               <option name="xmlPackage" value="mapper" />
             </Config>
           </value>
@@ -161,9 +161,9 @@
             <Config>
               <option name="comment" value="true" />
               <option name="daoMvnPath" value="src/main/java" />
-              <option name="daoName" value="EqtRecordMapper" />
+              <option name="daoName" value="EqtrecordMapper" />
               <option name="daoPackage" value="hci.artedu.dao" />
-              <option name="daoPostfix" value="Mapper" />
+              <option name="daoPostfix" value="EqtrecordMapper" />
               <option name="modelMvnPath" value="src/main/java" />
               <option name="modelName" value="EqtRecord" />
               <option name="modelPackage" value="hci.artedu.pojo" />
@@ -456,6 +456,32 @@
               <option name="primaryKey" value="id" />
               <option name="projectFolder" value="$PROJECT_DIR$" />
               <option name="tableName" value="user" />
+              <option name="useActualColumnNames" value="true" />
+              <option name="useExample" value="true" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources/mybatis/" />
+              <option name="xmlPackage" value="mapper" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="userLoginLog">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="UserloginlogMapper" />
+              <option name="daoPackage" value="hci.artedu.dao" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="Userloginlog" />
+              <option name="modelPackage" value="hci.artedu.pojo" />
+              <option name="name" value="userLoginLog" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$" />
+              <option name="tableName" value="userLoginLog" />
               <option name="useActualColumnNames" value="true" />
               <option name="useExample" value="true" />
               <option name="useLombokPlugin" value="true" />

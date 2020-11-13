@@ -35,7 +35,7 @@ public class Userloginlog implements Serializable {
     /**
      * 持续时间
      */
-    private Date duringTime;
+    private Long duringTime;
 
     /**
      * 用户ip

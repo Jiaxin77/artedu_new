@@ -10,7 +10,6 @@ import hci.artedu.pojo.Userloginlog;
 import hci.artedu.service.TokenService;
 import hci.artedu.service.UserService;
 import hci.artedu.utils.DateUtils;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -225,22 +222,22 @@ public class UserServiceImpl implements UserService {
         //时间差计算
         Date beginTime = userloginlog.getBeginTime();
         Date endTime = userloginlog.getEndTime();
-        long l = endTime.getTime() - beginTime.getTime();
 
-        long day = l / (24 * 60 * 60 * 1000);
-        long hour = (l / (60 * 60 * 1000) - day * 24);
-        long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
-        long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+        long login_time = beginTime.getTime();
+        long logout_time = endTime.getTime();
+        long timeSpan = logout_time - login_time;
 
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
-        try {
-            String during_str = hour + ":" + min + ":" + s;
-            Date duringTime = df.parse(during_str);
-            userloginlog.setDuringTime(duringTime);
-            userloginlogMapper.updateByPrimaryKey(userloginlog);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        userloginlog.setDuringTime(timeSpan);
+
+//        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+//        try {
+//            String during_str = hour + ":" + min + ":" + s;
+//            Date duringTime = df.parse(during_str);
+//            userloginlog.setDuringTime(duringTime);
+//            userloginlogMapper.updateByPrimaryKey(userloginlog);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 
     }

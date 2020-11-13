@@ -26,8 +26,7 @@ public class EptRecord implements Serializable {
     /**
      * 实验时长
      */
-    @DateTimeFormat(pattern = "HH:mm:ss")
-    private Date durTime;
+    private Long durTime;
 
     /**
      * 操作难度反馈
@@ -47,19 +46,19 @@ public class EptRecord implements Serializable {
     /**
      * 实验日期
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "YYYY-mm-dd")
     private Date eptDate;
 
     /**
      * 开始时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "YYYY-mm-dd HH:mm:ss")
     private Date startTime;
 
     /**
      * 结束时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "YYYY-mm-dd HH:mm:ss")
     private Date endTime;
 
     private static final long serialVersionUID = 1L;

@@ -7,7 +7,7 @@
     <result column="userName" jdbcType="VARCHAR" property="userName" />
     <result column="beginTime" jdbcType="TIMESTAMP" property="beginTime" />
     <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
-    <result column="duringTime" jdbcType="TIME" property="duringTime" />
+    <result column="duringTime" jdbcType="BIGINT" property="duringTime" />
     <result column="userIp" jdbcType="VARCHAR" property="userIp" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -106,7 +106,7 @@
       endTime, duringTime, userIp
       )
     values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{duringTime,jdbcType=TIME}, #{userIp,jdbcType=VARCHAR}
+      #{endTime,jdbcType=TIMESTAMP}, #{duringTime,jdbcType=BIGINT}, #{userIp,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.Userloginlog" useGeneratedKeys="true">
@@ -145,7 +145,7 @@
         #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="duringTime != null">
-        #{duringTime,jdbcType=TIME},
+        #{duringTime,jdbcType=BIGINT},
       </if>
       <if test="userIp != null">
         #{userIp,jdbcType=VARCHAR},
@@ -177,7 +177,7 @@
         endTime = #{record.endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.duringTime != null">
-        duringTime = #{record.duringTime,jdbcType=TIME},
+        duringTime = #{record.duringTime,jdbcType=BIGINT},
       </if>
       <if test="record.userIp != null">
         userIp = #{record.userIp,jdbcType=VARCHAR},
@@ -194,7 +194,7 @@
       userName = #{record.userName,jdbcType=VARCHAR},
       beginTime = #{record.beginTime,jdbcType=TIMESTAMP},
       endTime = #{record.endTime,jdbcType=TIMESTAMP},
-      duringTime = #{record.duringTime,jdbcType=TIME},
+      duringTime = #{record.duringTime,jdbcType=BIGINT},
       userIp = #{record.userIp,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -216,7 +216,7 @@
         endTime = #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="duringTime != null">
-        duringTime = #{duringTime,jdbcType=TIME},
+        duringTime = #{duringTime,jdbcType=BIGINT},
       </if>
       <if test="userIp != null">
         userIp = #{userIp,jdbcType=VARCHAR},
@@ -230,7 +230,7 @@
       userName = #{userName,jdbcType=VARCHAR},
       beginTime = #{beginTime,jdbcType=TIMESTAMP},
       endTime = #{endTime,jdbcType=TIMESTAMP},
-      duringTime = #{duringTime,jdbcType=TIME},
+      duringTime = #{duringTime,jdbcType=BIGINT},
       userIp = #{userIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
