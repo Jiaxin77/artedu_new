@@ -6,7 +6,7 @@
     <result column="userId" jdbcType="INTEGER" property="userId" />
     <result column="startTime" jdbcType="TIMESTAMP" property="startTime" />
     <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
-    <result column="duringTime" jdbcType="TIMESTAMP" property="duringTime" />
+    <result column="duringTime" jdbcType="BIGINT" property="duringTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -103,7 +103,7 @@
     insert into learningRecord (userId, startTime, endTime, 
       duringTime)
     values (#{userId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
-      #{duringTime,jdbcType=TIMESTAMP})
+      #{duringTime,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.LearningRecord" useGeneratedKeys="true">
     insert into learningRecord
@@ -132,7 +132,7 @@
         #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="duringTime != null">
-        #{duringTime,jdbcType=TIMESTAMP},
+        #{duringTime,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -158,7 +158,7 @@
         endTime = #{record.endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.duringTime != null">
-        duringTime = #{record.duringTime,jdbcType=TIMESTAMP},
+        duringTime = #{record.duringTime,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -171,7 +171,7 @@
       userId = #{record.userId,jdbcType=INTEGER},
       startTime = #{record.startTime,jdbcType=TIMESTAMP},
       endTime = #{record.endTime,jdbcType=TIMESTAMP},
-      duringTime = #{record.duringTime,jdbcType=TIMESTAMP}
+      duringTime = #{record.duringTime,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -189,7 +189,7 @@
         endTime = #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="duringTime != null">
-        duringTime = #{duringTime,jdbcType=TIMESTAMP},
+        duringTime = #{duringTime,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -199,7 +199,7 @@
     set userId = #{userId,jdbcType=INTEGER},
       startTime = #{startTime,jdbcType=TIMESTAMP},
       endTime = #{endTime,jdbcType=TIMESTAMP},
-      duringTime = #{duringTime,jdbcType=TIMESTAMP}
+      duringTime = #{duringTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
