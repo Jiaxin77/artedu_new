@@ -6,6 +6,7 @@ import hci.artedu.pojo.*;
 import hci.artedu.service.EptService;
 import hci.artedu.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.hash.HashMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -337,6 +338,7 @@ public class EptServiceImpl implements EptService {
 
     }
 
+    @Override
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
     public ServerResponse endPostExperiment(EptRecord eptRecord)
     {
@@ -437,11 +439,31 @@ public class EptServiceImpl implements EptService {
 
     @Override
     public ServerResponse<HashMap<String, Object>> getAllTimeLength() {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 学生总体时长统计
+         * @Author Leaf
+         * @Date 2020/11/13 11:32 上午
+         **/
+        //实验时长
+        int eptSum = 0;
+        EptRecordExample eptRecordExample = new EptRecordExample();
+
+        //学习时长
+        //在线时长
         return null;
     }
 
     @Override
     public ServerResponse<HashMap<String, Object>> getStudentMasterAttitude() {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 用于获取所有学生的喜好度和掌握程度
+         * @Author Leaf
+         * @Date 2020/11/13 10:16 上午
+         **/
         UserExample example = new UserExample();
         UserExample.Criteria criteria =  example.createCriteria();
         criteria.andUserTypeEqualTo(0);
@@ -529,12 +551,19 @@ public class EptServiceImpl implements EptService {
 
     @Override
     public ServerResponse<HashMap<String, Object>> getStudentInfo(String studentName) {
+        /**
+         * TODO
+         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+         * @Description 通过学生姓名查询学生基本信息
+         * @Author Leaf
+         * @Date 2020/11/13 10:17 上午
+         **/
         UserExample example = new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
         criteria.andUserNameEqualTo(studentName);
         List<User> userList = userMapper.selectByExample(example);
         User user =userList.get(0);
-        
+
         HashMap<String,Object> studentInfo = new HashMap<>();//基本信息
         studentInfo.put("userGender", user.getUserGender());
         studentInfo.put("userEmail", user.getUserEmail());
@@ -651,7 +680,36 @@ public class EptServiceImpl implements EptService {
         averMastery0 = maleMastery0 * malePercent + femaleMastery0 * femalePercent;
         averMastery1 = maleMastery1 * malePercent + femaleMastery1 * femalePercent;
         averMastery2 = maleMastery2 * malePercent + femaleMastery2 * femalePercent;
-        return null;
+        HashMap<String,Object> AttitudeMap =new HashMap<>();
+        AttitudeMap.put("女生喜欢",femaleAttitude0);
+        AttitudeMap.put("女生一般",femaleAttitude1);
+        AttitudeMap.put("女生抵触", femaleAttitude2);
+        AttitudeMap.put("男生喜欢", maleAttitude0);
+        AttitudeMap.put("男生一般", maleAttitude1);
+        AttitudeMap.put("男生抵触", maleAttitude2);
+        AttitudeMap.put("平均喜欢", averAttitude0);
+        AttitudeMap.put("平均一般", averAttitude1);
+        AttitudeMap.put("平均抵触", averAttitude2);
+
+        HashMap<String,Object> MasteryMap = new HashMap<String, Object>();
+        MasteryMap.put("女生从未学过",femaleMastery0);
+        MasteryMap.put("女生学习1-3年",femaleMastery1);
+        MasteryMap.put("女生学习3年以上",femaleMastery2);
+        MasteryMap.put("男生从未学过",maleMastery0);
+        MasteryMap.put("男生学习1-3年",maleMastery1);
+        MasteryMap.put("男生学习3年以上",maleMastery2);
+        MasteryMap.put("平均从未学过",averMastery0);
+        MasteryMap.put("平均学习1-3年",averMastery1);
+        MasteryMap.put("平均学习3年以上",averMastery2);
+
+        HashMap<String,Object> res = new HashMap<>();
+        res.put("attitude",AttitudeMap);
+        res.put("Mastery",MasteryMap);
+        res.put("male",male);
+        res.put("female",female);
+        res.put("malePercent",malePercent);
+        res.put("femalePercent",femalePercent);
+        return ServerResponse.createBySuccess("获取成功", res);
     }
 
     @Override
@@ -679,7 +737,7 @@ public class EptServiceImpl implements EptService {
         eptRecord.setEptDate(date);
         eptRecord.setStartTime(startTime);
         eptRecord.setEndTime(endTime);
-        //eptRecord.setDurTime(time);
+//        eptRecord.setDurTime(time);
         return null;
     }
 

@@ -1,0 +1,9 @@
+<changelist name="在Update之前未提交更改_at_2020_11_13,_11_35_上午_[Default_Changelist]" date="1605238555043" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/在Update之前未提交更改_at_2020_11_13,_11_35_上午_[Default_Changelist]/shelved.patch" />
+  <option name="DESCRIPTION" value="在Update之前未提交更改 at 2020/11/13, 11:35 上午 [Default Changelist]" />
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/hci/artedu/service/impl/EptServiceImpl.class" />
+    <option name="AFTER_PATH" value="target/classes/hci/artedu/service/impl/EptServiceImpl.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在Update之前未提交更改_at_2020_11_13,_11_35_上午_[Default_Changelist]/EptServiceImpl.class" />
+  </binary>
+</changelist>

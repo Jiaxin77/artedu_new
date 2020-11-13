@@ -1,0 +1,215 @@
+Index: src/main/resources/application.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>web:\n  upload-path: static/\nspring:\n  datasource:\n    # 如果存在多个数据源，监控的时候可以通过名字来区分开来\n    name: mysql\n    # 连接数据库的url\n    url: jdbc:mysql://localhost:3306/simulator?useUnicode=true&characterEncoding=utf-8&useSSL=true&verifyServerCertificate=false&serverTimezone=GMT%2B8\n    # 连接数据库的账号\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    username: root\n    #  连接数据库的密码\n    # password: 13541362\n    # password: 19971019\n    password: bupt20427\n    # 使用druid数据源\n    type: com.alibaba.druid.pool.DruidDataSource\n    # 扩展插件\n    # 监控统计用的filter:stat 日志用的filter:log4j 防御sql注入的filter:wall\n    filters: stat\n    # 最大连接池数量\n    maxActive: 20\n    # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时\n    initialSize: 1\n    # 获取连接时最大等待时间，单位毫秒\n    maxWait: 60000\n    # 最小连接池数量\n    minIdle: 1\n    timeBetweenEvictionRunsMillis: 60000\n    # 连接保持空闲而不被驱逐的最长时间\n    minEvictableIdleTimeMillis: 300000\n    # 用来检测连接是否有效的sql，要求是一个查询语句\n    # 如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用\n    validationQuery: select count(1) from 'table'\n    # 申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效\n    testWhileIdle: true\n    # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能\n    testOnBorrow: false\n    # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能\n    testOnReturn: false\n    # 是否缓存preparedStatement，即PSCache\n    poolPreparedStatements: false\n    # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true\n    maxOpenPreparedStatements: -1\n#  security:\n#    user:\n#      password: 1234\n#      name: root\n\n  jackson:\n    #日期格式化\n    date-format: yyyy-MM-dd HH:mm:ss\n    time-zone: GMT+8\n#  data:\n#    mongodb:\n#      host: 127.0.0.1\n#      port: 27017\n#      database: testmongo1\n  resources:\n    static-locations: file:${web.upload-path}\n  # static-locations: classpath:static/,file:static/\n# pagehelper分页插件\npagehelper:\n  # 数据库的方言\n  helperDialect: mysql\n  # 启用合理化，如果pageNum < 1会查询第一页，如果pageNum > pages会查询最后一页\n  reasonable: true\n\nmybatis:\n  mapper-locations: classpath:mybatis/mapper/*.xml\n  type-aliases-package: hci.dky.pojo\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/application.yml	(revision f4bad1f1b46feeff81de3ce02c291b9fc0229221)
++++ src/main/resources/application.yml	(date 1603935185066)
+@@ -12,7 +12,8 @@
+     #  连接数据库的密码
+     # password: 13541362
+     # password: 19971019
+-    password: bupt20427
++#    password: bupt20427
++    pssword: abc720904
+     # 使用druid数据源
+     type: com.alibaba.druid.pool.DruidDataSource
+     # 扩展插件
+@@ -68,4 +69,4 @@
+ 
+ mybatis:
+   mapper-locations: classpath:mybatis/mapper/*.xml
+-  type-aliases-package: hci.dky.pojo
++  type-aliases-package: hci.artedu.pojo
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\n    <modelVersion>4.0.0</modelVersion>\n    <parent>\n        <groupId>org.springframework.boot</groupId>\n        <artifactId>spring-boot-starter-parent</artifactId>\n        <version>2.2.4.RELEASE</version>\n        <relativePath/> <!-- lookup parent from repository -->\n    </parent>\n    <groupId>hci</groupId>\n    <artifactId>artedu</artifactId>\n    <version>0.0.1-SNAPSHOT</version>\n    <packaging>jar</packaging>\n    <name>artEdu</name>\n    <description>Simulation_Project</description>\n\n    <properties>\n        <java.version>1.8</java.version>\n    </properties>\n\n    <dependencies>\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-starter-data-mongodb</artifactId>\n        </dependency>\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-starter-web</artifactId>\n        </dependency>\n        <dependency>\n            <groupId>org.mybatis.spring.boot</groupId>\n            <artifactId>mybatis-spring-boot-starter</artifactId>\n            <version>2.1.1</version>\n        </dependency>\n        <dependency>\n            <groupId>org.apdplat</groupId>\n            <artifactId>word</artifactId>\n            <version>1.1</version>\n        </dependency>\n\n\n        <dependency>\n            <groupId>mysql</groupId>\n            <artifactId>mysql-connector-java</artifactId>\n            <scope>runtime</scope>\n        </dependency>\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-starter-test</artifactId>\n            <scope>test</scope>\n            <exclusions>\n                <exclusion>\n                    <groupId>org.junit.vintage</groupId>\n                    <artifactId>junit-vintage-engine</artifactId>\n                </exclusion>\n            </exclusions>\n        </dependency>\n\n        <!-- 分页插件 -->\n        <dependency>\n            <groupId>com.github.pagehelper</groupId>\n            <artifactId>pagehelper-spring-boot-starter</artifactId>\n            <version>1.2.3</version>\n        </dependency>\n        <!-- alibaba的druid数据库连接池 -->\n        <dependency>\n            <groupId>com.alibaba</groupId>\n            <artifactId>druid-spring-boot-starter</artifactId>\n            <version>1.1.1</version>\n        </dependency>\n        <!-- alibaba的json格式化对象 -->\n        <dependency>\n            <groupId>com.alibaba</groupId>\n            <artifactId>fastjson</artifactId>\n            <version>1.2.31</version>\n        </dependency>\n\n        <dependency>\n            <groupId>io.springfox</groupId>\n            <artifactId>springfox-swagger2</artifactId>\n            <version>2.7.0</version>\n        </dependency>\n\n        <dependency>\n            <groupId>io.springfox</groupId>\n            <artifactId>springfox-swagger-ui</artifactId>\n            <version>2.7.0</version>\n        </dependency>\n\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-starter-aop</artifactId>\n        </dependency>\n\n        <dependency>\n            <groupId>org.projectlombok</groupId>\n            <artifactId>lombok</artifactId>\n        </dependency>\n\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-devtools</artifactId>\n            <optional>true</optional>\n        </dependency>\n\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-starter-security</artifactId>\n        </dependency>\n\n        <!-- token 相关-->\n        <dependency>\n            <groupId>com.auth0</groupId>\n            <artifactId>java-jwt</artifactId>\n            <version>3.4.0</version>\n        </dependency>\n\n        <!--文件上传相关-->\n\n\n    </dependencies>\n\n    <build>\n        <plugins>\n\n\n            <plugin>\n                <groupId>org.mybatis.generator</groupId>\n                <artifactId>mybatis-generator-maven-plugin</artifactId>\n                <version>1.3.2</version>\n                <configuration>\n                    <verbose>true</verbose>\n                    <overwrite>true</overwrite>\n                    <configurationFile>${project.basedir}/src/main/resources/mybatis/mybatis-generator.xml\n                    </configurationFile>\n                </configuration>\n            </plugin>\n\n            <plugin>\n                <groupId>org.springframework.boot</groupId>\n                <artifactId>spring-boot-maven-plugin</artifactId>\n                <configuration>\n                    <fork>true</fork>\n                </configuration>\n            </plugin>\n        </plugins>\n    </build>\n\n</project>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pom.xml	(revision f4bad1f1b46feeff81de3ce02c291b9fc0229221)
++++ pom.xml	(date 1604369512743)
+@@ -118,6 +118,17 @@
+ 
+         <!--文件上传相关-->
+ 
++        <!--验证码-->
++        <dependency>
++            <groupId>com.alibaba</groupId>
++            <artifactId>fastjson</artifactId>
++            <version>1.2.4</version>
++        </dependency>
++        <dependency>
++            <groupId>com.zhenzikj</groupId>
++            <artifactId>zhenzisms</artifactId>
++            <version>1.0.2</version>
++        </dependency>
+ 
+     </dependencies>
+ 
+Index: target/classes/application.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>web:\n  upload-path: static/\nspring:\n  datasource:\n    # 如果存在多个数据源，监控的时候可以通过名字来区分开来\n    name: mysql\n    # 连接数据库的url\n    url: jdbc:mysql://localhost:3306/simulator?useUnicode=true&characterEncoding=utf-8&useSSL=true&verifyServerCertificate=false&serverTimezone=GMT%2B8\n    # 连接数据库的账号\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    username: root\n    #  连接数据库的密码\n    # password: 13541362\n    # password: 19971019\n    password: bupt20427\n    # 使用druid数据源\n    type: com.alibaba.druid.pool.DruidDataSource\n    # 扩展插件\n    # 监控统计用的filter:stat 日志用的filter:log4j 防御sql注入的filter:wall\n    filters: stat\n    # 最大连接池数量\n    maxActive: 20\n    # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时\n    initialSize: 1\n    # 获取连接时最大等待时间，单位毫秒\n    maxWait: 60000\n    # 最小连接池数量\n    minIdle: 1\n    timeBetweenEvictionRunsMillis: 60000\n    # 连接保持空闲而不被驱逐的最长时间\n    minEvictableIdleTimeMillis: 300000\n    # 用来检测连接是否有效的sql，要求是一个查询语句\n    # 如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用\n    validationQuery: select count(1) from 'table'\n    # 申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效\n    testWhileIdle: true\n    # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能\n    testOnBorrow: false\n    # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能\n    testOnReturn: false\n    # 是否缓存preparedStatement，即PSCache\n    poolPreparedStatements: false\n    # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true\n    maxOpenPreparedStatements: -1\n#  security:\n#    user:\n#      password: 1234\n#      name: root\n\n  jackson:\n    #日期格式化\n    date-format: yyyy-MM-dd HH:mm:ss\n    time-zone: GMT+8\n#  data:\n#    mongodb:\n#      host: 127.0.0.1\n#      port: 27017\n#      database: testmongo1\n  resources:\n    static-locations: file:${web.upload-path}\n  # static-locations: classpath:static/,file:static/\n# pagehelper分页插件\npagehelper:\n  # 数据库的方言\n  helperDialect: mysql\n  # 启用合理化，如果pageNum < 1会查询第一页，如果pageNum > pages会查询最后一页\n  reasonable: true\n\nmybatis:\n  mapper-locations: classpath:mybatis/mapper/*.xml\n  type-aliases-package: hci.dky.pojo\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- target/classes/application.yml	(revision f4bad1f1b46feeff81de3ce02c291b9fc0229221)
++++ target/classes/application.yml	(date 1604370036157)
+@@ -12,7 +12,8 @@
+     #  连接数据库的密码
+     # password: 13541362
+     # password: 19971019
+-    password: bupt20427
++#    password: bupt20427
++    pssword: abc720904
+     # 使用druid数据源
+     type: com.alibaba.druid.pool.DruidDataSource
+     # 扩展插件
+@@ -68,4 +69,4 @@
+ 
+ mybatis:
+   mapper-locations: classpath:mybatis/mapper/*.xml
+-  type-aliases-package: hci.dky.pojo
++  type-aliases-package: hci.artedu.pojo
+Index: .idea/libraries/Maven__com_zhenzikj_zhenzisms_1_0_2.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/libraries/Maven__com_zhenzikj_zhenzisms_1_0_2.xml	(date 1604369589118)
++++ .idea/libraries/Maven__com_zhenzikj_zhenzisms_1_0_2.xml	(date 1604369589118)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: com.zhenzikj:zhenzisms:1.0.2">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/zhenzikj/zhenzisms/1.0.2/zhenzisms-1.0.2.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/com/zhenzikj/zhenzisms/1.0.2/zhenzisms-1.0.2-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/zhenzikj/zhenzisms/1.0.2/zhenzisms-1.0.2-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: artedu.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule=\"true\" type=\"JAVA_MODULE\" version=\"4\">\n  <component name=\"FacetManager\">\n    <facet type=\"Spring\" name=\"Spring\">\n      <configuration />\n    </facet>\n    <facet type=\"web\" name=\"Web\">\n      <configuration>\n        <webroots />\n        <sourceRoots>\n          <root url=\"file://$MODULE_DIR$/src/main/java\" />\n          <root url=\"file://$MODULE_DIR$/src/main/resources\" />\n        </sourceRoots>\n      </configuration>\n    </facet>\n  </component>\n  <component name=\"NewModuleRootManager\" LANGUAGE_LEVEL=\"JDK_1_8\">\n    <output url=\"file://$MODULE_DIR$/target/classes\" />\n    <output-test url=\"file://$MODULE_DIR$/target/test-classes\" />\n    <content url=\"file://$MODULE_DIR$\">\n      <sourceFolder url=\"file://$MODULE_DIR$/src/main/java\" isTestSource=\"false\" />\n      <sourceFolder url=\"file://$MODULE_DIR$/src/main/resources\" type=\"java-resource\" />\n      <sourceFolder url=\"file://$MODULE_DIR$/src/test/java\" isTestSource=\"true\" />\n      <excludeFolder url=\"file://$MODULE_DIR$/target\" />\n    </content>\n    <orderEntry type=\"inheritedJdk\" />\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-data-mongodb:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-logging:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: ch.qos.logback:logback-classic:1.2.3\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: ch.qos.logback:logback-core:1.2.3\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.apache.logging.log4j:log4j-to-slf4j:2.12.1\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.apache.logging.log4j:log4j-api:2.12.1\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.slf4j:jul-to-slf4j:1.7.30\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: jakarta.annotation:jakarta.annotation-api:1.3.5\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"RUNTIME\" name=\"Maven: org.yaml:snakeyaml:1.25\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.mongodb:mongodb-driver:3.11.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.mongodb:bson:3.11.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.mongodb:mongodb-driver-core:3.11.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.data:spring-data-mongodb:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-tx:5.2.3.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-context:5.2.3.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-beans:5.2.3.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-expression:5.2.3.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.data:spring-data-commons:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-web:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-json:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.10.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.10.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-tomcat:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.apache.tomcat.embed:tomcat-embed-core:9.0.30\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.apache.tomcat.embed:tomcat-embed-el:9.0.30\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.30\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-validation:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: jakarta.validation:jakarta.validation-api:2.0.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.hibernate.validator:hibernate-validator:6.0.18.Final\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.jboss.logging:jboss-logging:3.4.1.Final\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-web:5.2.3.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-webmvc:5.2.3.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-jdbc:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.zaxxer:HikariCP:3.4.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-jdbc:5.2.3.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.mybatis.spring.boot:mybatis-spring-boot-autoconfigure:2.1.1\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.mybatis:mybatis:3.5.3\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.mybatis:mybatis-spring:2.0.3\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.apdplat:word:1.1\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.slf4j:slf4j-api:1.7.30\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: redis.clients:jedis:3.1.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.apache.commons:commons-pool2:2.7.0\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"RUNTIME\" name=\"Maven: mysql:mysql-connector-java:8.0.19\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.springframework.boot:spring-boot-starter-test:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.springframework.boot:spring-boot-test:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.springframework.boot:spring-boot-test-autoconfigure:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: com.jayway.jsonpath:json-path:2.4.0\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: net.minidev:json-smart:2.3\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: net.minidev:accessors-smart:1.2\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.ow2.asm:asm:5.0.4\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.2\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: jakarta.activation:jakarta.activation-api:1.2.1\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter:5.5.2\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter-api:5.5.2\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.apiguardian:apiguardian-api:1.1.0\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.opentest4j:opentest4j:1.2.0\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.platform:junit-platform-commons:1.5.2\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter-params:5.5.2\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter-engine:5.5.2\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.platform:junit-platform-engine:1.5.2\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.mockito:mockito-junit-jupiter:3.1.0\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.assertj:assertj-core:3.13.2\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.hamcrest:hamcrest:2.1\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.mockito:mockito-core:3.1.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: net.bytebuddy:byte-buddy:1.10.6\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: net.bytebuddy:byte-buddy-agent:1.10.6\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.objenesis:objenesis:2.6\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.skyscreamer:jsonassert:1.5.0\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: com.vaadin.external.google:android-json:0.0.20131108.vaadin1\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-core:5.2.3.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-jcl:5.2.3.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.springframework:spring-test:5.2.3.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.xmlunit:xmlunit-core:2.6.3\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.github.pagehelper:pagehelper-spring-boot-starter:1.2.3\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.github.pagehelper:pagehelper-spring-boot-autoconfigure:1.2.3\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.github.pagehelper:pagehelper:5.1.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.github.jsqlparser:jsqlparser:1.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.alibaba:druid-spring-boot-starter:1.1.1\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.alibaba:druid:1.1.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-autoconfigure:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.alibaba:fastjson:1.2.31\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: io.springfox:springfox-swagger2:2.7.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: io.swagger:swagger-annotations:1.5.13\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: io.swagger:swagger-models:1.5.13\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: io.springfox:springfox-spi:2.7.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: io.springfox:springfox-core:2.7.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: io.springfox:springfox-schema:2.7.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: io.springfox:springfox-swagger-common:2.7.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: io.springfox:springfox-spring-web:2.7.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.reflections:reflections:0.9.11\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.javassist:javassist:3.21.0-GA\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.google.guava:guava:18.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml:classmate:1.5.1\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.plugin:spring-plugin-metadata:1.2.0.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.mapstruct:mapstruct:1.1.0.Final\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: io.springfox:springfox-swagger-ui:2.7.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-aop:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-aop:5.2.3.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.aspectj:aspectjweaver:1.9.5\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.projectlombok:lombok:1.18.10\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-devtools:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-security:2.2.4.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.security:spring-security-config:5.2.1.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.security:spring-security-core:5.2.1.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.security:spring-security-web:5.2.1.RELEASE\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.auth0:java-jwt:3.4.0\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.core:jackson-databind:2.10.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.core:jackson-core:2.10.2\" level=\"project\" />\n    <orderEntry type=\"library\" name=\"Maven: commons-codec:commons-codec:1.13\" level=\"project\" />\n  </component>\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- artedu.iml	(revision f4bad1f1b46feeff81de3ce02c291b9fc0229221)
++++ artedu.iml	(date 1604369589105)
+@@ -108,7 +108,7 @@
+     <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.1.1" level="project" />
+     <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.0" level="project" />
+     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.2.4.RELEASE" level="project" />
+-    <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.31" level="project" />
++    <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.4" level="project" />
+     <orderEntry type="library" name="Maven: io.springfox:springfox-swagger2:2.7.0" level="project" />
+     <orderEntry type="library" name="Maven: io.swagger:swagger-annotations:1.5.13" level="project" />
+     <orderEntry type="library" name="Maven: io.swagger:swagger-models:1.5.13" level="project" />
+@@ -140,5 +140,6 @@
+     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.2" level="project" />
+     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.2" level="project" />
+     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.13" level="project" />
++    <orderEntry type="library" name="Maven: com.zhenzikj:zhenzisms:1.0.2" level="project" />
+   </component>
+ </module>
+\ No newline at end of file
+Index: src/main/java/hci/artedu/controller/CodeController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/hci/artedu/controller/CodeController.java	(date 1604369776170)
++++ src/main/java/hci/artedu/controller/CodeController.java	(date 1604369776170)
+@@ -0,0 +1,56 @@
++package hci.artedu.controller;
++
++import com.alibaba.fastjson.JSONObject;
++import com.zhenzi.sms.ZhenziSmsClient;
++import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.RequestParam;
++import org.springframework.web.bind.annotation.ResponseBody;
++
++import javax.servlet.http.HttpSession;
++import java.util.Random;
++
++/**
++ * @program: artedu
++ * @description: 获取验证码
++ * @author: Leaf
++ * @create: 2020-11-03 10:12
++ * @Version: 1.0
++ **/
++public class CodeController {
++    //短信平台相关参数
++    //这个不用改
++    private String apiUrl = "https://sms_developer.zhenzikj.com";
++    //榛子云系统上获取
++    private String appId = "107057";
++    private String appSecret = "22785fd4-019e-41c5-8a27-e2628b06044f";
++
++    @ResponseBody
++    @GetMapping("/fitness/code")
++    public boolean getCode(@RequestParam("memPhone") String memPhone, HttpSession httpSession) {
++        boolean res = false;
++        try {
++            JSONObject json;
++            json = null;
++            //随机生成验证码
++            String code = String.valueOf(new Random().nextInt(999999));
++            //将验证码通过榛子云接口发送至手机
++            ZhenziSmsClient client = new ZhenziSmsClient(apiUrl, appId, appSecret);
++            String result = client.send(memPhone, "您的验证码为:" + code + "，该码有效期为5分钟，该码只能使用一次!");
++
++            json = JSONObject.parseObject(result);
++            //发送短信失败
++            if (json.getIntValue("code") == 0) {//将验证码存到session中,同时存入创建时间
++//以json存放，这里使用的是阿里的fastjson
++                json = new JSONObject();
++                json.put("memPhone", memPhone);
++                json.put("code", code);
++                json.put("createTime", System.currentTimeMillis());// 将认证码存入SESSION
++                httpSession.setAttribute("code", json);
++                res = true;
++            }
++        } catch (Exception e) {
++            e.printStackTrace();
++        }
++        return res;
++    }
++}
+Index: .idea/libraries/Maven__com_alibaba_fastjson_1_2_31.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\n  <library name=\"Maven: com.alibaba:fastjson:1.2.31\">\n    <CLASSES>\n      <root url=\"jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.31/fastjson-1.2.31.jar!/\" />\n    </CLASSES>\n    <JAVADOC>\n      <root url=\"jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.31/fastjson-1.2.31-javadoc.jar!/\" />\n    </JAVADOC>\n    <SOURCES>\n      <root url=\"jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.31/fastjson-1.2.31-sources.jar!/\" />\n    </SOURCES>\n  </library>\n</component>
+===================================================================
+--- .idea/libraries/Maven__com_alibaba_fastjson_1_2_31.xml	(revision f4bad1f1b46feeff81de3ce02c291b9fc0229221)
++++ .idea/libraries/Maven__com_alibaba_fastjson_1_2_4.xml	(date 1604369589113)
+@@ -1,13 +1,13 @@
+ <component name="libraryTable">
+-  <library name="Maven: com.alibaba:fastjson:1.2.31">
++  <library name="Maven: com.alibaba:fastjson:1.2.4">
+     <CLASSES>
+-      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.31/fastjson-1.2.31.jar!/" />
++      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.4/fastjson-1.2.4.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+-      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.31/fastjson-1.2.31-javadoc.jar!/" />
++      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.4/fastjson-1.2.4-javadoc.jar!/" />
+     </JAVADOC>
+     <SOURCES>
+-      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.31/fastjson-1.2.31-sources.jar!/" />
++      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.4/fastjson-1.2.4-sources.jar!/" />
+     </SOURCES>
+   </library>
+ </component>
+\ No newline at end of file
