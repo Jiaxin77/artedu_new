@@ -1,20 +1,13 @@
 package hci.artedu.pojo;
 
 import java.io.Serializable;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 /**
  * user
  * @author 
  */
 @Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
 public class User implements Serializable {
     private Integer id;
 
@@ -56,7 +49,7 @@ public class User implements Serializable {
     /**
      * 班号
      */
-    private String className;
+    private Integer className;
 
     /**
      * 对素描的掌握程度
@@ -79,5 +72,4 @@ public class User implements Serializable {
     private String phoneNumber;
 
     private static final long serialVersionUID = 1L;
-
 }

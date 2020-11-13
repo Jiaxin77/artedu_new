@@ -10,10 +10,11 @@
     <result column="userType" jdbcType="INTEGER" property="userType" />
     <result column="userNumber" jdbcType="VARCHAR" property="userNumber" />
     <result column="schoolName" jdbcType="VARCHAR" property="schoolName" />
-    <result column="className" jdbcType="VARCHAR" property="className" />
+    <result column="className" jdbcType="INTEGER" property="className" />
     <result column="levelOfMastery" jdbcType="INTEGER" property="levelOfMastery" />
     <result column="userAttitude" jdbcType="INTEGER" property="userAttitude" />
     <result column="userScore" jdbcType="FLOAT" property="userScore" />
+    <result column="phoneNumber" jdbcType="VARCHAR" property="phoneNumber" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, userName, userGender, userEmail, userPassword, userType, userNumber, schoolName, 
-    className, levelOfMastery, userAttitude, userScore
+    className, levelOfMastery, userAttitude, userScore, phoneNumber
   </sql>
   <select id="selectByExample" parameterType="hci.artedu.pojo.UserExample" resultMap="BaseResultMap">
     select
@@ -111,11 +112,13 @@
     insert into user (userName, userGender, userEmail, 
       userPassword, userType, userNumber, 
       schoolName, className, levelOfMastery, 
-      userAttitude, userScore)
+      userAttitude, userScore, phoneNumber
+      )
     values (#{userName,jdbcType=VARCHAR}, #{userGender,jdbcType=BOOLEAN}, #{userEmail,jdbcType=VARCHAR}, 
       #{userPassword,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{userNumber,jdbcType=VARCHAR}, 
-      #{schoolName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{levelOfMastery,jdbcType=INTEGER}, 
-      #{userAttitude,jdbcType=INTEGER}, #{userScore,jdbcType=FLOAT})
+      #{schoolName,jdbcType=VARCHAR}, #{className,jdbcType=INTEGER}, #{levelOfMastery,jdbcType=INTEGER}, 
+      #{userAttitude,jdbcType=INTEGER}, #{userScore,jdbcType=FLOAT}, #{phoneNumber,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.User" useGeneratedKeys="true">
     insert into user
@@ -153,6 +156,9 @@
       <if test="userScore != null">
         userScore,
       </if>
+      <if test="phoneNumber != null">
+        phoneNumber,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userName != null">
@@ -177,7 +183,7 @@
         #{schoolName,jdbcType=VARCHAR},
       </if>
       <if test="className != null">
-        #{className,jdbcType=VARCHAR},
+        #{className,jdbcType=INTEGER},
       </if>
       <if test="levelOfMastery != null">
         #{levelOfMastery,jdbcType=INTEGER},
@@ -187,6 +193,9 @@
       </if>
       <if test="userScore != null">
         #{userScore,jdbcType=FLOAT},
+      </if>
+      <if test="phoneNumber != null">
+        #{phoneNumber,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -224,7 +233,7 @@
         schoolName = #{record.schoolName,jdbcType=VARCHAR},
       </if>
       <if test="record.className != null">
-        className = #{record.className,jdbcType=VARCHAR},
+        className = #{record.className,jdbcType=INTEGER},
       </if>
       <if test="record.levelOfMastery != null">
         levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},
@@ -234,6 +243,9 @@
       </if>
       <if test="record.userScore != null">
         userScore = #{record.userScore,jdbcType=FLOAT},
+      </if>
+      <if test="record.phoneNumber != null">
+        phoneNumber = #{record.phoneNumber,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -250,10 +262,11 @@
       userType = #{record.userType,jdbcType=INTEGER},
       userNumber = #{record.userNumber,jdbcType=VARCHAR},
       schoolName = #{record.schoolName,jdbcType=VARCHAR},
-      className = #{record.className,jdbcType=VARCHAR},
+      className = #{record.className,jdbcType=INTEGER},
       levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},
       userAttitude = #{record.userAttitude,jdbcType=INTEGER},
-      userScore = #{record.userScore,jdbcType=FLOAT}
+      userScore = #{record.userScore,jdbcType=FLOAT},
+      phoneNumber = #{record.phoneNumber,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -283,7 +296,7 @@
         schoolName = #{schoolName,jdbcType=VARCHAR},
       </if>
       <if test="className != null">
-        className = #{className,jdbcType=VARCHAR},
+        className = #{className,jdbcType=INTEGER},
       </if>
       <if test="levelOfMastery != null">
         levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},
@@ -293,6 +306,9 @@
       </if>
       <if test="userScore != null">
         userScore = #{userScore,jdbcType=FLOAT},
+      </if>
+      <if test="phoneNumber != null">
+        phoneNumber = #{phoneNumber,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -306,10 +322,11 @@
       userType = #{userType,jdbcType=INTEGER},
       userNumber = #{userNumber,jdbcType=VARCHAR},
       schoolName = #{schoolName,jdbcType=VARCHAR},
-      className = #{className,jdbcType=VARCHAR},
+      className = #{className,jdbcType=INTEGER},
       levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},
       userAttitude = #{userAttitude,jdbcType=INTEGER},
-      userScore = #{userScore,jdbcType=FLOAT}
+      userScore = #{userScore,jdbcType=FLOAT},
+      phoneNumber = #{phoneNumber,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

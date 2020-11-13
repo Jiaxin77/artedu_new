@@ -102,7 +102,7 @@ public class EqtServiceImpl implements EqtService {
             example.createCriteria().andIdEqualTo(userId);
             List<User> userList = userMapper.selectByExample(example);
             String userName = null;
-            String userClass = null;
+            int userClass = 0;
             if (!userList.isEmpty()){
                 User thisUser = userList.get(0);
                 userName = thisUser.getUserName();

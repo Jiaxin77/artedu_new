@@ -644,62 +644,52 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andClassNameEqualTo(String value) {
+        public Criteria andClassNameEqualTo(Integer value) {
             addCriterion("className =", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNameNotEqualTo(String value) {
+        public Criteria andClassNameNotEqualTo(Integer value) {
             addCriterion("className <>", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNameGreaterThan(String value) {
+        public Criteria andClassNameGreaterThan(Integer value) {
             addCriterion("className >", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNameGreaterThanOrEqualTo(String value) {
+        public Criteria andClassNameGreaterThanOrEqualTo(Integer value) {
             addCriterion("className >=", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNameLessThan(String value) {
+        public Criteria andClassNameLessThan(Integer value) {
             addCriterion("className <", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNameLessThanOrEqualTo(String value) {
+        public Criteria andClassNameLessThanOrEqualTo(Integer value) {
             addCriterion("className <=", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNameLike(String value) {
-            addCriterion("className like", value, "className");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassNameNotLike(String value) {
-            addCriterion("className not like", value, "className");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassNameIn(List<String> values) {
+        public Criteria andClassNameIn(List<Integer> values) {
             addCriterion("className in", values, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNameNotIn(List<String> values) {
+        public Criteria andClassNameNotIn(List<Integer> values) {
             addCriterion("className not in", values, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNameBetween(String value1, String value2) {
+        public Criteria andClassNameBetween(Integer value1, Integer value2) {
             addCriterion("className between", value1, value2, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNameNotBetween(String value1, String value2) {
+        public Criteria andClassNameNotBetween(Integer value1, Integer value2) {
             addCriterion("className not between", value1, value2, "className");
             return (Criteria) this;
         }
