@@ -685,6 +685,29 @@ public class EptServiceImpl implements EptService {
             }
         }
         onlineTimeAver = onlineTimeSum / userloginlogList.size();
+        //实验进度
+        int[] steps = new int[6];
+        int[] maxSteps = new int[6];
+        double[] stepPercent = new double[6];
+        for (int i = 0; i < 6; i++) {
+            maxSteps[i] = 0;
+            ExperimentstepExample experimentstepExample = new ExperimentstepExample();
+            ExperimentstepExample.Criteria criteria4 = experimentstepExample.createCriteria();
+            criteria4.andEptIdEqualTo(i);
+            List<Experimentstep> experimentstepList = experimentstepMapper.selectByExample(experimentstepExample);
+            steps[i] = experimentstepList.size();
+            UserprocessExample userprocessExample = new UserprocessExample();
+            UserprocessExample.Criteria criteria5 = userprocessExample.createCriteria();
+            criteria5.andEptIdEqualTo(i);
+            criteria5.andUserIdEqualTo(user.getId());
+            List<Userprocess> userprocessList = userprocessMapper.selectByExample(userprocessExample);
+            for (Userprocess u:userprocessList) {
+                if(u.getStageNum()>maxSteps[i]){
+                    maxSteps[i] = u.getStageNum();
+                }
+            }
+            stepPercent[i] = maxSteps[i]/steps[i];
+        }
 
         HashMap<String, Object> studentInfo = new HashMap<>();//基本信息
         studentInfo.put("userGender", user.getUserGender());
@@ -742,6 +765,7 @@ public class EptServiceImpl implements EptService {
         res.put("studentInfo", studentInfo);
         res.put("eptTime", eptTime);
         res.put("pointTime", pointTime);
+        res.put("stepPercent",stepPercent);
         return ServerResponse.createBySuccess("获取成功", res);
 
     }
@@ -914,6 +938,7 @@ public class EptServiceImpl implements EptService {
         timeInfo.put("onlineTimeMin", onlineTimeMin);
         timeInfo.put("onlineTimeMax", onlineTimeMax);
         timeInfo.put("onlineTimeAver", onlineTimeAver);
+        //实验进度
 
 
         HashMap<String, Object> res = new HashMap<>();
@@ -1262,6 +1287,29 @@ public class EptServiceImpl implements EptService {
             }
         }
         onlineTimeAver = onlineTimeSum / userloginlogList.size();
+        //实验进度
+        int[] steps = new int[6];
+        int[] maxSteps = new int[6];
+        double[] stepPercent = new double[6];
+        for (int i = 0; i < 6; i++) {
+            maxSteps[i] = 0;
+            ExperimentstepExample experimentstepExample = new ExperimentstepExample();
+            ExperimentstepExample.Criteria criteria4 = experimentstepExample.createCriteria();
+            criteria4.andEptIdEqualTo(i);
+            List<Experimentstep> experimentstepList = experimentstepMapper.selectByExample(experimentstepExample);
+            steps[i] = experimentstepList.size();
+            UserprocessExample userprocessExample = new UserprocessExample();
+            UserprocessExample.Criteria criteria5 = userprocessExample.createCriteria();
+            criteria5.andEptIdEqualTo(i);
+            criteria5.andUserIdEqualTo(user.getId());
+            List<Userprocess> userprocessList = userprocessMapper.selectByExample(userprocessExample);
+            for (Userprocess u:userprocessList) {
+                if(u.getStageNum()>maxSteps[i]){
+                    maxSteps[i] = u.getStageNum();
+                }
+            }
+            stepPercent[i] = maxSteps[i]/steps[i];
+        }
         HashMap<String, Object> res = new HashMap<>();
         res.put("eptTimeMin", eptTimeMin);
         res.put("eptTimeMax", eptTimeMax);
@@ -1272,6 +1320,7 @@ public class EptServiceImpl implements EptService {
         res.put("onlineTimeMin", onlineTimeMin);
         res.put("onlineTimeMax", onlineTimeMax);
         res.put("onlineTimeAver", onlineTimeAver);
+        res.put("stepPercent", stepPercent);
         return ServerResponse.createBySuccess("获取成功", res);
     }
 
