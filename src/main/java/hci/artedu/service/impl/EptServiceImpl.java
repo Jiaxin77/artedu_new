@@ -587,7 +587,7 @@ public class EptServiceImpl implements EptService {
     @Override
     public ServerResponse<HashMap<String, Object>> getClassInfo(int classNumber) {
        return null;
-       
+
     }
 
     @Override
