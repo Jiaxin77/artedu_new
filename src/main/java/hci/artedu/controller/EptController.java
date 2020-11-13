@@ -4,9 +4,7 @@ import hci.artedu.common.ServerResponse;
 import hci.artedu.pojo.EptRecord;
 import hci.artedu.service.EptService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -196,7 +194,7 @@ public class EptController {
     }
 
     @PostMapping("/beginExperiment")
-    public ServerResponse<Boolean> beginExperiment(int userId,int expId)
+    public ServerResponse<Boolean> beginExperiment(Integer userId,Integer expId)
     {
         /**
          * @Author jiaxin
@@ -205,7 +203,7 @@ public class EptController {
          * @Param [userid, expId]
          * @return hci.artedu.common.ServerResponse<java.lang.Boolean>
          **/
-        ServerResponse<Boolean> response = eptService.beginExperiment(userId,expId);
+        ServerResponse<Boolean> response = eptService.beginExperiment((int)userId,(int)expId);
         return response;
 
     }
@@ -409,9 +407,9 @@ public class EptController {
     }
 
     @PostMapping("/postUserStageNum")
-    public ServerResponse<Boolean> postUserStageNum(int userId,int eptId,int stageNum)
+    public ServerResponse<Boolean> postUserStageNum(Integer userId, Integer eptId, Integer stageNum)
     {
-        ServerResponse<Boolean> response = eptService.postUserStageNum(userId,eptId,stageNum);
+        ServerResponse<Boolean> response = eptService.postUserStageNum((int)userId,(int)eptId,(int)stageNum);
         return response;
     }
 
