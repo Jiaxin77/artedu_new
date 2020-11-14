@@ -11,6 +11,7 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import hci.artedu.common.ServerResponse;
 import hci.artedu.service.CodeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

@@ -3,12 +3,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.utils.StringUtils;
 import com.zhenzi.sms.ZhenziSmsClient;
 import hci.artedu.common.ServerResponse;
+import hci.artedu.pojo.User;
 import hci.artedu.service.CodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,17 +70,26 @@ public class CodeController {
     @Autowired
     private CodeService sendMessage;
 
-    //RestFul风格请求
-    @GetMapping("/send/{phone}")
-    public String send(@PathVariable("phone") String phone) {
-        String code = String.valueOf(new Random().nextInt(999999)); //generate random verification code
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+    @RequestMapping("/code/{phone}")
+    @ResponseBody
+    public ServerResponse<String> codeSend(@PathVariable("phone") String phone) {
+        String code = redisTemplate.opsForValue().get(phone);
+        if (!StringUtils.isEmpty(code)) {
+            return ServerResponse.createByErrorMessage(phone + ": " + code + "该验证尚未过期！");
+        }
+        code = String.valueOf(new Random().nextInt(999999)); //generate random verification code
         HashMap<String, Object> map = new HashMap<>();
         map.put("code", code);
         ServerResponse flag = sendMessage.sendMessage(phone, map);
         if (flag.getStatus() == 0) {
-            return phone + ":" + "验证码" + "发送成功！";
+            redisTemplate.opsForValue().set(phone, code, 15, TimeUnit.MINUTES);
+            return ServerResponse.createBySuccessMessage(phone + " 发送成功！");
         }
-        return "发送失败";
+        return ServerResponse.createByErrorMessage("发送失败");
     }
+
 
 }

@@ -12,8 +12,9 @@ import java.util.List;
 
 public interface UserService {
 
-    ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode);
-    ServerResponse<HashMap<String,Object>> login(User user, HttpSession session);
+    ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode, String phoneNo);
+
+    ServerResponse<HashMap<String, Object>> login(User user, HttpSession session);
     int add(User user);
     ServerResponse<String> delete(User user);
     ServerResponse<String> modify(User user);
