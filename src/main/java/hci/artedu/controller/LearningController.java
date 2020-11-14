@@ -25,13 +25,13 @@ public class LearningController {
 
 
     @PostMapping("/startLearning")
-    public ServerResponse<String> startLearning(int userId) {
+    public ServerResponse<String> startLearning(Integer userId) {
         ServerResponse<String> response =  learningService.startLearning(userId);
         return response;
     }
 
     @PostMapping("/finishLearning")
-    public ServerResponse<String> finishLearning(int id) {
+    public ServerResponse<String> finishLearning(Integer id) {
         ServerResponse<String> response =  learningService.finishLearning(id);
         return response;
     }
