@@ -1195,6 +1195,43 @@ public class EptServiceImpl implements EptService {
 
     @Override
     public ServerResponse<HashMap<String, Object>> getRank(int userId, int id) {
+        EptRecord eptRecord = eptrecordMapper.selectByPrimaryKey(id);
+        User user = userMapper.selectByPrimaryKey(userId);
+        int className = user.getClassName();
+        int eptId = eptRecord.getEptId();
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andClassNameEqualTo(className);
+        List<User> userList = userMapper.selectByExample(userExample);
+
+        int classSum = userList.size();
+        long time = eptRecord.getDurTime();
+        Date startTime = eptRecord.getStartTime();
+        Date endTime = eptRecord.getEndTime();
+        int[] score = new int[classSum];
+        int i = 0;
+        for (User u:
+             userList) {
+            score[i] = 0;
+            UserprocessExample userprocessExample = new UserprocessExample();
+            UserprocessExample.Criteria criteria1 = userprocessExample.createCriteria();
+            criteria1.andUserIdEqualTo(u.getId());
+            List<Userprocess> userProcessList = userprocessMapper.selectByExample(userprocessExample);
+            for (Userprocess p: userProcessList ) {
+                if(p.getStageNum() > score[i]){
+                    score[i] = p.getStageNum();
+                }
+            }
+        }
+//        int rank;
+//        for ( int j = 0; j < classSum;j++){
+//            if(score[j] == eptRecord)
+//        }
+        HashMap<String,Object> res =new HashMap<>();
+        res.put("Time",time);
+        res.put("startTime", startTime);
+        res.put("endTime",endTime);
+//        return ServerResponse.createBySuccess("获取成功",res);
         return null;
     }
 
@@ -1392,7 +1429,16 @@ public class EptServiceImpl implements EptService {
         }
     }
 
-    //
+    //TODO 这个界面主要是下面这两个评分，上面是教师评分，教师可以调节，下面这个学习过程得分是网站直接给出的，
+    // 逻辑是学习过程的100分=实验平均得分（未参加的实验不计入成绩）*60%+实验时长（大于1h得满分，0.5h-1h得60分，
+    // 0.5小时以下30分）*20%+学习时长（大于1h得满分，0.5h-1h得60分，0.5小时以下30分）*20%，
+    // 原来的界面可能容易被误解成两项都是教师评分，所以可能还需要再改一下
+
+    //通关率
+
+    //实验练习结果 rank
+
+    //实验数据 参与人数 参与时长
 
 
 }
