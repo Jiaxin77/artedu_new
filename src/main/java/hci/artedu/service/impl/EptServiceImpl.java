@@ -530,82 +530,168 @@ public class EptServiceImpl implements EptService {
          * @Author Leaf
          * @Date 2020/11/13 10:16 上午
          **/
-        UserExample example = new UserExample();
-        UserExample.Criteria criteria = example.createCriteria();
+//        UserExample example = new UserExample();
+//        UserExample.Criteria criteria = example.createCriteria();
+//        criteria.andUserTypeEqualTo(0);
+//        criteria.andUserAttitudeIsNotNull();
+//        criteria.andLevelOfMasteryIsNotNull();
+//        int averageLike = 0;
+//        int averageNormal = 0;
+//        int averageDislike = 0;
+//        List<User> uList = userMapper.selectByExample(example);
+//        for (User u : uList) {
+//            if (u.getUserAttitude() == 0) {
+//                averageLike++;
+//            } else if (u.getUserAttitude() == 1) {
+//                averageNormal++;
+//            } else if (u.getUserAttitude() == 2) {
+//                averageDislike++;
+//            }
+//        }
+//        HashMap<String, Object> averInfo = new HashMap<String, Object>();
+//        averInfo.put("averageLike", averageLike);
+//        averInfo.put("averageNormal", averageNormal);
+//        averInfo.put("averageDislike", averageDislike);
+//
+//        UserExample example1 = new UserExample();
+//        UserExample.Criteria criteria1 = example1.createCriteria();
+//        criteria1.andUserTypeEqualTo(0);
+//        criteria1.andUserAttitudeIsNotNull();
+//        criteria1.andLevelOfMasteryIsNotNull();
+//        criteria1.andUserGenderEqualTo(Boolean.TRUE);
+//        int maleLike = 0;
+//        int maleNormal = 0;
+//        int maleDislike = 0;
+//        List<User> uList1 = userMapper.selectByExample(example1);
+//        for (User u : uList1) {
+//            if (u.getUserAttitude() == 0) {
+//                maleLike++;
+//            } else if (u.getUserAttitude() == 1) {
+//                maleNormal++;
+//            } else if (u.getUserAttitude() == 2) {
+//                maleDislike++;
+//            }
+//        }
+//        HashMap<String, Object> maleInfo = new HashMap<String, Object>();
+//        maleInfo.put("maleLike", maleLike);
+//        maleInfo.put("maleNormal", maleNormal);
+//        maleInfo.put("maleDislike", maleDislike);
+//
+//        UserExample example2 = new UserExample();
+//        UserExample.Criteria criteria2 = example2.createCriteria();
+//        criteria2.andUserTypeEqualTo(0);
+//        criteria2.andUserAttitudeIsNotNull();
+//        criteria2.andLevelOfMasteryIsNotNull();
+//        criteria2.andUserGenderEqualTo(Boolean.FALSE);
+//        int femaleLike = 0;
+//        int femaleNormal = 0;
+//        int femaleDislike = 0;
+//        List<User> uList2 = userMapper.selectByExample(example2);
+//        for (User u : uList2) {
+//            if (u.getUserAttitude() == 0) {
+//                femaleLike++;
+//            } else if (u.getUserAttitude() == 1) {
+//                femaleNormal++;
+//            } else if (u.getUserAttitude() == 2) {
+//                femaleDislike++;
+//            }
+//        }
+//        HashMap<String, Object> femaleInfo = new HashMap<String, Object>();
+//        femaleInfo.put("femaleLike", femaleLike);
+//        femaleInfo.put("femaleNormal", femaleNormal);
+//        femaleInfo.put("femaleDislike", femaleDislike);
+//
+//        HashMap<String, Object> res = new HashMap<>();
+//        res.put("aver", averInfo);
+//        res.put("male", maleInfo);
+//        res.put("female", femaleInfo);
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
         criteria.andUserTypeEqualTo(0);
         criteria.andUserAttitudeIsNotNull();
         criteria.andLevelOfMasteryIsNotNull();
-        int averageLike = 0;
-        int averageNormal = 0;
-        int averageDislike = 0;
-        List<User> uList = userMapper.selectByExample(example);
-        for (User u : uList) {
-            if (u.getUserAttitude() == 0) {
-                averageLike++;
-            } else if (u.getUserAttitude() == 1) {
-                averageNormal++;
-            } else if (u.getUserAttitude() == 2) {
-                averageDislike++;
+        double male = 0, female = 0, maleMastery0 = 0, maleMastery1 = 0, maleMastery2 = 0, femaleMastery0 = 0,
+                femaleMastery1 = 0, femaleMastery2 = 0, maleAttitude0 = 0, maleAttitude1 = 0,
+                maleAttitude2 = 0, femaleAttitude0 = 0, femaleAttitude1 = 0, femaleAttitude2 = 0, averAttitude0 = 0,
+                averAttitude1 = 0, averAttitude2 = 0, averMastery0 = 0, averMastery1 = 0, averMastery2 = 0;
+        List<User> userList = userMapper.selectByExample(userExample);
+        for (User u :
+                userList) {
+            if (u.getUserGender() == Boolean.TRUE) {
+                male += 1;
+                if (u.getUserAttitude() == 0) {
+                    maleAttitude0 += 1;
+                }
+                if (u.getUserAttitude() == 1) {
+                    maleAttitude1 += 1;
+                }
+                if (u.getUserAttitude() == 2) {
+                    maleAttitude2 += 1;
+                }
+                if (u.getLevelOfMastery() == 0) {
+                    maleMastery0 += 1;
+                }
+                if (u.getLevelOfMastery() == 1) {
+                    maleMastery1 += 1;
+                }
+                if (u.getLevelOfMastery() == 2) {
+                    maleMastery2 += 1;
+                }
+            } else if (u.getUserGender() == Boolean.FALSE) {
+                female += 1;
+                if (u.getUserAttitude() == 0) {
+                    femaleAttitude0 += 1;
+                }
+                if (u.getUserAttitude() == 1) {
+                    femaleAttitude1 += 1;
+                }
+                if (u.getUserAttitude() == 2) {
+                    femaleAttitude2 += 1;
+                }
+                if (u.getLevelOfMastery() == 0) {
+                    femaleMastery0 += 1;
+                }
+                if (u.getLevelOfMastery() == 1) {
+                    femaleMastery1 += 1;
+                }
+                if (u.getLevelOfMastery() == 2) {
+                    femaleMastery2 += 1;
+                }
             }
         }
-        HashMap<String, Object> averInfo = new HashMap<String, Object>();
-        averInfo.put("averageLike", averageLike);
-        averInfo.put("averageNormal", averageNormal);
-        averInfo.put("averageDislike", averageDislike);
+        double malePercent = male / userList.size();
+        double femalePercent = female / userList.size();
+        averAttitude0 = maleAttitude0 * malePercent + femaleAttitude0 * femalePercent;
+        averAttitude1 = maleAttitude1 * malePercent + femaleAttitude1 * femalePercent;
+        averAttitude2 = maleAttitude2 * malePercent + femaleAttitude2 * femalePercent;
+        averMastery0 = maleMastery0 * malePercent + femaleMastery0 * femalePercent;
+        averMastery1 = maleMastery1 * malePercent + femaleMastery1 * femalePercent;
+        averMastery2 = maleMastery2 * malePercent + femaleMastery2 * femalePercent;
+        HashMap<String, Object> AttitudeMap = new HashMap<>();
+        AttitudeMap.put("女生喜欢", femaleAttitude0);
+        AttitudeMap.put("女生一般", femaleAttitude1);
+        AttitudeMap.put("女生抵触", femaleAttitude2);
+        AttitudeMap.put("男生喜欢", maleAttitude0);
+        AttitudeMap.put("男生一般", maleAttitude1);
+        AttitudeMap.put("男生抵触", maleAttitude2);
+        AttitudeMap.put("平均喜欢", averAttitude0);
+        AttitudeMap.put("平均一般", averAttitude1);
+        AttitudeMap.put("平均抵触", averAttitude2);
 
-        UserExample example1 = new UserExample();
-        UserExample.Criteria criteria1 = example1.createCriteria();
-        criteria1.andUserTypeEqualTo(0);
-        criteria1.andUserAttitudeIsNotNull();
-        criteria1.andLevelOfMasteryIsNotNull();
-        criteria1.andUserGenderEqualTo(Boolean.TRUE);
-        int maleLike = 0;
-        int maleNormal = 0;
-        int maleDislike = 0;
-        List<User> uList1 = userMapper.selectByExample(example1);
-        for (User u : uList1) {
-            if (u.getUserAttitude() == 0) {
-                maleLike++;
-            } else if (u.getUserAttitude() == 1) {
-                maleNormal++;
-            } else if (u.getUserAttitude() == 2) {
-                maleDislike++;
-            }
-        }
-        HashMap<String, Object> maleInfo = new HashMap<String, Object>();
-        maleInfo.put("maleLike", maleLike);
-        maleInfo.put("maleNormal", maleNormal);
-        maleInfo.put("maleDislike", maleDislike);
+        HashMap<String, Object> MasteryMap = new HashMap<String, Object>();
+        MasteryMap.put("女生从未学过", femaleMastery0);
+        MasteryMap.put("女生学习1-3年", femaleMastery1);
+        MasteryMap.put("女生学习3年以上", femaleMastery2);
+        MasteryMap.put("男生从未学过", maleMastery0);
+        MasteryMap.put("男生学习1-3年", maleMastery1);
+        MasteryMap.put("男生学习3年以上", maleMastery2);
+        MasteryMap.put("平均从未学过", averMastery0);
+        MasteryMap.put("平均学习1-3年", averMastery1);
+        MasteryMap.put("平均学习3年以上", averMastery2);
 
-        UserExample example2 = new UserExample();
-        UserExample.Criteria criteria2 = example2.createCriteria();
-        criteria2.andUserTypeEqualTo(0);
-        criteria2.andUserAttitudeIsNotNull();
-        criteria2.andLevelOfMasteryIsNotNull();
-        criteria2.andUserGenderEqualTo(Boolean.FALSE);
-        int femaleLike = 0;
-        int femaleNormal = 0;
-        int femaleDislike = 0;
-        List<User> uList2 = userMapper.selectByExample(example2);
-        for (User u : uList2) {
-            if (u.getUserAttitude() == 0) {
-                femaleLike++;
-            } else if (u.getUserAttitude() == 1) {
-                femaleNormal++;
-            } else if (u.getUserAttitude() == 2) {
-                femaleDislike++;
-            }
-        }
-        HashMap<String, Object> femaleInfo = new HashMap<String, Object>();
-        femaleInfo.put("femaleLike", femaleLike);
-        femaleInfo.put("femaleNormal", femaleNormal);
-        femaleInfo.put("femaleDislike", femaleDislike);
-
-        HashMap<String, Object> res = new HashMap<>();
-        res.put("aver", averInfo);
-        res.put("male", maleInfo);
-        res.put("female", femaleInfo);
-
+        HashMap<String, Object> res =new HashMap<>();
+        res.put("attitudeMap",AttitudeMap);
+        res.put("MastertMap",MasteryMap);
         return ServerResponse.createBySuccess("获取成功", res);
     }
 
