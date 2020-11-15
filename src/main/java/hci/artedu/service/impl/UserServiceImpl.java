@@ -171,7 +171,13 @@ public class UserServiceImpl implements UserService {
         return ServerResponse.createBySuccess("获取成功",userList);
 
     }
+    public ServerResponse<User> getUser(int id)
+    {
 
+        User user = userMapper.selectByPrimaryKey(id);
+        return ServerResponse.createBySuccess("获取成功",user);
+
+    }
 
     @Override
     public User findUserById(int id)

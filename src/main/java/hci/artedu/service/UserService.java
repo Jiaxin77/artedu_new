@@ -19,6 +19,7 @@ public interface UserService {
     ServerResponse<String> delete(User user);
     ServerResponse<String> modify(User user);
     ServerResponse<List<User>> getAllUser();
+    ServerResponse<User> getUser(int id);
     User findUserById(int id);
     ServerResponse<String> logout(int uid, HttpSession session);
     int insertLoginLog(int uid);

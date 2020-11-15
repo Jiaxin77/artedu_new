@@ -66,6 +66,12 @@ public class UserController {
         return userService.getAllUser();
     }
 
+    @GetMapping("/getUser")
+    public ServerResponse<User> getUser(Integer id)
+    {
+        return userService.getUser(id);
+    }
+
     @PostMapping("/logout")
     public ServerResponse<String> logout(int uid,HttpSession session)
     {
