@@ -667,31 +667,62 @@ public class EptServiceImpl implements EptService {
         averMastery0 = maleMastery0 * malePercent + femaleMastery0 * femalePercent;
         averMastery1 = maleMastery1 * malePercent + femaleMastery1 * femalePercent;
         averMastery2 = maleMastery2 * malePercent + femaleMastery2 * femalePercent;
-        HashMap<String, Object> AttitudeMap = new HashMap<>();
-        AttitudeMap.put("女生喜欢", femaleAttitude0);
-        AttitudeMap.put("女生一般", femaleAttitude1);
-        AttitudeMap.put("女生抵触", femaleAttitude2);
-        AttitudeMap.put("男生喜欢", maleAttitude0);
-        AttitudeMap.put("男生一般", maleAttitude1);
-        AttitudeMap.put("男生抵触", maleAttitude2);
-        AttitudeMap.put("平均喜欢", averAttitude0);
-        AttitudeMap.put("平均一般", averAttitude1);
-        AttitudeMap.put("平均抵触", averAttitude2);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("like","喜欢");
+        map.put("女生",femaleAttitude0);
+        map.put("男生",maleAttitude0);
+        map.put("平均",averAttitude0);
 
-        HashMap<String, Object> MasteryMap = new HashMap<String, Object>();
-        MasteryMap.put("女生从未学过", femaleMastery0);
-        MasteryMap.put("女生学习1-3年", femaleMastery1);
-        MasteryMap.put("女生学习3年以上", femaleMastery2);
-        MasteryMap.put("男生从未学过", maleMastery0);
-        MasteryMap.put("男生学习1-3年", maleMastery1);
-        MasteryMap.put("男生学习3年以上", maleMastery2);
-        MasteryMap.put("平均从未学过", averMastery0);
-        MasteryMap.put("平均学习1-3年", averMastery1);
-        MasteryMap.put("平均学习3年以上", averMastery2);
+        HashMap<String, Object> map1 = new HashMap<>();
+        map1.put("like","一般");
+        map1.put("女生",femaleAttitude1);
+        map1.put("男生",maleAttitude1);
+        map1.put("平均",averAttitude1);
 
-        HashMap<String, Object> res =new HashMap<>();
-        res.put("attitudeMap",AttitudeMap);
-        res.put("MastertMap",MasteryMap);
+        HashMap<String, Object> map2 = new HashMap<>();
+        map2.put("like","抵触");
+        map2.put("女生",femaleAttitude2);
+        map2.put("男生",maleAttitude2);
+        map2.put("平均",averAttitude2);
+
+        HashMap<String, Object> map3 = new HashMap<>();
+        map3.put("mastery","从未学过");
+        map3.put("女生",femaleMastery0);
+        map3.put("男生",maleMastery0);
+        map3.put("平均",averMastery0);
+
+        HashMap<String, Object> map4 = new HashMap<>();
+        map4.put("mastery","学习1-3年");
+        map4.put("女生",femaleMastery1);
+        map4.put("男生",maleMastery1);
+        map4.put("平均",averMastery1);
+
+        HashMap<String, Object> map5 = new HashMap<>();
+        map5.put("mastery","学习3年以上");
+        map5.put("女生",femaleMastery2);
+        map5.put("男生",maleMastery2);
+        map5.put("平均",averMastery2);
+        String[] dim = {"like","女生","男生","平均"};
+        HashMap<String,Object> like =new HashMap<>();
+        List<Map> like1 = new ArrayList<>();
+        like1.add(map);
+        like1.add(map1);
+        like1.add(map2);
+        like.put("demensions",dim);
+        like.put("source",like1);
+
+        String[] dim1 = {"mastery","女生","男生","平均"};
+        HashMap<String,Object> mastery =new HashMap<>();
+        List<Map> mastery1 = new ArrayList<>();
+        mastery1.add(map3);
+        mastery1.add(map4);
+        mastery1.add(map5);
+        mastery.put("dimensions",dim1);
+        mastery.put("source",mastery1);
+
+        HashMap<String,Object> res =new HashMap<>();
+        res.put("like",like);
+        res.put("mastery",mastery);
         return ServerResponse.createBySuccess("获取成功", res);
     }
 
@@ -843,19 +874,40 @@ public class EptServiceImpl implements EptService {
             pointTime.put("point" + i, temp1[i]);
         }
         HashMap<String, Object> res = new HashMap<>();
-        res.put("eptTimeMin", eptTimeMin);
-        res.put("eptTimeMax", eptTimeMax);
-        res.put("eptTimeAver", eptTimeAver);
-        res.put("learningTimeMin", learningTimeMin);
-        res.put("learningTimeMax", learningTimeMax);
-        res.put("learningTimeAver", learningTimeAver);
-        res.put("onlineTimeMin", onlineTimeMin);
-        res.put("onlineTimeMax", onlineTimeMax);
-        res.put("onlineTimeAver", onlineTimeAver);
+//        res.put("eptTimeMin", eptTimeMin);
+//        res.put("eptTimeMax", eptTimeMax);
+//        res.put("eptTimeAver", eptTimeAver);
+//        res.put("learningTimeMin", learningTimeMin);
+//        res.put("learningTimeMax", learningTimeMax);
+//        res.put("learningTimeAver", learningTimeAver);
+//        res.put("onlineTimeMin", onlineTimeMin);
+//        res.put("onlineTimeMax", onlineTimeMax);
+//        res.put("onlineTimeAver", onlineTimeAver);
+        HashMap<String, Object> radarData = new HashMap<>();
+        String[] latitude = {"平均","最低","最高"};
+        radarData.put("latitude",latitude);
+        ArrayList<ArrayList> values = new ArrayList<>();
+        ArrayList ept = new ArrayList();
+        ept.add(eptTimeAver);
+        ept.add(eptTimeMin);
+        ept.add(eptTimeMax);
+        ArrayList online = new ArrayList();
+        online.add(onlineTimeAver);
+        online.add(onlineTimeMin);
+        online.add(onlineTimeMax);
+        ArrayList learn = new ArrayList();
+        learn.add(learningTimeAver);
+        learn.add(learningTimeMin);
+        learn.add(learningTimeMax);
+        values.add(ept);
+        values.add(online);
+        values.add(learn);
+        radarData.put("values",values);
         res.put("studentInfo", studentInfo);
         res.put("eptTime", eptTime);
         res.put("pointTime", pointTime);
         res.put("stepPercent",stepPercent);
+        res.put("radarData",radarData);
         return ServerResponse.createBySuccess("获取成功", res);
 
     }
