@@ -24,11 +24,11 @@ public class EqtController {
     private EqtService eqtService;
 
     @GetMapping("/getReserveApply")
-    public ServerResponse<ArrayList<Object>> getEqtNum() {
+    public ServerResponse<ArrayList<Object>> getReserveApply() {
         /**
          * TODO
          * @return hci.artedu.common.ServerResponse<java.util.ArrayList>
-         * @Description 获取设备数量
+         * @Description 获取设备租借申请的相关信息
          * @Author Leaf
          * @Date 2020/11/4 4:28 下午
          **/
@@ -80,7 +80,7 @@ public class EqtController {
         /**
          * TODO
          * @return hci.artedu.common.ServerResponse<java.lang.String>
-         * @Description 提交设备预约申请
+         * @Description 获取目前已有设备数量
          * @Author Leaf
          * @Date 2020/11/4 6:49 下午
          **/
