@@ -728,7 +728,7 @@ public class EptServiceImpl implements EptService {
     }
 
     @Override
-    public ServerResponse<HashMap<String, Object>> getStudentInfo(String studentName) {
+    public ServerResponse<HashMap<String, Object>> getStudentInfo(int userNumber) {
         /**
          * TODO
          * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
@@ -739,8 +739,11 @@ public class EptServiceImpl implements EptService {
 
         UserExample example = new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
-        criteria.andUserNameEqualTo(studentName);
+        criteria.andUserNumberEqualTo(userNumber);
         List<User> userList = userMapper.selectByExample(example);
+        if (userList.size()==0){
+            return  ServerResponse.createByErrorMessage("查无此人");
+        }
         User user = userList.get(0);
         //实验时长
         long eptTimeMin = Long.MAX_VALUE;
@@ -832,6 +835,7 @@ public class EptServiceImpl implements EptService {
         }
 
         HashMap<String, Object> studentInfo = new HashMap<>();//基本信息
+        studentInfo.put("userName", user.getUserName());
         studentInfo.put("userGender", user.getUserGender());
         studentInfo.put("userEmail", user.getUserEmail());
         studentInfo.put("schoolName", user.getSchoolName());
@@ -860,30 +864,24 @@ public class EptServiceImpl implements EptService {
             }
             eptTime.put("ept" + i, temp[i]);
         }
-        HashMap<String, Object> pointTime = new HashMap<>();//知识点时长 存在问题 现在就一个知识点
-        PointrecordExample pointrecordExample = new PointrecordExample();
-        PointrecordExample.Criteria criteria5 = pointrecordExample.createCriteria();
-        criteria5.andUserIdEqualTo(user.getId());
-        List<Pointrecord> pointrecordList = pointrecordMapper.selectByExample(pointrecordExample);
-        long[] temp1 = new long[6];
-        for (int i = 0; i < 6; i++) {
-            for (Pointrecord p : pointrecordList) {
-                if (p.getPointId() == i) {
-                    temp[i] += p.getCompleteTime().getTime();
-                }
-            }
-            pointTime.put("point" + i, temp1[i]);
-        }
+
+//
+//        HashMap<String, Object> pointTime = new HashMap<>();//知识点时长 存在问题 现在就一个知识点
+//        PointrecordExample pointrecordExample = new PointrecordExample();
+//        PointrecordExample.Criteria criteria5 = pointrecordExample.createCriteria();
+//        criteria5.andUserIdEqualTo(user.getId());
+//        List<Pointrecord> pointrecordList = pointrecordMapper.selectByExample(pointrecordExample);
+//        long[] temp1 = new long[6];
+//        for (int i = 0; i < 6; i++) {
+//            for (Pointrecord p : pointrecordList) {
+//                if (p.getPointId() == i) {
+//                    temp[i] += p.getCompleteTime().getTime();
+//                }
+//            }
+//            pointTime.put("point" + i, temp1[i]);
+//        }
         HashMap<String, Object> res = new HashMap<>();
-//        res.put("eptTimeMin", eptTimeMin);
-//        res.put("eptTimeMax", eptTimeMax);
-//        res.put("eptTimeAver", eptTimeAver);
-//        res.put("learningTimeMin", learningTimeMin);
-//        res.put("learningTimeMax", learningTimeMax);
-//        res.put("learningTimeAver", learningTimeAver);
-//        res.put("onlineTimeMin", onlineTimeMin);
-//        res.put("onlineTimeMax", onlineTimeMax);
-//        res.put("onlineTimeAver", onlineTimeAver);
+
         HashMap<String, Object> radarData = new HashMap<>();
         String[] latitude = {"平均","最低","最高"};
         radarData.put("latitude",latitude);
@@ -906,9 +904,12 @@ public class EptServiceImpl implements EptService {
         radarData.put("values",values);
         res.put("studentInfo", studentInfo);
         res.put("eptTime", eptTime);
-        res.put("pointTime", pointTime);
+//        res.put("pointTime", );
         res.put("stepPercent",stepPercent);
         res.put("radarData",radarData);
+        res.put("eptTimeSum",eptTimeSum);
+        res.put("learningTimeSum",learningTimeSum);
+        res.put("onlineTimeSum",onlineTimeSum);
         return ServerResponse.createBySuccess("获取成功", res);
 
     }
@@ -924,175 +925,180 @@ public class EptServiceImpl implements EptService {
                 maleAttitude2 = 0, femaleAttitude0 = 0, femaleAttitude1 = 0, femaleAttitude2 = 0, averAttitude0 = 0,
                 averAttitude1 = 0, averAttitude2 = 0, averMastery0 = 0, averMastery1 = 0, averMastery2 = 0;
         List<User> userList = userMapper.selectByExample(userExample);
-        for (User u :
-                userList) {
-            if (u.getUserGender() == Boolean.TRUE) {
-                male += 1;
-                if (u.getUserAttitude() == 0) {
-                    maleAttitude0 += 1;
-                }
-                if (u.getUserAttitude() == 1) {
-                    maleAttitude1 += 1;
-                }
-                if (u.getUserAttitude() == 2) {
-                    maleAttitude2 += 1;
-                }
-                if (u.getLevelOfMastery() == 0) {
-                    maleMastery0 += 1;
-                }
-                if (u.getLevelOfMastery() == 1) {
-                    maleMastery1 += 1;
-                }
-                if (u.getLevelOfMastery() == 2) {
-                    maleMastery2 += 1;
-                }
-            } else if (u.getUserGender() == Boolean.FALSE) {
-                female += 1;
-                if (u.getUserAttitude() == 0) {
-                    femaleAttitude0 += 1;
-                }
-                if (u.getUserAttitude() == 1) {
-                    femaleAttitude1 += 1;
-                }
-                if (u.getUserAttitude() == 2) {
-                    femaleAttitude2 += 1;
-                }
-                if (u.getLevelOfMastery() == 0) {
-                    femaleMastery0 += 1;
-                }
-                if (u.getLevelOfMastery() == 1) {
-                    femaleMastery1 += 1;
-                }
-                if (u.getLevelOfMastery() == 2) {
-                    femaleMastery2 += 1;
+        if (userList.size()==0){
+            ServerResponse.createByErrorMessage("没有查询结果");
+        }
+        else{
+            for (User u :userList) {
+                if (u.getUserGender() == Boolean.TRUE) {
+                    male += 1;
+                    if (u.getUserAttitude() == 0) {
+                        maleAttitude0 += 1;
+                    }
+                    if (u.getUserAttitude() == 1) {
+                        maleAttitude1 += 1;
+                    }
+                    if (u.getUserAttitude() == 2) {
+                        maleAttitude2 += 1;
+                    }
+                    if (u.getLevelOfMastery() == 0) {
+                        maleMastery0 += 1;
+                    }
+                    if (u.getLevelOfMastery() == 1) {
+                        maleMastery1 += 1;
+                    }
+                    if (u.getLevelOfMastery() == 2) {
+                        maleMastery2 += 1;
+                    }
+                } else if (u.getUserGender() == Boolean.FALSE) {
+                    female += 1;
+                    if (u.getUserAttitude() == 0) {
+                        femaleAttitude0 += 1;
+                    }
+                    if (u.getUserAttitude() == 1) {
+                        femaleAttitude1 += 1;
+                    }
+                    if (u.getUserAttitude() == 2) {
+                        femaleAttitude2 += 1;
+                    }
+                    if (u.getLevelOfMastery() == 0) {
+                        femaleMastery0 += 1;
+                    }
+                    if (u.getLevelOfMastery() == 1) {
+                        femaleMastery1 += 1;
+                    }
+                    if (u.getLevelOfMastery() == 2) {
+                        femaleMastery2 += 1;
+                    }
                 }
             }
-        }
-        double malePercent = male / userList.size();
-        double femalePercent = female / userList.size();
-        averAttitude0 = maleAttitude0 * malePercent + femaleAttitude0 * femalePercent;
-        averAttitude1 = maleAttitude1 * malePercent + femaleAttitude1 * femalePercent;
-        averAttitude2 = maleAttitude2 * malePercent + femaleAttitude2 * femalePercent;
-        averMastery0 = maleMastery0 * malePercent + femaleMastery0 * femalePercent;
-        averMastery1 = maleMastery1 * malePercent + femaleMastery1 * femalePercent;
-        averMastery2 = maleMastery2 * malePercent + femaleMastery2 * femalePercent;
-        HashMap<String, Object> AttitudeMap = new HashMap<>();
-        AttitudeMap.put("女生喜欢", femaleAttitude0);
-        AttitudeMap.put("女生一般", femaleAttitude1);
-        AttitudeMap.put("女生抵触", femaleAttitude2);
-        AttitudeMap.put("男生喜欢", maleAttitude0);
-        AttitudeMap.put("男生一般", maleAttitude1);
-        AttitudeMap.put("男生抵触", maleAttitude2);
-        AttitudeMap.put("平均喜欢", averAttitude0);
-        AttitudeMap.put("平均一般", averAttitude1);
-        AttitudeMap.put("平均抵触", averAttitude2);
+            double malePercent = male / userList.size();
+            double femalePercent = female / userList.size();
+            averAttitude0 = maleAttitude0 * malePercent + femaleAttitude0 * femalePercent;
+            averAttitude1 = maleAttitude1 * malePercent + femaleAttitude1 * femalePercent;
+            averAttitude2 = maleAttitude2 * malePercent + femaleAttitude2 * femalePercent;
+            averMastery0 = maleMastery0 * malePercent + femaleMastery0 * femalePercent;
+            averMastery1 = maleMastery1 * malePercent + femaleMastery1 * femalePercent;
+            averMastery2 = maleMastery2 * malePercent + femaleMastery2 * femalePercent;
+            HashMap<String, Object> AttitudeMap = new HashMap<>();
+            AttitudeMap.put("女生喜欢", femaleAttitude0);
+            AttitudeMap.put("女生一般", femaleAttitude1);
+            AttitudeMap.put("女生抵触", femaleAttitude2);
+            AttitudeMap.put("男生喜欢", maleAttitude0);
+            AttitudeMap.put("男生一般", maleAttitude1);
+            AttitudeMap.put("男生抵触", maleAttitude2);
+            AttitudeMap.put("平均喜欢", averAttitude0);
+            AttitudeMap.put("平均一般", averAttitude1);
+            AttitudeMap.put("平均抵触", averAttitude2);
 
-        HashMap<String, Object> MasteryMap = new HashMap<String, Object>();
-        MasteryMap.put("女生从未学过", femaleMastery0);
-        MasteryMap.put("女生学习1-3年", femaleMastery1);
-        MasteryMap.put("女生学习3年以上", femaleMastery2);
-        MasteryMap.put("男生从未学过", maleMastery0);
-        MasteryMap.put("男生学习1-3年", maleMastery1);
-        MasteryMap.put("男生学习3年以上", maleMastery2);
-        MasteryMap.put("平均从未学过", averMastery0);
-        MasteryMap.put("平均学习1-3年", averMastery1);
-        MasteryMap.put("平均学习3年以上", averMastery2);
-        //实验时长
-        long eptTimeMin = Long.MAX_VALUE;
-        long eptTimeMax = 0;
-        long eptTimeAver;
-        int eptCount = 0;
-        long eptTimeSum = 0;
-        for (User u : userList) {
-            EptRecordExample eptRecordExample = new EptRecordExample();
-            EptRecordExample.Criteria criteria1 = eptRecordExample.createCriteria();
-            criteria1.andUseridEqualTo(u.getId());
-            List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);
-            eptCount += eptRecordList.size();
+            HashMap<String, Object> MasteryMap = new HashMap<String, Object>();
+            MasteryMap.put("女生从未学过", femaleMastery0);
+            MasteryMap.put("女生学习1-3年", femaleMastery1);
+            MasteryMap.put("女生学习3年以上", femaleMastery2);
+            MasteryMap.put("男生从未学过", maleMastery0);
+            MasteryMap.put("男生学习1-3年", maleMastery1);
+            MasteryMap.put("男生学习3年以上", maleMastery2);
+            MasteryMap.put("平均从未学过", averMastery0);
+            MasteryMap.put("平均学习1-3年", averMastery1);
+            MasteryMap.put("平均学习3年以上", averMastery2);
+            //实验时长
+            long eptTimeMin = Long.MAX_VALUE;
+            long eptTimeMax = 0;
+            long eptTimeAver;
+            int eptCount = 0;
+            long eptTimeSum = 0;
+            for (User u : userList) {
+                EptRecordExample eptRecordExample = new EptRecordExample();
+                EptRecordExample.Criteria criteria1 = eptRecordExample.createCriteria();
+                criteria1.andUseridEqualTo(u.getId());
+                List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);
+                eptCount += eptRecordList.size();
 
-            for (EptRecord e : eptRecordList) {
-                eptTimeSum += e.getDurTime();
-                if (e.getDurTime() > eptTimeMax) {
-                    eptTimeMax = e.getDurTime();
-                }
-                if (e.getDurTime() < eptTimeMin) {
-                    eptTimeMin = e.getDurTime();
-                }
-            }
-        }
-        eptTimeAver = eptTimeSum / eptCount;
-
-        //学习时长
-        long learningTimeMin = Long.MAX_VALUE;
-        long learningTimeMax = 0;
-        long learningTimeAver;
-        long learningTimeSum = 0;
-        int learningCount = 0;
-        for (User u : userList) {
-            LearningRecordExample learningRecordExample = new LearningRecordExample();
-            LearningRecordExample.Criteria criteria2 = learningRecordExample.createCriteria();
-            criteria2.andUserIdEqualTo(u.getId());
-            List<LearningRecord> learningRecordList = learningRecordMapper.selectByExample(learningRecordExample);
-            learningCount += learningRecordList.size();
-            for (LearningRecord l :
-                    learningRecordList) {
-                learningTimeSum += l.getDuringTime();
-                if (l.getDuringTime() > eptTimeMax) {
-                    learningTimeMax = l.getDuringTime();
-                }
-                if (l.getDuringTime() < eptTimeMin) {
-                    learningTimeMin = l.getDuringTime();
+                for (EptRecord e : eptRecordList) {
+                    eptTimeSum += e.getDurTime();
+                    if (e.getDurTime() > eptTimeMax) {
+                        eptTimeMax = e.getDurTime();
+                    }
+                    if (e.getDurTime() < eptTimeMin) {
+                        eptTimeMin = e.getDurTime();
+                    }
                 }
             }
-        }
-        learningTimeAver = learningTimeSum / learningCount;
+            eptTimeAver = eptTimeSum / eptCount;
 
-        //在线时长
-        long onlineTimeMin = Long.MAX_VALUE;
-        long onlineTimeMax = 0;
-        long onlineTimeAver;
-        long onlineTimeSum = 0;
-        int onlineCount = 0;
-        for (User uu : userList) {
-            UserloginlogExample userloginlogExample = new UserloginlogExample();
-            UserloginlogExample.Criteria criteria3 = userloginlogExample.createCriteria();
-            criteria3.andUserIdEqualTo(uu.getId());
-            List<Userloginlog> userloginlogList = userloginlogMapper.selectByExample(userloginlogExample);
-            onlineCount += userloginlogList.size();
-            for (Userloginlog u :
-                    userloginlogList) {
-                onlineTimeSum += u.getDuringTime();
-                if (u.getDuringTime() > onlineTimeMax) {
-                    onlineTimeMax = u.getDuringTime();
-                }
-                if (u.getDuringTime() < onlineTimeMin) {
-                    onlineTimeMin = u.getDuringTime();
+            //学习时长
+            long learningTimeMin = Long.MAX_VALUE;
+            long learningTimeMax = 0;
+            long learningTimeAver;
+            long learningTimeSum = 0;
+            int learningCount = 0;
+            for (User u : userList) {
+                LearningRecordExample learningRecordExample = new LearningRecordExample();
+                LearningRecordExample.Criteria criteria2 = learningRecordExample.createCriteria();
+                criteria2.andUserIdEqualTo(u.getId());
+                List<LearningRecord> learningRecordList = learningRecordMapper.selectByExample(learningRecordExample);
+                learningCount += learningRecordList.size();
+                for (LearningRecord l :
+                        learningRecordList) {
+                    learningTimeSum += l.getDuringTime();
+                    if (l.getDuringTime() > eptTimeMax) {
+                        learningTimeMax = l.getDuringTime();
+                    }
+                    if (l.getDuringTime() < eptTimeMin) {
+                        learningTimeMin = l.getDuringTime();
+                    }
                 }
             }
+            learningTimeAver = learningTimeSum / learningCount;
+
+            //在线时长
+            long onlineTimeMin = Long.MAX_VALUE;
+            long onlineTimeMax = 0;
+            long onlineTimeAver;
+            long onlineTimeSum = 0;
+            int onlineCount = 0;
+            for (User uu : userList) {
+                UserloginlogExample userloginlogExample = new UserloginlogExample();
+                UserloginlogExample.Criteria criteria3 = userloginlogExample.createCriteria();
+                criteria3.andUserIdEqualTo(uu.getId());
+                List<Userloginlog> userloginlogList = userloginlogMapper.selectByExample(userloginlogExample);
+                onlineCount += userloginlogList.size();
+                for (Userloginlog u :
+                        userloginlogList) {
+                    onlineTimeSum += u.getDuringTime();
+                    if (u.getDuringTime() > onlineTimeMax) {
+                        onlineTimeMax = u.getDuringTime();
+                    }
+                    if (u.getDuringTime() < onlineTimeMin) {
+                        onlineTimeMin = u.getDuringTime();
+                    }
+                }
+            }
+            onlineTimeAver = onlineTimeSum / onlineCount;
+            HashMap<String, Object> timeInfo = new HashMap<>();
+            timeInfo.put("eptTimeMin", eptTimeMin);
+            timeInfo.put("eptTimeMax", eptTimeMax);
+            timeInfo.put("eptTimeAver", eptTimeAver);
+            timeInfo.put("learningTimeMin", learningTimeMin);
+            timeInfo.put("learningTimeMax", learningTimeMax);
+            timeInfo.put("learningTimeAver", learningTimeAver);
+            timeInfo.put("onlineTimeMin", onlineTimeMin);
+            timeInfo.put("onlineTimeMax", onlineTimeMax);
+            timeInfo.put("onlineTimeAver", onlineTimeAver);
+            //实验进度
+
+
+            HashMap<String, Object> res = new HashMap<>();
+            res.put("attitude", AttitudeMap);
+            res.put("Mastery", MasteryMap);
+            res.put("timeInfo", timeInfo);
+            res.put("male", male);
+            res.put("female", female);
+            res.put("malePercent", malePercent);
+            res.put("femalePercent", femalePercent);
+            return ServerResponse.createBySuccess("获取成功", res);
         }
-        onlineTimeAver = onlineTimeSum / onlineCount;
-        HashMap<String, Object> timeInfo = new HashMap<>();
-        timeInfo.put("eptTimeMin", eptTimeMin);
-        timeInfo.put("eptTimeMax", eptTimeMax);
-        timeInfo.put("eptTimeAver", eptTimeAver);
-        timeInfo.put("learningTimeMin", learningTimeMin);
-        timeInfo.put("learningTimeMax", learningTimeMax);
-        timeInfo.put("learningTimeAver", learningTimeAver);
-        timeInfo.put("onlineTimeMin", onlineTimeMin);
-        timeInfo.put("onlineTimeMax", onlineTimeMax);
-        timeInfo.put("onlineTimeAver", onlineTimeAver);
-        //实验进度
-
-
-        HashMap<String, Object> res = new HashMap<>();
-        res.put("attitude", AttitudeMap);
-        res.put("Mastery", MasteryMap);
-        res.put("timeInfo", timeInfo);
-        res.put("male", male);
-        res.put("female", female);
-        res.put("malePercent", malePercent);
-        res.put("femalePercent", femalePercent);
-        return ServerResponse.createBySuccess("获取成功", res);
+        return ServerResponse.createBySuccessMessage("获取成功");
     }
 
     @Override
@@ -1106,6 +1112,9 @@ public class EptServiceImpl implements EptService {
                 maleAttitude2 = 0, femaleAttitude0 = 0, femaleAttitude1 = 0, femaleAttitude2 = 0, averAttitude0 = 0,
                 averAttitude1 = 0, averAttitude2 = 0, averMastery0 = 0, averMastery1 = 0, averMastery2 = 0;
         List<User> userList = userMapper.selectByExample(userExample);
+        if (userList.size()==0){
+            return ServerResponse.createByErrorMessage("没有此学校");
+        }
         for (User u :
                 userList) {
             if (u.getUserGender() == Boolean.TRUE) {
@@ -1441,6 +1450,9 @@ public class EptServiceImpl implements EptService {
         UserExample.Criteria criteria = example.createCriteria();
         criteria.andIdEqualTo(userId);
         List<User> userList = userMapper.selectByExample(example);
+        if(userList.size()==0){
+            return ServerResponse.createByErrorMessage("查无此人");
+        }
         User user = userList.get(0);
         //实验时长
         long eptTimeMin = Long.MAX_VALUE;
@@ -1615,6 +1627,10 @@ public class EptServiceImpl implements EptService {
     //实验练习结果 rank
 
     //实验数据 参与人数 参与时长
+
+    //返回值 错误信息
+
+    //成绩
 
 
 }

@@ -256,7 +256,7 @@ public class EptController {
     }
 
     @PostMapping("/getStudentInfo")
-    public ServerResponse<HashMap<String, Object>> getStudentInfo(String studentName)
+    public ServerResponse<HashMap<String, Object>> getStudentInfo(Integer userNumber)
     {
         /**
          * TODO 用于获取所有学生的喜好度和掌握程度
@@ -265,7 +265,7 @@ public class EptController {
          * @Author Leaf
          * @Date 2020/11/11 4:47 下午
          **/
-        ServerResponse<HashMap<String, Object>> response = eptService.getStudentInfo(studentName);
+        ServerResponse<HashMap<String, Object>> response = eptService.getStudentInfo(userNumber);
         return response;
 
     }

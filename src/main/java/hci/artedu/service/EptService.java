@@ -38,7 +38,7 @@ public interface EptService {
 
     ServerResponse<HashMap<String, Object>> getStudentMasterAttitude();
 
-    ServerResponse<HashMap<String, Object>> getStudentInfo(String studentName);
+    ServerResponse<HashMap<String, Object>> getStudentInfo(int userNumber);
 
 
     ServerResponse<HashMap<String, Object>> getClassInfo(int classNumber);
