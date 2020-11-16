@@ -32,5 +32,10 @@ public class Userprocess implements Serializable {
      */
     private Date completetime;
 
+    /**
+     * 关卡分数
+     */
+    private Integer score;
+
     private static final long serialVersionUID = 1L;
 }
