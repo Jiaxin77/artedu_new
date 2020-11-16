@@ -375,8 +375,8 @@ public class EptController {
 
     }
 
-    @PostMapping("/getScore")
-    public ServerResponse<HashMap<String, Object>> getScore(Integer userId, Integer eptId)
+    @GetMapping("/getScore")
+    public ServerResponse<ArrayList<Object>> getScore(Integer userId)
     {
         /**
          * TODO
@@ -385,7 +385,7 @@ public class EptController {
          * @Author Leaf
          * @Date 2020/11/11 4:52 下午
          **/
-        ServerResponse<HashMap<String, Object>> response = eptService.getScore(userId, eptId);
+        ServerResponse<ArrayList<Object>> response = eptService.getScore(userId);
         return response;
 
     }
@@ -407,9 +407,9 @@ public class EptController {
     }
 
     @PostMapping("/postUserStageNum")
-    public ServerResponse<Boolean> postUserStageNum(Integer userId, Integer eptId, Integer stageNum)
+    public ServerResponse<Boolean> postUserStageNum(Integer userId, Integer eptId, Integer stageNum,Integer score)
     {
-        ServerResponse<Boolean> response = eptService.postUserStageNum(userId, eptId, stageNum);
+        ServerResponse<Boolean> response = eptService.postUserStageNum(userId, eptId, stageNum,score);
         return response;
     }
 

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -1394,8 +1395,44 @@ public class EptServiceImpl implements EptService {
     }
 
     @Override
-    public ServerResponse<HashMap<String, Object>> getScore(int userId, int eptId) {
-        return null;
+    public ServerResponse<ArrayList<Object>> getScore(int userId) {
+       /**
+        * @Author jiaxin
+        * @Description 获取某用户的各实验分数//TODO
+        * @Date 10:35 上午 2020/11/16
+        * @Param [userId]
+        * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
+        **/
+
+       //实验ID列表
+        ExperimentExample eptExample = new ExperimentExample();
+        eptExample.setDistinct(false);
+        List<Experiment> epts = experimentMapper.selectByExample(eptExample);
+        ArrayList<Object> result = new ArrayList<>();
+        for(Experiment ept : epts) {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("eptId", ept.getId());
+            hashMap.put("eptName", ept.getEptName());
+            UserprocessExample userprocessExample = new UserprocessExample();
+            UserprocessExample.Criteria criteria = userprocessExample.createCriteria();
+            criteria.andUserIdEqualTo(userId);
+            criteria.andEptIdEqualTo(ept.getId());
+            List<Userprocess> userprocessList = userprocessMapper.selectByExample(userprocessExample);
+            double avg_score = 0;
+            if(userprocessList.size()!=0)
+            {
+                avg_score = userprocessList.stream().mapToDouble(Userprocess::getScore).average().getAsDouble();
+            }
+            //保留两位小数
+            DecimalFormat df   = new DecimalFormat("######0.00");
+            hashMap.put("eptScore", df.format(avg_score));
+            result.add(hashMap);
+        }
+        return ServerResponse.createBySuccess("获取成功",result);
+
+
+
+
     }
 
     @Override
@@ -1537,7 +1574,7 @@ public class EptServiceImpl implements EptService {
     //用户过了某一关
     @Override
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
-    public ServerResponse<Boolean> postUserStageNum(int userId, int eptId, int stageNum) {
+    public ServerResponse<Boolean> postUserStageNum(int userId, int eptId, int stageNum,int score) {
         /**
          * @Author jiaxin
          * @Description 用户过了某一关//TODO
@@ -1560,6 +1597,7 @@ public class EptServiceImpl implements EptService {
             userprocess.setStageNum(stageNum);
             userprocess.setEptId(eptId);
             userprocess.setUserId(userId);
+            userprocess.setScore(score);
             Timestamp nowTime = DateUtils.nowDateTime();
             userprocess.setCompletetime(nowTime);
             userprocessMapper.insert(userprocess);

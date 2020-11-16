@@ -55,11 +55,11 @@ public interface EptService {
 
     ServerResponse<String> postFeedback(int id, int difficultLevel, int exerciseLevel, int masteryLevel);
 
-    ServerResponse<HashMap<String, Object>> getScore(int userId, int eptId);
+    ServerResponse<ArrayList<Object>> getScore(int userId);
 
     ServerResponse<HashMap<String, Object>> getReport(int userId);
 
     ServerResponse<int[]> getEptProcess(int expId, int userId);
 
-    public ServerResponse postUserStageNum(int userId,int eptId,int stageNum);
+    ServerResponse postUserStageNum(int userId,int eptId,int stageNum,int score);
 }
