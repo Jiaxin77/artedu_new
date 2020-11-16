@@ -8,7 +8,7 @@
     <result column="userEmail" jdbcType="VARCHAR" property="userEmail" />
     <result column="userPassword" jdbcType="VARCHAR" property="userPassword" />
     <result column="userType" jdbcType="INTEGER" property="userType" />
-    <result column="userNumber" jdbcType="VARCHAR" property="userNumber" />
+    <result column="userNumber" jdbcType="INTEGER" property="userNumber" />
     <result column="schoolName" jdbcType="VARCHAR" property="schoolName" />
     <result column="className" jdbcType="INTEGER" property="className" />
     <result column="levelOfMastery" jdbcType="INTEGER" property="levelOfMastery" />
@@ -115,7 +115,7 @@
       userAttitude, userScore, phoneNumber
       )
     values (#{userName,jdbcType=VARCHAR}, #{userGender,jdbcType=BOOLEAN}, #{userEmail,jdbcType=VARCHAR}, 
-      #{userPassword,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{userNumber,jdbcType=VARCHAR}, 
+      #{userPassword,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{userNumber,jdbcType=INTEGER}, 
       #{schoolName,jdbcType=VARCHAR}, #{className,jdbcType=INTEGER}, #{levelOfMastery,jdbcType=INTEGER}, 
       #{userAttitude,jdbcType=INTEGER}, #{userScore,jdbcType=FLOAT}, #{phoneNumber,jdbcType=VARCHAR}
       )
@@ -177,7 +177,7 @@
         #{userType,jdbcType=INTEGER},
       </if>
       <if test="userNumber != null">
-        #{userNumber,jdbcType=VARCHAR},
+        #{userNumber,jdbcType=INTEGER},
       </if>
       <if test="schoolName != null">
         #{schoolName,jdbcType=VARCHAR},
@@ -227,7 +227,7 @@
         userType = #{record.userType,jdbcType=INTEGER},
       </if>
       <if test="record.userNumber != null">
-        userNumber = #{record.userNumber,jdbcType=VARCHAR},
+        userNumber = #{record.userNumber,jdbcType=INTEGER},
       </if>
       <if test="record.schoolName != null">
         schoolName = #{record.schoolName,jdbcType=VARCHAR},
@@ -260,7 +260,7 @@
       userEmail = #{record.userEmail,jdbcType=VARCHAR},
       userPassword = #{record.userPassword,jdbcType=VARCHAR},
       userType = #{record.userType,jdbcType=INTEGER},
-      userNumber = #{record.userNumber,jdbcType=VARCHAR},
+      userNumber = #{record.userNumber,jdbcType=INTEGER},
       schoolName = #{record.schoolName,jdbcType=VARCHAR},
       className = #{record.className,jdbcType=INTEGER},
       levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},
@@ -290,7 +290,7 @@
         userType = #{userType,jdbcType=INTEGER},
       </if>
       <if test="userNumber != null">
-        userNumber = #{userNumber,jdbcType=VARCHAR},
+        userNumber = #{userNumber,jdbcType=INTEGER},
       </if>
       <if test="schoolName != null">
         schoolName = #{schoolName,jdbcType=VARCHAR},
@@ -320,7 +320,7 @@
       userEmail = #{userEmail,jdbcType=VARCHAR},
       userPassword = #{userPassword,jdbcType=VARCHAR},
       userType = #{userType,jdbcType=INTEGER},
-      userNumber = #{userNumber,jdbcType=VARCHAR},
+      userNumber = #{userNumber,jdbcType=INTEGER},
       schoolName = #{schoolName,jdbcType=VARCHAR},
       className = #{className,jdbcType=INTEGER},
       levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},
