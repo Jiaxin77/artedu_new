@@ -37,7 +37,7 @@ public class EqtController {
     }
 
     @PostMapping("/checkApply")
-    public ServerResponse<String> checkApply(int result,String comment) {
+    public ServerResponse<String> checkApply(Integer result,String comment) {
         /**
          * TODO
          * @return hci.artedu.common.ServerResponse<java.lang.String>
@@ -50,7 +50,7 @@ public class EqtController {
     }
 
     @PostMapping("/reserveApply")
-    public ServerResponse<String> reserveApply(int deviceId, Date reverseTime, Double reversePeriod) {
+    public ServerResponse<String> reserveApply(Integer deviceId, Date reverseTime, Double reversePeriod) {
         /**
          * TODO
          * @return hci.artedu.common.ServerResponse<java.lang.String>
@@ -62,7 +62,7 @@ public class EqtController {
         return response;
     }
 
-    @PostMapping("/toolInfo")
+    @GetMapping("/toolInfo")
     public ServerResponse<HashMap<String, Object>> toolInfo(int toolTpye) {
         /**
          * TODO

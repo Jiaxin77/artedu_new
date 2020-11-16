@@ -1,0 +1,1460 @@
+Index: src/main/java/hci/artedu/service/impl/EptServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hci.artedu.service.impl;\n\nimport hci.artedu.common.ServerResponse;\nimport hci.artedu.dao.*;\nimport hci.artedu.pojo.*;\nimport hci.artedu.service.EptService;\nimport hci.artedu.utils.DateUtils;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.data.redis.hash.HashMapper;\nimport org.springframework.stereotype.Service;\nimport org.springframework.transaction.annotation.Propagation;\nimport org.springframework.transaction.annotation.Transactional;\n\nimport java.sql.Timestamp;\nimport java.util.*;\n\n/**\n * @ClassName EptServiceImpl\n * @Description TODO\n * @Author jiaxin\n * @Date 2020/10/27 10:56 上午\n * @Version 1.0\n **/\n@Service\npublic class EptServiceImpl implements EptService {\n\n    @Autowired\n    private ExperimentMapper experimentMapper;\n\n    @Autowired\n    private BigexperimentMapper bigexperimentMapper;\n\n    @Autowired\n    private ExperimentstepMapper experimentstepMapper;\n\n    @Autowired\n    private UserMapper userMapper;\n\n\n    @Autowired\n    private PointExperimentMapper pointExperimentMapper;\n\n    @Autowired\n    private KnowledgepointMapper knowledgepointMapper;\n\n    @Autowired\n    private EptrecordMapper eptrecordMapper;\n\n    @Autowired\n    private  PointrecordMapper pointrecordMapper;\n\n    @Autowired\n    private UserprocessMapper userprocessMapper;\n\n\n\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<ArrayList> getEptList()\n    {\n\n        /***\n         * @Author jiaxin\n         * @Description 获取小实验列表//TODO\n         * @Date 11:07 上午 2020/10/27\n         * @Param []\n         * @return hci.artedu.common.ServerResponse<java.util.ArrayList>\n         **/\n\n        ArrayList<Object> eptList = new ArrayList<Object>();\n        ExperimentExample eptExample = new ExperimentExample();\n        eptExample.setDistinct(false);\n        List<Experiment> epts = experimentMapper.selectByExample(eptExample);\n        for(Experiment ept : epts)\n        {\n            HashMap<String,Object> eptInfo = new HashMap<String, Object>();\n            eptInfo.put(\"eptId\",ept.getId());\n            eptInfo.put(\"eptName\",ept.getEptName());\n            eptInfo.put(\"eptTime\",ept.getEptTime());\n            eptInfo.put(\"coverPic\",ept.getCoverPic());\n            eptList.add(eptInfo);\n        }\n\n        return ServerResponse.createBySuccess(\"获取成功\",eptList);\n    }\n\n\n    @Override\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<HashMap<String,Object>> getBigEptInfo()\n    {\n        /**\n         * @Author jiaxin\n         * @Description 获取大实验的基本信息//TODO\n         * @Date 5:22 下午 2020/10/28\n         * @Param []\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>\n         **/\n        int eptId = 1;\n        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey(eptId);\n        HashMap<String,Object> eptInfo = new HashMap<String, Object>();\n        eptInfo.put(\"eptId\",bigexperiment.getId());\n        eptInfo.put(\"eptName\",bigexperiment.getName());\n        eptInfo.put(\"eptPassRate\",bigexperiment.getPassRate());\n        eptInfo.put(\"eptParticipateRate\",bigexperiment.getParticipateRate());\n        eptInfo.put(\"eptTime\",bigexperiment.getTime());\n        eptInfo.put(\"totalTime\",bigexperiment.getCourseTime());\n        eptInfo.put(\"content\",bigexperiment.getContent());\n        eptInfo.put(\"course\",bigexperiment.getCourse());\n        eptInfo.put(\"eptDes\",bigexperiment.getDes());\n        eptInfo.put(\"eptPic\",bigexperiment.getCoverPic());\n\n        return ServerResponse.createBySuccess(\"获取成功\",eptInfo);\n\n\n    }\n\n\n    @Override\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<HashMap<String,Object>> getEptBasicInfo(int eptId)\n    {\n        /**\n         * @Author jiaxin\n         * @Description 获取小实验基本信息//TODO\n         * @Date 11:00 上午 2020/10/29\n         * @Param [eptId]\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>\n         **/\n\n        Experiment experiment = experimentMapper.selectByPrimaryKey(eptId);\n        HashMap<String,Object> eptInfo = new HashMap<String, Object>();\n        eptInfo.put(\"eptId\",experiment.getId());\n        eptInfo.put(\"eptName\",experiment.getEptName());\n        eptInfo.put(\"englishName\",experiment.getEnglishName());\n        eptInfo.put(\"eptDes\",experiment.getDes());\n        eptInfo.put(\"difficultLevel\",experiment.getDifficultDegree());\n        eptInfo.put(\"passRate\",experiment.getPassRate());\n        eptInfo.put(\"stepNum\",experiment.getSteps());\n        eptInfo.put(\"knowledgePoint\",experiment.getKnowledgePoint());\n        eptInfo.put(\"scanNum\",experiment.getScanNum());\n        eptInfo.put(\"coverPic\",experiment.getCoverPic());\n\n        //获取步骤图\n        ExperimentstepExample experimentstepExample = new ExperimentstepExample();\n        ExperimentstepExample.Criteria criteria = experimentstepExample.createCriteria();\n        criteria.andEptIdEqualTo(experiment.getId());\n        List<Experimentstep> experimentsteps = experimentstepMapper.selectByExample(experimentstepExample);\n\n        ArrayList<Object> stepInfo = new ArrayList<Object>();\n        for(Experimentstep step:experimentsteps)\n        {\n            HashMap<String,Object> oneStepInfo = new HashMap<String, Object>();\n            oneStepInfo.put(\"num\",step.getStepNum());\n            oneStepInfo.put(\"name\",step.getStepName());\n            oneStepInfo.put(\"des\",step.getStepDes());\n            oneStepInfo.put(\"pic\",step.getStepPic());\n\n            stepInfo.add(oneStepInfo);\n\n        }\n\n        eptInfo.put(\"stepInfo\",stepInfo);\n\n        return ServerResponse.createBySuccess(\"获取成功\",eptInfo);\n\n\n\n\n\n\n\n    }\n\n    @Override\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<HashMap<String, Object>> getBigEptPurpose() {\n        /**\n         * @Author jiaxin\n         * @Description 获取某实验目的//TODO\n         * @Date 11:14 上午 2020/10/27\n         * @Param []\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>\n         **/\n\n        int eptId = 1;\n        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);\n        HashMap<String, Object> eptInfo = new HashMap<String, Object>();\n        eptInfo.put(\"eptId\", bigexperiment.getId());\n        eptInfo.put(\"eptName\", bigexperiment.getName());\n        eptInfo.put(\"eptContent\", bigexperiment.getPurpose());\n        eptInfo.put(\"eptPic\", bigexperiment.getPurposePic());\n\n\n        return ServerResponse.createBySuccess(\"获取成功\", eptInfo);\n\n\n    }\n\n    @Override\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<HashMap<String, Object>> getBigEptRequirement() {\n        /**\n         * @Author myz\n         * @Description 获取某实验要求//TODO\n         * @Date 9：50 上午 2020/10/30\n         * @Param []\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>\n         **/\n        int eptId = 1;  //only one bigExpt\n        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);\n        HashMap<String, Object> eptInfo = new HashMap<String, Object>();\n        eptInfo.put(\"eptId\", bigexperiment.getId());\n        eptInfo.put(\"eptName\", bigexperiment.getName());\n        eptInfo.put(\"eptContent\", bigexperiment.getRequirement());\n        eptInfo.put(\"eptPic\", bigexperiment.getRequirementPic());\n\n        return ServerResponse.createBySuccess(\"获取成功\", eptInfo);\n    }\n\n    @Override\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<HashMap<String, Object>> getBigEptPrinciple() {\n        /**\n         * @Author myz\n         * @Description 获取某实验原理//TODO\n         * @Date 9：50 上午 2020/10/30\n         * @Param []\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>\n         **/\n\n        int eptId = 1;\n        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);\n        HashMap<String, Object> eptInfo = new HashMap<String, Object>();\n        eptInfo.put(\"eptId\", bigexperiment.getId());\n        eptInfo.put(\"eptName\", bigexperiment.getName());\n        eptInfo.put(\"eptContent\", bigexperiment.getPrinciple());\n        eptInfo.put(\"eptPic\", bigexperiment.getPrinciplePic());\n\n        return ServerResponse.createBySuccess(\"获取成功\", eptInfo);\n    }\n\n    @Override\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<HashMap<String, Object>> getBigEptMethod() {\n        /**\n         * @Author myz\n         * @Description 获取某实验方法//TODO\n         * @Date 9：50 上午 2020/10/30\n         * @Param []\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>\n         **/\n\n        int eptId = 1;\n        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);\n        HashMap<String, Object> eptInfo = new HashMap<String, Object>();\n        eptInfo.put(\"eptId\", bigexperiment.getId());\n        eptInfo.put(\"eptName\", bigexperiment.getName());\n        eptInfo.put(\"eptContent\", bigexperiment.getMethod());\n        eptInfo.put(\"eptPic\", bigexperiment.getMethodPic());\n\n        return ServerResponse.createBySuccess(\"获取成功\", eptInfo);\n    }\n\n    @Override\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<HashMap<String, Object>> getBigEptStep() {\n        /**\n         * @Author myz\n         * @Description 获取某实验步骤//TODO\n         * @Date 9：50 上午 2020/10/30\n         * @Param []\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>\n         **/\n\n        int eptId = 1;\n        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);\n        HashMap<String, Object> eptInfo = new HashMap<String, Object>();\n        eptInfo.put(\"eptId\", bigexperiment.getId());\n        eptInfo.put(\"eptName\", bigexperiment.getName());\n        eptInfo.put(\"eptContent\", bigexperiment.getSteps());\n        eptInfo.put(\"eptPic\", bigexperiment.getStepPic());\n\n        return ServerResponse.createBySuccess(\"获取成功\", eptInfo);\n    }\n\n    @Override\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<HashMap<String, Object>> getBigEptDevice() {\n        /**\n         * @Author myz\n         * @Description 获取某实验仪器设备//TODO\n         * @Date 9：50 上午 2020/10/30\n         * @Param []\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>\n         **/\n\n        int eptId = 1;\n        Bigexperiment bigexperiment = bigexperimentMapper.selectByPrimaryKey((Integer) eptId);\n        HashMap<String, Object> eptInfo = new HashMap<String, Object>();\n        eptInfo.put(\"eptId\", bigexperiment.getId());\n        eptInfo.put(\"eptName\", bigexperiment.getName());\n        eptInfo.put(\"eptContent\", bigexperiment.getDevice());\n        eptInfo.put(\"eptPic\", bigexperiment.getDevicePic());\n\n        return ServerResponse.createBySuccess(\"获取成功\", eptInfo);\n    }\n\n\n    //开始实验\n\n    @Override\n    @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚\n    public ServerResponse<Boolean> beginExperiment(int userid,int expId)\n    {\n        /**\n         * @Author jiaxin\n         * @Description 开始实验；记录实验开始的时间？【或许获取进度？】//TODO\n         * @Date 10:04 下午 2020/11/2\n         * @Param [userid用户id, expId实验id]\n         * @return hci.artedu.common.ServerResponse<java.lang.Boolean>\n         **/\n\n        //写日志\n        User user = userMapper.selectByPrimaryKey(userid);\n        Experiment experiment = experimentMapper.selectByPrimaryKey(expId);\n\n//        Useroperation useroperation = new Useroperation();\n//        useroperation.setUserId(user.getId());\n//        useroperation.setUserOperation(\"beginEpt\");\n//        useroperation.setParams(Integer.toString(experiment.getId()));\n//        useroperation.setUserName(user.getUserName());\n//        Timestamp beginTime = DateUtils.nowDateTime();\n//        useroperation.setOperationTime(beginTime);\n//        useroperationMapper.insert(useroperation);\n\n        return ServerResponse.createBySuccess(\"开始成功\", true);\n\n\n    }\n\n    @Override\n    @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚\n    public ServerResponse endPostExperiment(EptRecord eptRecord)\n    {\n        /**\n         * @Author jiaxin\n         * @Description 实验结束后提交信息//TODO\n         * @Date 10:49 上午 2020/11/5\n         * @Param [eptRecord]\n         * @return hci.artedu.common.ServerResponse\n         **/\n\n        eptrecordMapper.insert(eptRecord);//记录实验相关\n        //写日志\n        //写日志\n        User user = userMapper.selectByPrimaryKey(eptRecord.getUserid());\n        Experiment experiment = experimentMapper.selectByPrimaryKey(eptRecord.getEptId());\n//\n//        Useroperation useroperation = new Useroperation();\n//        useroperation.setUserId(user.getId());\n//        useroperation.setUserOperation(\"endEpt\");\n//        useroperation.setParams(Integer.toString(experiment.getId()));\n//        useroperation.setUserName(user.getUserName());\n//        Timestamp endTime = DateUtils.nowDateTime();\n//        useroperation.setOperationTime(endTime);\n//\n//        useroperationMapper.insert(useroperation);\n\n        return ServerResponse.createBySuccessMessage(\"记录成功\");\n\n    }\n\n    @Override\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<ArrayList> getUserExperimentProcess(int userId)\n    {\n        /**\n         * @Author jiaxin\n         * @Description 获取某用户的实验进度-不用了//TODO\n         * @Date 10:49 上午 2020/11/5\n         * @Param [userId]\n         * @return hci.artedu.common.ServerResponse<java.util.ArrayList>\n         **/\n\n        User user = userMapper.selectByPrimaryKey(userId);\n        EptRecordExample eptRecordExample = new EptRecordExample();\n        EptRecordExample.Criteria criteria = eptRecordExample.createCriteria();\n        criteria.andUseridEqualTo(user.getId());\n        List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);\n\n        ArrayList<Object> userProcess = new ArrayList<Object>();\n        for(EptRecord eptRecord:eptRecordList)\n        {\n            HashMap<String,Object> map = new HashMap<String, Object>();\n            map.put(\"eptId\",eptRecord.getEptId());\n            Experiment experiment = experimentMapper.selectByPrimaryKey(eptRecord.getEptId());\n            map.put(\"eptName\",experiment.getEptName());\n\n            userProcess.add(map);\n        }\n\n        return ServerResponse.createBySuccess(\"获取成功\", userProcess);\n\n    }\n\n    @Override\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<ArrayList> getEptPoint(int eptId)\n    {\n        /**\n         * @Author jiaxin\n         * @Description 获取某个实验对应的知识点列表//TODO\n         * @Date 4:58 下午 2020/11/4\n         * @Param [eptId]\n         * @return hci.artedu.common.ServerResponse<java.util.ArrayList>\n         **/\n\n        Experiment experiment = experimentMapper.selectByPrimaryKey(eptId);\n        PointExperimentExample pointExperimentExample = new PointExperimentExample();\n        PointExperimentExample.Criteria criteria = pointExperimentExample.createCriteria();\n        criteria.andEptIdEqualTo(experiment.getId());\n        List<PointExperiment> pointExperimentList = pointExperimentMapper.selectByExample(pointExperimentExample);\n\n        ArrayList<Object> pointList = new ArrayList<>();\n        for(PointExperiment pointExperiment:pointExperimentList)\n        {\n            Knowledgepoint knowledgepoint = knowledgepointMapper.selectByPrimaryKey(pointExperiment.getPointId());\n            HashMap<String,Object> map = new HashMap<String, Object>();\n            map.put(\"id\",knowledgepoint.getId());\n            map.put(\"pointName\",knowledgepoint.getName());\n            pointList.add(map);\n\n        }\n        return ServerResponse.createBySuccess(\"获取成功\", pointList);\n\n\n\n    }\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> getAllTimeLength() {\n        /**\n         * TODO\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>\n         * @Description 学生总体时长统计\n         * @Author Leaf\n         * @Date 2020/11/13 11:32 上午\n         **/\n        //实验时长\n        int eptSum = 0;\n        EptRecordExample eptRecordExample = new EptRecordExample();\n\n        //学习时长\n        //在线时长\n        return null;\n    }\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> getStudentMasterAttitude() {\n        /**\n         * TODO\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>\n         * @Description 用于获取所有学生的喜好度和掌握程度\n         * @Author Leaf\n         * @Date 2020/11/13 10:16 上午\n         **/\n        UserExample example = new UserExample();\n        UserExample.Criteria criteria =  example.createCriteria();\n        criteria.andUserTypeEqualTo(0);\n        criteria.andUserAttitudeIsNotNull();\n        criteria.andLevelOfMasteryIsNotNull();\n        int averageLike = 0;\n        int averageNormal = 0;\n        int averageDislike = 0;\n        List<User> uList = userMapper.selectByExample(example);\n        for(User u:uList){\n            if(u.getUserAttitude() == 0){\n                averageLike ++;\n            }\n            else if(u.getUserAttitude() == 1){\n                averageNormal++;\n            }\n            else if(u.getUserAttitude() == 2){\n                averageDislike++;\n            }\n        }\n        HashMap<String,Object> averInfo = new HashMap<String, Object>();\n        averInfo.put(\"averageLike\",averageLike);\n        averInfo.put(\"averageNormal\",averageNormal);\n        averInfo.put(\"averageDislike\",averageDislike);\n\n        UserExample example1 = new UserExample();\n        UserExample.Criteria criteria1 =  example1.createCriteria();\n        criteria1.andUserTypeEqualTo(0);\n        criteria1.andUserAttitudeIsNotNull();\n        criteria1.andLevelOfMasteryIsNotNull();\n        criteria1.andUserGenderEqualTo(Boolean.TRUE);\n        int maleLike = 0;\n        int maleNormal = 0;\n        int maleDislike = 0;\n        List<User> uList1 = userMapper.selectByExample(example1);\n        for(User u:uList1){\n            if(u.getUserAttitude() == 0){\n                maleLike ++;\n            }\n            else if(u.getUserAttitude() == 1){\n                maleNormal++;\n            }\n            else if(u.getUserAttitude() == 2){\n                maleDislike++;\n            }\n        }\n        HashMap<String,Object> maleInfo = new HashMap<String, Object>();\n        averInfo.put(\"maleLike\",maleLike);\n        averInfo.put(\"maleNormal\",maleNormal);\n        averInfo.put(\"maleDislike\",maleDislike);\n\n        UserExample example2 = new UserExample();\n        UserExample.Criteria criteria2 =  example2.createCriteria();\n        criteria2.andUserTypeEqualTo(0);\n        criteria2.andUserAttitudeIsNotNull();\n        criteria2.andLevelOfMasteryIsNotNull();\n        criteria2.andUserGenderEqualTo(Boolean.FALSE);\n        int femaleLike = 0;\n        int femaleNormal = 0;\n        int femaleDislike = 0;\n        List<User> uList2 = userMapper.selectByExample(example2);\n        for(User u:uList2){\n            if(u.getUserAttitude() == 0){\n                femaleLike ++;\n            }\n            else if(u.getUserAttitude() == 1){\n                femaleNormal++;\n            }\n            else if(u.getUserAttitude() == 2){\n                femaleDislike++;\n            }\n        }\n        HashMap<String,Object> femaleInfo = new HashMap<String, Object>();\n        averInfo.put(\"femaleLike\",femaleLike);\n        averInfo.put(\"femaleNormal\",femaleNormal);\n        averInfo.put(\"femaleDislike\",femaleDislike);\n\n        HashMap<String, Object> res= new HashMap<>();\n        res.put(\"aver\", averInfo);\n        res.put(\"male\", maleInfo);\n        res.put(\"female\",femaleInfo);\n\n        return ServerResponse.createBySuccess(\"获取成功\", res);\n    }\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> getStudentInfo(String studentName) {\n        /**\n         * TODO\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>\n         * @Description 通过学生姓名查询学生基本信息\n         * @Author Leaf\n         * @Date 2020/11/13 10:17 上午\n         **/\n        UserExample example = new UserExample();\n        UserExample.Criteria criteria = example.createCriteria();\n        criteria.andUserNameEqualTo(studentName);\n        List<User> userList = userMapper.selectByExample(example);\n        User user =userList.get(0);\n\n        HashMap<String,Object> studentInfo = new HashMap<>();//基本信息\n        studentInfo.put(\"userGender\", user.getUserGender());\n        studentInfo.put(\"userEmail\", user.getUserEmail());\n        studentInfo.put(\"schoolName\", user.getSchoolName());\n        studentInfo.put(\"className\", user.getClassName());\n        studentInfo.put(\"phoneNumber\", user.getPhoneNumber());\n        studentInfo.put(\"userAttitude\", user.getUserAttitude());\n        studentInfo.put(\"levelOfMastery\", user.getLevelOfMastery());\n        studentInfo.put(\"userEmail\", user.getUserEmail());\n\n        HashMap<String,Object> studentScore = new HashMap<>();\n//        EptRecordExample eptRecordExample = new EptRecordExample();\n//        EptRecordExample.Criteria criteria1 =eptRecordExample.createCriteria();\n//        criteria1.andUseridEqualTo(user.getId());\n\n        HashMap<String,Object> eptTime = new HashMap<>();//实验时长\n        EptRecordExample eptRecordExample1 = new EptRecordExample();\n        EptRecordExample.Criteria criteria2 =eptRecordExample1.createCriteria();\n        criteria2.andUseridEqualTo(user.getId());\n        List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample1);\n        long[] temp=new long[6];\n        for (int i = 0; i < 6; i++) {\n            for (EptRecord e: eptRecordList) {\n                if (e.getEptId() == i){\n                    temp[i] += e.getEndTime().getTime() - e.getStartTime().getTime();\n                }\n            }\n            eptTime.put(\"ept\"+i, temp[i]);\n        }\n        HashMap<String,Object> pointTime = new HashMap<>();//知识点时长 存在问题 现在就一个知识点\n        PointrecordExample pointrecordExample = new PointrecordExample();\n        PointrecordExample.Criteria criteria3 =pointrecordExample.createCriteria();\n        criteria3.andUserIdEqualTo(user.getId());\n        List<Pointrecord> pointrecordList = pointrecordMapper.selectByExample(pointrecordExample);\n        long[] temp1=new long[6];\n        for (int i = 0; i < 6; i++) {\n            for (Pointrecord p: pointrecordList) {\n                if (p.getPointId() == i){\n                    temp[i] += p.getCompleteTime().getTime();\n                }\n            }\n            pointTime.put(\"point\"+i, temp1[i]);\n        }\n        return null;\n\n    }\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> getClassInfo(int classNumber) {\n       return null;\n    }\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> getSchoolInfo(String schoolName) {\n        UserExample userExample = new UserExample();\n        UserExample.Criteria criteria = userExample.createCriteria();\n        criteria.andSchoolNameEqualTo(schoolName);\n        criteria.andUserTypeEqualTo(0);\n        int male = 0, female = 0, maleMastery0 = 0, maleMastery1 = 0, maleMastery2 = 0, femaleMastery0 = 0,\n                femaleMastery1 = 0, femaleMastery2 = 0, maleAttitude0 = 0, maleAttitude1 = 0,\n                maleAttitude2 = 0, femaleAttitude0 = 0,femaleAttitude1 = 0,femaleAttitude2 =0,averAttitude0 = 0,\n                averAttitude1 = 0, averAttitude2 = 0, averMastery0 = 0, averMastery1 = 0, averMastery2 = 0;\n        List<User> userList = userMapper.selectByExample(userExample);\n        for (User u:\n             userList) {\n            if(u.getUserGender()==Boolean.TRUE){\n                male += 1;\n                if(u.getUserAttitude() == 0){\n                    maleAttitude0 += 1;\n                }\n                if(u.getUserAttitude() == 1){\n                    maleAttitude1 += 1;\n                }\n                if(u.getUserAttitude() == 2){\n                    maleAttitude2 += 1;\n                }\n                if(u.getLevelOfMastery() ==0){\n                    maleMastery0 += 1;\n                }\n                if(u.getLevelOfMastery() == 1){\n                    maleMastery1 += 1;\n                }\n                if(u.getLevelOfMastery() == 2){\n                    maleMastery2 += 1;\n                }\n            }\n            else if(u.getUserGender()==Boolean.FALSE){\n                female += 1;\n                if(u.getUserAttitude() == 0){\n                    femaleAttitude0 += 1;\n                }\n                if(u.getUserAttitude() == 1){\n                    femaleAttitude1 += 1;\n                }\n                if(u.getUserAttitude() == 2){\n                    femaleAttitude2 += 1;\n                }\n                if(u.getLevelOfMastery() ==0){\n                    femaleMastery0 += 1;\n                }\n                if(u.getLevelOfMastery() == 1){\n                    femaleMastery1 += 1;\n                }\n                if(u.getLevelOfMastery() == 2){\n                    femaleMastery2 += 1;\n                }\n            }\n        }\n        int malePercent = male/userList.size();\n        int femalePercent = female/userList.size();\n        averAttitude0 = maleAttitude0 * malePercent + femaleAttitude0 * femalePercent;\n        averAttitude1 = maleAttitude1 * malePercent + femaleAttitude1 * femalePercent;\n        averAttitude2 = maleAttitude2 * malePercent + femaleAttitude2 * femalePercent;\n        averMastery0 = maleMastery0 * malePercent + femaleMastery0 * femalePercent;\n        averMastery1 = maleMastery1 * malePercent + femaleMastery1 * femalePercent;\n        averMastery2 = maleMastery2 * malePercent + femaleMastery2 * femalePercent;\n        HashMap<String,Object> AttitudeMap =new HashMap<>();\n        AttitudeMap.put(\"女生喜欢\",femaleAttitude0);\n        AttitudeMap.put(\"女生一般\",femaleAttitude1);\n        AttitudeMap.put(\"女生抵触\", femaleAttitude2);\n        AttitudeMap.put(\"男生喜欢\", maleAttitude0);\n        AttitudeMap.put(\"男生一般\", maleAttitude1);\n        AttitudeMap.put(\"男生抵触\", maleAttitude2);\n        AttitudeMap.put(\"平均喜欢\", averAttitude0);\n        AttitudeMap.put(\"平均一般\", averAttitude1);\n        AttitudeMap.put(\"平均抵触\", averAttitude2);\n\n        HashMap<String,Object> MasteryMap = new HashMap<String, Object>();\n        MasteryMap.put(\"女生从未学过\",femaleMastery0);\n        MasteryMap.put(\"女生学习1-3年\",femaleMastery1);\n        MasteryMap.put(\"女生学习3年以上\",femaleMastery2);\n        MasteryMap.put(\"男生从未学过\",maleMastery0);\n        MasteryMap.put(\"男生学习1-3年\",maleMastery1);\n        MasteryMap.put(\"男生学习3年以上\",maleMastery2);\n        MasteryMap.put(\"平均从未学过\",averMastery0);\n        MasteryMap.put(\"平均学习1-3年\",averMastery1);\n        MasteryMap.put(\"平均学习3年以上\",averMastery2);\n\n        HashMap<String,Object> res = new HashMap<>();\n        res.put(\"attitude\",AttitudeMap);\n        res.put(\"Mastery\",MasteryMap);\n        res.put(\"male\",male);\n        res.put(\"female\",female);\n        res.put(\"malePercent\",malePercent);\n        res.put(\"femalePercent\",femalePercent);\n        return ServerResponse.createBySuccess(\"获取成功\", res);\n    }\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> getEptCondition() {\n        return null;\n    }\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> getStudentScore(String studentName) {\n        return null;\n    }\n\n    @Override\n    public ServerResponse<String> postAnswer(int userId, int eptId, int progress, Date time, Date startTime, Date endTime, Date date) {\n        /**\n         * TODO 好像没啥用\n         * @return hci.artedu.common.ServerResponse<java.lang.String>\n         * @Description \n         * @Author Leaf\n         * @Date 2020/11/11 8:24 下午\n         **/\n        EptRecord eptRecord = new EptRecord();\n        eptRecord.setUserid(userId);\n        eptRecord.setEptId(eptId);\n        eptRecord.setEptDate(date);\n        eptRecord.setStartTime(startTime);\n        eptRecord.setEndTime(endTime);\n//        eptRecord.setDurTime(time);\n        return null;\n    }\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> getRank(int userId, int id) {\n        return null;\n    }\n\n    @Override\n    public ServerResponse<String> postFeedback(int id, int difficultLevel, int exerciseLevel, int masteryLevel) {\n        /**\n         * TODO 提交实验 看结果 应该返回记录id  然后这里重写那个记录\n         * @return hci.artedu.common.ServerResponse<java.lang.String>\n         * @Description \n         * @Author Leaf\n         * @Date 2020/11/11 8:30 下午\n         **/\n        EptRecordExample eptRecordExample = new EptRecordExample();\n        EptRecordExample.Criteria critrtia = eptRecordExample.createCriteria();\n        critrtia.andIdEqualTo(id);\n        List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);\n        EptRecord eptRecord =eptRecordList.get(0);\n        eptRecord.setDifficultyLevel(difficultLevel);\n        eptRecord.setExerciseLevel(exerciseLevel);\n        eptRecord.setMasteryLevel(masteryLevel);\n        return null;\n    }\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> getScore(int userId, int eptId) {\n        return null;\n    }\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> getReport(int userId) {\n        return null;\n    }\n\n\n//    @Override\n//    public ServerResponse<int[]> getEptProcess(int expId, int userId)\n//    {\n//        UserprocessExample userprocessExample = new UserprocessExample();\n//        UserprocessExample.Criteria criteria = userprocessExample.createCriteria();\n//        criteria.andEptIdEqualTo(expId);\n//        criteria.andUserIdEqualTo(userId);\n//\n//    }\n\n    //获取该用户该实验进度\n    public ServerResponse<int[]> getEptProcess(int eptId,int userId)\n    {\n        UserprocessExample userprocessExample = new UserprocessExample();\n        UserprocessExample.Criteria criteria = userprocessExample.createCriteria();\n        criteria.andEptIdEqualTo(eptId);\n        criteria.andUserIdEqualTo(userId);\n        List<Userprocess> userprocessList = userprocessMapper.selectByExample(userprocessExample);\n\n        int[] stageList = new int[userprocessList.size()];\n        int count = 0;\n        for(Userprocess userprocess:userprocessList)\n        {\n            stageList[count] = userprocess.getStageNum();\n            count++;\n        }\n\n        return ServerResponse.createBySuccess(\"获取成功\", stageList);\n\n\n    }\n\n    //用户过了某一关\n    @Override\n    @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚\n    public ServerResponse<Boolean> postUserStageNum(int userId,int eptId,int stageNum)\n    {\n        /**\n         * @Author jiaxin\n         * @Description 用户过了某一关//TODO\n         * @Date 3:34 下午 2020/11/12\n         * @Param [userId, eptId, stageNum]\n         * @return hci.artedu.common.ServerResponse<int[]>\n         **/\n         //先查有没有此关的记录\n\n        UserprocessExample userprocessExample = new UserprocessExample();\n        UserprocessExample.Criteria criteria = userprocessExample.createCriteria();\n        criteria.andUserIdEqualTo(userId);\n        criteria.andEptIdEqualTo(eptId);\n        criteria.andStageNumEqualTo(stageNum);\n        List<Userprocess> userprocessList = userprocessMapper.selectByExample(userprocessExample);\n        if(userprocessList.size()!=0)\n        {\n            return ServerResponse.createByErrorMessage(\"已存在该记录\");\n        }\n        else\n        {\n            Userprocess userprocess = new Userprocess();\n            userprocess.setStageNum(stageNum);\n            userprocess.setEptId(eptId);\n            userprocess.setUserId(userId);\n            Timestamp nowTime = DateUtils.nowDateTime();\n            userprocess.setCompletetime(nowTime);\n            userprocessMapper.insert(userprocess);\n            return ServerResponse.createBySuccess(\"记录成功\",Boolean.TRUE);\n        }\n    }\n\n    //\n\n\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/hci/artedu/service/impl/EptServiceImpl.java	(revision bc9aa15b68235da2e7f4f27686a4320712d5b358)
++++ src/main/java/hci/artedu/service/impl/EptServiceImpl.java	(date 1605268530871)
+@@ -36,7 +36,6 @@
+     @Autowired
+     private UserMapper userMapper;
+ 
+-
+     @Autowired
+     private PointExperimentMapper pointExperimentMapper;
+ 
+@@ -52,6 +51,12 @@
+     @Autowired
+     private UserprocessMapper userprocessMapper;
+ 
++    @Autowired
++    private  LearningRecordMapper learningRecordMapper;
++
++    @Autowired
++    private  UserloginlogMapper userloginlogMapper;
++
+ 
+ 
+     @Transactional(propagation = Propagation.SUPPORTS)
+@@ -427,7 +432,7 @@
+             Knowledgepoint knowledgepoint = knowledgepointMapper.selectByPrimaryKey(pointExperiment.getPointId());
+             HashMap<String,Object> map = new HashMap<String, Object>();
+             map.put("id",knowledgepoint.getId());
+-            map.put("pointName",knowledgepoint.getName());
++            map.put("pointName", knowledgepoint.getName());
+             pointList.add(map);
+ 
+         }
+@@ -447,25 +452,86 @@
+          * @Date 2020/11/13 11:32 上午
+          **/
+         //实验时长
+-        int eptSum = 0;
++        long eptTimeMin = Long.MAX_VALUE;
++        long eptTimeMax = 0;
++        long eptTimeAver;
+         EptRecordExample eptRecordExample = new EptRecordExample();
++        List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);
++        long eptTimeSum = 0;
++        for (EptRecord e : eptRecordList) {
++            eptTimeSum += e.getDurTime();
++            if (e.getDurTime() > eptTimeMax) {
++                eptTimeMax = e.getDurTime();
++            }
++            if (e.getDurTime() < eptTimeMin) {
++                eptTimeMin = e.getDurTime();
++            }
++        }
++        eptTimeAver = eptTimeSum / eptRecordList.size();
+ 
+         //学习时长
++        long learningTimeMin = Long.MAX_VALUE;
++        long learningTimeMax = 0;
++        long learningTimeAver;
++        LearningRecordExample learningRecordExample = new LearningRecordExample();
++        List<LearningRecord> learningRecordList = learningRecordMapper.selectByExample(learningRecordExample);
++        long learningTimeSum = 0;
++        for (LearningRecord l :
++                learningRecordList) {
++            learningTimeSum += l.getDuringTime();
++            if (l.getDuringTime() > eptTimeMax) {
++                learningTimeMax = l.getDuringTime();
++            }
++            if (l.getDuringTime() < eptTimeMin) {
++                learningTimeMin = l.getDuringTime();
++            }
++        }
++        learningTimeAver = learningTimeSum / learningRecordList.size();
++
+         //在线时长
+-        return null;
++        long onlineTimeMin = Long.MAX_VALUE;
++        long onlineTimeMax = 0;
++        long onlineTimeAver;
++        UserloginlogExample userloginlogExample = new UserloginlogExample();
++        List<Userloginlog> userloginlogList = userloginlogMapper.selectByExample(userloginlogExample);
++        long onlineTimeSum = 0;
++        for (Userloginlog u :
++                userloginlogList) {
++            onlineTimeSum += u.getDuringTime();
++            if (u.getDuringTime() > onlineTimeMax) {
++                onlineTimeMax = u.getDuringTime();
++            }
++            if (u.getDuringTime() < onlineTimeMin) {
++                onlineTimeMin = u.getDuringTime();
++            }
++        }
++        onlineTimeAver = onlineTimeSum / userloginlogList.size();
++
++        HashMap<String, Object> res = new HashMap<>();
++        res.put("eptTimeMin", eptTimeMin);
++        res.put("eptTimeMax", eptTimeMax);
++        res.put("eptTimeAver", eptTimeAver);
++        res.put("learningTimeMin", learningTimeMin);
++        res.put("learningTimeMax", learningTimeMax);
++        res.put("learningTimeAver", learningTimeAver);
++        res.put("onlineTimeMin", onlineTimeMin);
++        res.put("onlineTimeMax", onlineTimeMax);
++        res.put("onlineTimeAver", onlineTimeAver);
++
++        return ServerResponse.createBySuccess("获取成功", res);
+     }
+ 
+     @Override
+     public ServerResponse<HashMap<String, Object>> getStudentMasterAttitude() {
+         /**
+          * TODO
+-         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
++         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
+          * @Description 用于获取所有学生的喜好度和掌握程度
+          * @Author Leaf
+          * @Date 2020/11/13 10:16 上午
+          **/
+         UserExample example = new UserExample();
+-        UserExample.Criteria criteria =  example.createCriteria();
++        UserExample.Criteria criteria = example.createCriteria();
+         criteria.andUserTypeEqualTo(0);
+         criteria.andUserAttitudeIsNotNull();
+         criteria.andLevelOfMasteryIsNotNull();
+@@ -473,24 +539,22 @@
+         int averageNormal = 0;
+         int averageDislike = 0;
+         List<User> uList = userMapper.selectByExample(example);
+-        for(User u:uList){
+-            if(u.getUserAttitude() == 0){
+-                averageLike ++;
+-            }
+-            else if(u.getUserAttitude() == 1){
++        for (User u : uList) {
++            if (u.getUserAttitude() == 0) {
++                averageLike++;
++            } else if (u.getUserAttitude() == 1) {
+                 averageNormal++;
+-            }
+-            else if(u.getUserAttitude() == 2){
++            } else if (u.getUserAttitude() == 2) {
+                 averageDislike++;
+             }
+         }
+-        HashMap<String,Object> averInfo = new HashMap<String, Object>();
+-        averInfo.put("averageLike",averageLike);
+-        averInfo.put("averageNormal",averageNormal);
+-        averInfo.put("averageDislike",averageDislike);
++        HashMap<String, Object> averInfo = new HashMap<String, Object>();
++        averInfo.put("averageLike", averageLike);
++        averInfo.put("averageNormal", averageNormal);
++        averInfo.put("averageDislike", averageDislike);
+ 
+         UserExample example1 = new UserExample();
+-        UserExample.Criteria criteria1 =  example1.createCriteria();
++        UserExample.Criteria criteria1 = example1.createCriteria();
+         criteria1.andUserTypeEqualTo(0);
+         criteria1.andUserAttitudeIsNotNull();
+         criteria1.andLevelOfMasteryIsNotNull();
+@@ -499,24 +563,22 @@
+         int maleNormal = 0;
+         int maleDislike = 0;
+         List<User> uList1 = userMapper.selectByExample(example1);
+-        for(User u:uList1){
+-            if(u.getUserAttitude() == 0){
+-                maleLike ++;
+-            }
+-            else if(u.getUserAttitude() == 1){
++        for (User u : uList1) {
++            if (u.getUserAttitude() == 0) {
++                maleLike++;
++            } else if (u.getUserAttitude() == 1) {
+                 maleNormal++;
+-            }
+-            else if(u.getUserAttitude() == 2){
++            } else if (u.getUserAttitude() == 2) {
+                 maleDislike++;
+             }
+         }
+-        HashMap<String,Object> maleInfo = new HashMap<String, Object>();
+-        averInfo.put("maleLike",maleLike);
+-        averInfo.put("maleNormal",maleNormal);
+-        averInfo.put("maleDislike",maleDislike);
++        HashMap<String, Object> maleInfo = new HashMap<String, Object>();
++        averInfo.put("maleLike", maleLike);
++        averInfo.put("maleNormal", maleNormal);
++        averInfo.put("maleDislike", maleDislike);
+ 
+         UserExample example2 = new UserExample();
+-        UserExample.Criteria criteria2 =  example2.createCriteria();
++        UserExample.Criteria criteria2 = example2.createCriteria();
+         criteria2.andUserTypeEqualTo(0);
+         criteria2.andUserAttitudeIsNotNull();
+         criteria2.andLevelOfMasteryIsNotNull();
+@@ -525,26 +587,24 @@
+         int femaleNormal = 0;
+         int femaleDislike = 0;
+         List<User> uList2 = userMapper.selectByExample(example2);
+-        for(User u:uList2){
+-            if(u.getUserAttitude() == 0){
+-                femaleLike ++;
+-            }
+-            else if(u.getUserAttitude() == 1){
++        for (User u : uList2) {
++            if (u.getUserAttitude() == 0) {
++                femaleLike++;
++            } else if (u.getUserAttitude() == 1) {
+                 femaleNormal++;
+-            }
+-            else if(u.getUserAttitude() == 2){
++            } else if (u.getUserAttitude() == 2) {
+                 femaleDislike++;
+             }
+         }
+-        HashMap<String,Object> femaleInfo = new HashMap<String, Object>();
+-        averInfo.put("femaleLike",femaleLike);
+-        averInfo.put("femaleNormal",femaleNormal);
+-        averInfo.put("femaleDislike",femaleDislike);
++        HashMap<String, Object> femaleInfo = new HashMap<String, Object>();
++        averInfo.put("femaleLike", femaleLike);
++        averInfo.put("femaleNormal", femaleNormal);
++        averInfo.put("femaleDislike", femaleDislike);
+ 
+-        HashMap<String, Object> res= new HashMap<>();
++        HashMap<String, Object> res = new HashMap<>();
+         res.put("aver", averInfo);
+         res.put("male", maleInfo);
+-        res.put("female",femaleInfo);
++        res.put("female", femaleInfo);
+ 
+         return ServerResponse.createBySuccess("获取成功", res);
+     }
+@@ -553,18 +613,80 @@
+     public ServerResponse<HashMap<String, Object>> getStudentInfo(String studentName) {
+         /**
+          * TODO
+-         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
++         * @return hci.artedu.common.ServerResponse<java.util.HashMap < java.lang.String, java.lang.Object>>
+          * @Description 通过学生姓名查询学生基本信息
+          * @Author Leaf
+          * @Date 2020/11/13 10:17 上午
+          **/
++
+         UserExample example = new UserExample();
+         UserExample.Criteria criteria = example.createCriteria();
+         criteria.andUserNameEqualTo(studentName);
+         List<User> userList = userMapper.selectByExample(example);
+-        User user =userList.get(0);
++        User user = userList.get(0);
++        //实验时长
++        long eptTimeMin = Long.MAX_VALUE;
++        long eptTimeMax = 0;
++        long eptTimeAver;
++        EptRecordExample eptRecordExample = new EptRecordExample();
++        EptRecordExample.Criteria criteria1 = eptRecordExample.createCriteria();
++        criteria1.andUseridEqualTo(user.getId());
++        List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);
++        long eptTimeSum = 0;
++        for (EptRecord e : eptRecordList) {
++            eptTimeSum += e.getDurTime();
++            if (e.getDurTime() > eptTimeMax) {
++                eptTimeMax = e.getDurTime();
++            }
++            if (e.getDurTime() < eptTimeMin) {
++                eptTimeMin = e.getDurTime();
++            }
++        }
++        eptTimeAver = eptTimeSum / eptRecordList.size();
++
++        //学习时长
++        long learningTimeMin = Long.MAX_VALUE;
++        long learningTimeMax = 0;
++        long learningTimeAver;
++        LearningRecordExample learningRecordExample = new LearningRecordExample();
++        LearningRecordExample.Criteria criteria2 = learningRecordExample.createCriteria();
++        criteria2.andUserIdEqualTo(user.getId());
++        List<LearningRecord> learningRecordList = learningRecordMapper.selectByExample(learningRecordExample);
++        long learningTimeSum = 0;
++        for (LearningRecord l :
++                learningRecordList) {
++            learningTimeSum += l.getDuringTime();
++            if (l.getDuringTime() > eptTimeMax) {
++                learningTimeMax = l.getDuringTime();
++            }
++            if (l.getDuringTime() < eptTimeMin) {
++                learningTimeMin = l.getDuringTime();
++            }
++        }
++        learningTimeAver = learningTimeSum / learningRecordList.size();
++
++        //在线时长
++        long onlineTimeMin = Long.MAX_VALUE;
++        long onlineTimeMax = 0;
++        long onlineTimeAver;
++        UserloginlogExample userloginlogExample = new UserloginlogExample();
++        UserloginlogExample.Criteria criteria3 = userloginlogExample.createCriteria();
++        criteria3.andUserIdEqualTo(user.getId());
++        List<Userloginlog> userloginlogList = userloginlogMapper.selectByExample(userloginlogExample);
++        long onlineTimeSum = 0;
++        for (Userloginlog u :
++                userloginlogList) {
++            onlineTimeSum += u.getDuringTime();
++            if (u.getDuringTime() > onlineTimeMax) {
++                onlineTimeMax = u.getDuringTime();
++            }
++            if (u.getDuringTime() < onlineTimeMin) {
++                onlineTimeMin = u.getDuringTime();
++            }
++        }
++        onlineTimeAver = onlineTimeSum / userloginlogList.size();
+ 
+-        HashMap<String,Object> studentInfo = new HashMap<>();//基本信息
++        HashMap<String, Object> studentInfo = new HashMap<>();//基本信息
+         studentInfo.put("userGender", user.getUserGender());
+         studentInfo.put("userEmail", user.getUserEmail());
+         studentInfo.put("schoolName", user.getSchoolName());
+@@ -574,46 +696,235 @@
+         studentInfo.put("levelOfMastery", user.getLevelOfMastery());
+         studentInfo.put("userEmail", user.getUserEmail());
+ 
+-        HashMap<String,Object> studentScore = new HashMap<>();
++        HashMap<String, Object> studentScore = new HashMap<>();
+ //        EptRecordExample eptRecordExample = new EptRecordExample();
+ //        EptRecordExample.Criteria criteria1 =eptRecordExample.createCriteria();
+ //        criteria1.andUseridEqualTo(user.getId());
+ 
+-        HashMap<String,Object> eptTime = new HashMap<>();//实验时长
++        HashMap<String, Object> eptTime = new HashMap<>();//实验时长
+         EptRecordExample eptRecordExample1 = new EptRecordExample();
+-        EptRecordExample.Criteria criteria2 =eptRecordExample1.createCriteria();
+-        criteria2.andUseridEqualTo(user.getId());
+-        List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample1);
+-        long[] temp=new long[6];
++        EptRecordExample.Criteria criteria4 = eptRecordExample1.createCriteria();
++        criteria4.andUseridEqualTo(user.getId());
++        List<EptRecord> eptRecordList1 = eptrecordMapper.selectByExample(eptRecordExample1);
++        long[] temp = new long[6];
+         for (int i = 0; i < 6; i++) {
+-            for (EptRecord e: eptRecordList) {
+-                if (e.getEptId() == i){
++            for (EptRecord e : eptRecordList1) {
++                if (e.getEptId() == i) {
+                     temp[i] += e.getEndTime().getTime() - e.getStartTime().getTime();
+                 }
+             }
+-            eptTime.put("ept"+i, temp[i]);
++            eptTime.put("ept" + i, temp[i]);
+         }
+-        HashMap<String,Object> pointTime = new HashMap<>();//知识点时长 存在问题 现在就一个知识点
++        HashMap<String, Object> pointTime = new HashMap<>();//知识点时长 存在问题 现在就一个知识点
+         PointrecordExample pointrecordExample = new PointrecordExample();
+-        PointrecordExample.Criteria criteria3 =pointrecordExample.createCriteria();
+-        criteria3.andUserIdEqualTo(user.getId());
++        PointrecordExample.Criteria criteria5 = pointrecordExample.createCriteria();
++        criteria5.andUserIdEqualTo(user.getId());
+         List<Pointrecord> pointrecordList = pointrecordMapper.selectByExample(pointrecordExample);
+-        long[] temp1=new long[6];
++        long[] temp1 = new long[6];
+         for (int i = 0; i < 6; i++) {
+-            for (Pointrecord p: pointrecordList) {
+-                if (p.getPointId() == i){
++            for (Pointrecord p : pointrecordList) {
++                if (p.getPointId() == i) {
+                     temp[i] += p.getCompleteTime().getTime();
+                 }
+             }
+-            pointTime.put("point"+i, temp1[i]);
++            pointTime.put("point" + i, temp1[i]);
+         }
+-        return null;
++        HashMap<String, Object> res = new HashMap<>();
++        res.put("eptTimeMin", eptTimeMin);
++        res.put("eptTimeMax", eptTimeMax);
++        res.put("eptTimeAver", eptTimeAver);
++        res.put("learningTimeMin", learningTimeMin);
++        res.put("learningTimeMax", learningTimeMax);
++        res.put("learningTimeAver", learningTimeAver);
++        res.put("onlineTimeMin", onlineTimeMin);
++        res.put("onlineTimeMax", onlineTimeMax);
++        res.put("onlineTimeAver", onlineTimeAver);
++        res.put("studentInfo", studentInfo);
++        res.put("eptTime", eptTime);
++        res.put("pointTime", pointTime);
++        return ServerResponse.createBySuccess("获取成功", res);
+ 
+     }
+ 
+     @Override
+     public ServerResponse<HashMap<String, Object>> getClassInfo(int classNumber) {
+-       return null;
++        UserExample userExample = new UserExample();
++        UserExample.Criteria criteria = userExample.createCriteria();
++        criteria.andClassNameEqualTo(classNumber);
++        criteria.andUserTypeEqualTo(0);
++        int male = 0, female = 0, maleMastery0 = 0, maleMastery1 = 0, maleMastery2 = 0, femaleMastery0 = 0,
++                femaleMastery1 = 0, femaleMastery2 = 0, maleAttitude0 = 0, maleAttitude1 = 0,
++                maleAttitude2 = 0, femaleAttitude0 = 0, femaleAttitude1 = 0, femaleAttitude2 = 0, averAttitude0 = 0,
++                averAttitude1 = 0, averAttitude2 = 0, averMastery0 = 0, averMastery1 = 0, averMastery2 = 0;
++        List<User> userList = userMapper.selectByExample(userExample);
++        for (User u :
++                userList) {
++            if (u.getUserGender() == Boolean.TRUE) {
++                male += 1;
++                if (u.getUserAttitude() == 0) {
++                    maleAttitude0 += 1;
++                }
++                if (u.getUserAttitude() == 1) {
++                    maleAttitude1 += 1;
++                }
++                if (u.getUserAttitude() == 2) {
++                    maleAttitude2 += 1;
++                }
++                if (u.getLevelOfMastery() == 0) {
++                    maleMastery0 += 1;
++                }
++                if (u.getLevelOfMastery() == 1) {
++                    maleMastery1 += 1;
++                }
++                if (u.getLevelOfMastery() == 2) {
++                    maleMastery2 += 1;
++                }
++            } else if (u.getUserGender() == Boolean.FALSE) {
++                female += 1;
++                if (u.getUserAttitude() == 0) {
++                    femaleAttitude0 += 1;
++                }
++                if (u.getUserAttitude() == 1) {
++                    femaleAttitude1 += 1;
++                }
++                if (u.getUserAttitude() == 2) {
++                    femaleAttitude2 += 1;
++                }
++                if (u.getLevelOfMastery() == 0) {
++                    femaleMastery0 += 1;
++                }
++                if (u.getLevelOfMastery() == 1) {
++                    femaleMastery1 += 1;
++                }
++                if (u.getLevelOfMastery() == 2) {
++                    femaleMastery2 += 1;
++                }
++            }
++        }
++        int malePercent = male / userList.size();
++        int femalePercent = female / userList.size();
++        averAttitude0 = maleAttitude0 * malePercent + femaleAttitude0 * femalePercent;
++        averAttitude1 = maleAttitude1 * malePercent + femaleAttitude1 * femalePercent;
++        averAttitude2 = maleAttitude2 * malePercent + femaleAttitude2 * femalePercent;
++        averMastery0 = maleMastery0 * malePercent + femaleMastery0 * femalePercent;
++        averMastery1 = maleMastery1 * malePercent + femaleMastery1 * femalePercent;
++        averMastery2 = maleMastery2 * malePercent + femaleMastery2 * femalePercent;
++        HashMap<String, Object> AttitudeMap = new HashMap<>();
++        AttitudeMap.put("女生喜欢", femaleAttitude0);
++        AttitudeMap.put("女生一般", femaleAttitude1);
++        AttitudeMap.put("女生抵触", femaleAttitude2);
++        AttitudeMap.put("男生喜欢", maleAttitude0);
++        AttitudeMap.put("男生一般", maleAttitude1);
++        AttitudeMap.put("男生抵触", maleAttitude2);
++        AttitudeMap.put("平均喜欢", averAttitude0);
++        AttitudeMap.put("平均一般", averAttitude1);
++        AttitudeMap.put("平均抵触", averAttitude2);
++
++        HashMap<String, Object> MasteryMap = new HashMap<String, Object>();
++        MasteryMap.put("女生从未学过", femaleMastery0);
++        MasteryMap.put("女生学习1-3年", femaleMastery1);
++        MasteryMap.put("女生学习3年以上", femaleMastery2);
++        MasteryMap.put("男生从未学过", maleMastery0);
++        MasteryMap.put("男生学习1-3年", maleMastery1);
++        MasteryMap.put("男生学习3年以上", maleMastery2);
++        MasteryMap.put("平均从未学过", averMastery0);
++        MasteryMap.put("平均学习1-3年", averMastery1);
++        MasteryMap.put("平均学习3年以上", averMastery2);
++        //实验时长
++        long eptTimeMin = Long.MAX_VALUE;
++        long eptTimeMax = 0;
++        long eptTimeAver;
++        int eptCount = 0;
++        long eptTimeSum = 0;
++        for (User u : userList) {
++            EptRecordExample eptRecordExample = new EptRecordExample();
++            EptRecordExample.Criteria criteria1 = eptRecordExample.createCriteria();
++            criteria1.andUseridEqualTo(u.getId());
++            List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);
++            eptCount += eptRecordList.size();
++
++            for (EptRecord e : eptRecordList) {
++                eptTimeSum += e.getDurTime();
++                if (e.getDurTime() > eptTimeMax) {
++                    eptTimeMax = e.getDurTime();
++                }
++                if (e.getDurTime() < eptTimeMin) {
++                    eptTimeMin = e.getDurTime();
++                }
++            }
++        }
++        eptTimeAver = eptTimeSum / eptCount;
++
++        //学习时长
++        long learningTimeMin = Long.MAX_VALUE;
++        long learningTimeMax = 0;
++        long learningTimeAver;
++        long learningTimeSum = 0;
++        int learningCount = 0;
++        for (User u : userList) {
++            LearningRecordExample learningRecordExample = new LearningRecordExample();
++            LearningRecordExample.Criteria criteria2 = learningRecordExample.createCriteria();
++            criteria2.andUserIdEqualTo(u.getId());
++            List<LearningRecord> learningRecordList = learningRecordMapper.selectByExample(learningRecordExample);
++            learningCount += learningRecordList.size();
++            for (LearningRecord l :
++                    learningRecordList) {
++                learningTimeSum += l.getDuringTime();
++                if (l.getDuringTime() > eptTimeMax) {
++                    learningTimeMax = l.getDuringTime();
++                }
++                if (l.getDuringTime() < eptTimeMin) {
++                    learningTimeMin = l.getDuringTime();
++                }
++            }
++        }
++        learningTimeAver = learningTimeSum / learningCount;
++
++        //在线时长
++        long onlineTimeMin = Long.MAX_VALUE;
++        long onlineTimeMax = 0;
++        long onlineTimeAver;
++        long onlineTimeSum = 0;
++        int onlineCount = 0;
++        for (User uu : userList) {
++            UserloginlogExample userloginlogExample = new UserloginlogExample();
++            UserloginlogExample.Criteria criteria3 = userloginlogExample.createCriteria();
++            criteria3.andUserIdEqualTo(uu.getId());
++            List<Userloginlog> userloginlogList = userloginlogMapper.selectByExample(userloginlogExample);
++            onlineCount += userloginlogList.size();
++            for (Userloginlog u :
++                    userloginlogList) {
++                onlineTimeSum += u.getDuringTime();
++                if (u.getDuringTime() > onlineTimeMax) {
++                    onlineTimeMax = u.getDuringTime();
++                }
++                if (u.getDuringTime() < onlineTimeMin) {
++                    onlineTimeMin = u.getDuringTime();
++                }
++            }
++        }
++        onlineTimeAver = onlineTimeSum / onlineCount;
++        HashMap<String, Object> timeInfo = new HashMap<>();
++        timeInfo.put("eptTimeMin", eptTimeMin);
++        timeInfo.put("eptTimeMax", eptTimeMax);
++        timeInfo.put("eptTimeAver", eptTimeAver);
++        timeInfo.put("learningTimeMin", learningTimeMin);
++        timeInfo.put("learningTimeMax", learningTimeMax);
++        timeInfo.put("learningTimeAver", learningTimeAver);
++        timeInfo.put("onlineTimeMin", onlineTimeMin);
++        timeInfo.put("onlineTimeMax", onlineTimeMax);
++        timeInfo.put("onlineTimeAver", onlineTimeAver);
++
++
++        HashMap<String, Object> res = new HashMap<>();
++        res.put("attitude", AttitudeMap);
++        res.put("Mastery", MasteryMap);
++        res.put("timeInfo", timeInfo);
++        res.put("male", male);
++        res.put("female", female);
++        res.put("malePercent", malePercent);
++        res.put("femalePercent", femalePercent);
++        return ServerResponse.createBySuccess("获取成功", res);
+     }
+ 
+     @Override
+@@ -624,65 +935,64 @@
+         criteria.andUserTypeEqualTo(0);
+         int male = 0, female = 0, maleMastery0 = 0, maleMastery1 = 0, maleMastery2 = 0, femaleMastery0 = 0,
+                 femaleMastery1 = 0, femaleMastery2 = 0, maleAttitude0 = 0, maleAttitude1 = 0,
+-                maleAttitude2 = 0, femaleAttitude0 = 0,femaleAttitude1 = 0,femaleAttitude2 =0,averAttitude0 = 0,
++                maleAttitude2 = 0, femaleAttitude0 = 0, femaleAttitude1 = 0, femaleAttitude2 = 0, averAttitude0 = 0,
+                 averAttitude1 = 0, averAttitude2 = 0, averMastery0 = 0, averMastery1 = 0, averMastery2 = 0;
+         List<User> userList = userMapper.selectByExample(userExample);
+-        for (User u:
+-             userList) {
+-            if(u.getUserGender()==Boolean.TRUE){
++        for (User u :
++                userList) {
++            if (u.getUserGender() == Boolean.TRUE) {
+                 male += 1;
+-                if(u.getUserAttitude() == 0){
++                if (u.getUserAttitude() == 0) {
+                     maleAttitude0 += 1;
+                 }
+-                if(u.getUserAttitude() == 1){
++                if (u.getUserAttitude() == 1) {
+                     maleAttitude1 += 1;
+                 }
+-                if(u.getUserAttitude() == 2){
++                if (u.getUserAttitude() == 2) {
+                     maleAttitude2 += 1;
+                 }
+-                if(u.getLevelOfMastery() ==0){
++                if (u.getLevelOfMastery() == 0) {
+                     maleMastery0 += 1;
+                 }
+-                if(u.getLevelOfMastery() == 1){
++                if (u.getLevelOfMastery() == 1) {
+                     maleMastery1 += 1;
+                 }
+-                if(u.getLevelOfMastery() == 2){
++                if (u.getLevelOfMastery() == 2) {
+                     maleMastery2 += 1;
+                 }
+-            }
+-            else if(u.getUserGender()==Boolean.FALSE){
++            } else if (u.getUserGender() == Boolean.FALSE) {
+                 female += 1;
+-                if(u.getUserAttitude() == 0){
++                if (u.getUserAttitude() == 0) {
+                     femaleAttitude0 += 1;
+                 }
+-                if(u.getUserAttitude() == 1){
++                if (u.getUserAttitude() == 1) {
+                     femaleAttitude1 += 1;
+                 }
+-                if(u.getUserAttitude() == 2){
++                if (u.getUserAttitude() == 2) {
+                     femaleAttitude2 += 1;
+                 }
+-                if(u.getLevelOfMastery() ==0){
++                if (u.getLevelOfMastery() == 0) {
+                     femaleMastery0 += 1;
+                 }
+-                if(u.getLevelOfMastery() == 1){
++                if (u.getLevelOfMastery() == 1) {
+                     femaleMastery1 += 1;
+                 }
+-                if(u.getLevelOfMastery() == 2){
++                if (u.getLevelOfMastery() == 2) {
+                     femaleMastery2 += 1;
+                 }
+             }
+         }
+-        int malePercent = male/userList.size();
+-        int femalePercent = female/userList.size();
++        int malePercent = male / userList.size();
++        int femalePercent = female / userList.size();
+         averAttitude0 = maleAttitude0 * malePercent + femaleAttitude0 * femalePercent;
+         averAttitude1 = maleAttitude1 * malePercent + femaleAttitude1 * femalePercent;
+         averAttitude2 = maleAttitude2 * malePercent + femaleAttitude2 * femalePercent;
+         averMastery0 = maleMastery0 * malePercent + femaleMastery0 * femalePercent;
+         averMastery1 = maleMastery1 * malePercent + femaleMastery1 * femalePercent;
+         averMastery2 = maleMastery2 * malePercent + femaleMastery2 * femalePercent;
+-        HashMap<String,Object> AttitudeMap =new HashMap<>();
+-        AttitudeMap.put("女生喜欢",femaleAttitude0);
+-        AttitudeMap.put("女生一般",femaleAttitude1);
++        HashMap<String, Object> AttitudeMap = new HashMap<>();
++        AttitudeMap.put("女生喜欢", femaleAttitude0);
++        AttitudeMap.put("女生一般", femaleAttitude1);
+         AttitudeMap.put("女生抵触", femaleAttitude2);
+         AttitudeMap.put("男生喜欢", maleAttitude0);
+         AttitudeMap.put("男生一般", maleAttitude1);
+@@ -691,30 +1001,143 @@
+         AttitudeMap.put("平均一般", averAttitude1);
+         AttitudeMap.put("平均抵触", averAttitude2);
+ 
+-        HashMap<String,Object> MasteryMap = new HashMap<String, Object>();
+-        MasteryMap.put("女生从未学过",femaleMastery0);
+-        MasteryMap.put("女生学习1-3年",femaleMastery1);
+-        MasteryMap.put("女生学习3年以上",femaleMastery2);
+-        MasteryMap.put("男生从未学过",maleMastery0);
+-        MasteryMap.put("男生学习1-3年",maleMastery1);
+-        MasteryMap.put("男生学习3年以上",maleMastery2);
+-        MasteryMap.put("平均从未学过",averMastery0);
+-        MasteryMap.put("平均学习1-3年",averMastery1);
+-        MasteryMap.put("平均学习3年以上",averMastery2);
++        HashMap<String, Object> MasteryMap = new HashMap<String, Object>();
++        MasteryMap.put("女生从未学过", femaleMastery0);
++        MasteryMap.put("女生学习1-3年", femaleMastery1);
++        MasteryMap.put("女生学习3年以上", femaleMastery2);
++        MasteryMap.put("男生从未学过", maleMastery0);
++        MasteryMap.put("男生学习1-3年", maleMastery1);
++        MasteryMap.put("男生学习3年以上", maleMastery2);
++        MasteryMap.put("平均从未学过", averMastery0);
++        MasteryMap.put("平均学习1-3年", averMastery1);
++        MasteryMap.put("平均学习3年以上", averMastery2);
+ 
+-        HashMap<String,Object> res = new HashMap<>();
+-        res.put("attitude",AttitudeMap);
+-        res.put("Mastery",MasteryMap);
+-        res.put("male",male);
+-        res.put("female",female);
+-        res.put("malePercent",malePercent);
+-        res.put("femalePercent",femalePercent);
++        //实验时长
++        long eptTimeMin = Long.MAX_VALUE;
++        long eptTimeMax = 0;
++        long eptTimeAver;
++        int eptCount = 0;
++        long eptTimeSum = 0;
++        for (User u : userList) {
++            EptRecordExample eptRecordExample = new EptRecordExample();
++            EptRecordExample.Criteria criteria1 = eptRecordExample.createCriteria();
++            criteria1.andUseridEqualTo(u.getId());
++            List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);
++            eptCount += eptRecordList.size();
++
++            for (EptRecord e : eptRecordList) {
++                eptTimeSum += e.getDurTime();
++                if (e.getDurTime() > eptTimeMax) {
++                    eptTimeMax = e.getDurTime();
++                }
++                if (e.getDurTime() < eptTimeMin) {
++                    eptTimeMin = e.getDurTime();
++                }
++            }
++        }
++        eptTimeAver = eptTimeSum / eptCount;
++
++        //学习时长
++        long learningTimeMin = Long.MAX_VALUE;
++        long learningTimeMax = 0;
++        long learningTimeAver;
++        long learningTimeSum = 0;
++        int learningCount = 0;
++        for (User u : userList) {
++            LearningRecordExample learningRecordExample = new LearningRecordExample();
++            LearningRecordExample.Criteria criteria2 = learningRecordExample.createCriteria();
++            criteria2.andUserIdEqualTo(u.getId());
++            List<LearningRecord> learningRecordList = learningRecordMapper.selectByExample(learningRecordExample);
++            learningCount += learningRecordList.size();
++            for (LearningRecord l :
++                    learningRecordList) {
++                learningTimeSum += l.getDuringTime();
++
++
++
++                if (l.getDuringTime() > eptTimeMax) {
++                    learningTimeMax = l.getDuringTime();
++                }
++                if (l.getDuringTime() < eptTimeMin) {
++                    learningTimeMin = l.getDuringTime();
++                }
++            }
++        }
++        learningTimeAver = learningTimeSum / learningCount;
++
++        //在线时长
++        long onlineTimeMin = Long.MAX_VALUE;
++        long onlineTimeMax = 0;
++        long onlineTimeAver;
++        long onlineTimeSum = 0;
++        int onlineCount = 0;
++        for (User uu : userList) {
++            UserloginlogExample userloginlogExample = new UserloginlogExample();
++            UserloginlogExample.Criteria criteria3 = userloginlogExample.createCriteria();
++            criteria3.andUserIdEqualTo(uu.getId());
++            List<Userloginlog> userloginlogList = userloginlogMapper.selectByExample(userloginlogExample);
++            onlineCount += userloginlogList.size();
++            for (Userloginlog u :
++                    userloginlogList) {
++                onlineTimeSum += u.getDuringTime();
++                if (u.getDuringTime() > onlineTimeMax) {
++                    onlineTimeMax = u.getDuringTime();
++                }
++                if (u.getDuringTime() < onlineTimeMin) {
++                    onlineTimeMin = u.getDuringTime();
++                }
++            }
++        }
++        onlineTimeAver = onlineTimeSum / onlineCount;
++        HashMap<String, Object> timeInfo = new HashMap<>();
++        timeInfo.put("eptTimeMin", eptTimeMin);
++        timeInfo.put("eptTimeMax", eptTimeMax);
++        timeInfo.put("eptTimeAver", eptTimeAver);
++        timeInfo.put("learningTimeMin", learningTimeMin);
++        timeInfo.put("learningTimeMax", learningTimeMax);
++        timeInfo.put("learningTimeAver", learningTimeAver);
++        timeInfo.put("onlineTimeMin", onlineTimeMin);
++        timeInfo.put("onlineTimeMax", onlineTimeMax);
++        timeInfo.put("onlineTimeAver", onlineTimeAver);
++        
++        HashMap<String, Object> res = new HashMap<>();
++        res.put("attitude", AttitudeMap);
++        res.put("Mastery", MasteryMap);
++        res.put("male", male);
++        res.put("female", female);
++        res.put("malePercent", malePercent);
++        res.put("femalePercent", femalePercent);
++        res.put("timeInfo",timeInfo);
+         return ServerResponse.createBySuccess("获取成功", res);
+     }
+ 
+     @Override
+     public ServerResponse<HashMap<String, Object>> getEptCondition() {
+-        return null;
++        long[] eptParticipantsTime = new long[6];
++        int[] eptParticipantsNum = new int[6];
++        for (int i = 0; i < 6; i++) {
++            EptRecordExample eptRecordExample = new EptRecordExample();
++            EptRecordExample.Criteria criteria = eptRecordExample.createCriteria();
++            criteria.andEptIdEqualTo(i);
++            ArrayList arrayList = new ArrayList();
++            eptParticipantsTime[i] = 0;
++            List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);
++            for (EptRecord e:
++                 eptRecordList) {
++                eptParticipantsTime[i] += e.getDurTime();
++                if(arrayList.contains(e.getUserid())){
++                    continue;
++                }else{
++                    arrayList.add(e.getUserid());
++                }
++            }
++            eptParticipantsNum[i] = arrayList.size();
++
++        }
++        HashMap<String,Object> res = new HashMap<>();
++        res.put("eptParticipantsTime",eptParticipantsTime);
++        res.put("eptParticipantsNum",eptParticipantsNum);
++        return ServerResponse.createBySuccess("获取成功", res);
+     }
+ 
+     @Override
+@@ -727,7 +1150,7 @@
+         /**
+          * TODO 好像没啥用
+          * @return hci.artedu.common.ServerResponse<java.lang.String>
+-         * @Description 
++         * @Description
+          * @Author Leaf
+          * @Date 2020/11/11 8:24 下午
+          **/
+@@ -751,7 +1174,7 @@
+         /**
+          * TODO 提交实验 看结果 应该返回记录id  然后这里重写那个记录
+          * @return hci.artedu.common.ServerResponse<java.lang.String>
+-         * @Description 
++         * @Description
+          * @Author Leaf
+          * @Date 2020/11/11 8:30 下午
+          **/
+@@ -759,7 +1182,7 @@
+         EptRecordExample.Criteria critrtia = eptRecordExample.createCriteria();
+         critrtia.andIdEqualTo(id);
+         List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);
+-        EptRecord eptRecord =eptRecordList.get(0);
++        EptRecord eptRecord = eptRecordList.get(0);
+         eptRecord.setDifficultyLevel(difficultLevel);
+         eptRecord.setExerciseLevel(exerciseLevel);
+         eptRecord.setMasteryLevel(masteryLevel);
+@@ -773,7 +1196,83 @@
+ 
+     @Override
+     public ServerResponse<HashMap<String, Object>> getReport(int userId) {
+-        return null;
++        UserExample example = new UserExample();
++        UserExample.Criteria criteria = example.createCriteria();
++        criteria.andIdEqualTo(userId);
++        List<User> userList = userMapper.selectByExample(example);
++        User user = userList.get(0);
++        //实验时长
++        long eptTimeMin = Long.MAX_VALUE;
++        long eptTimeMax = 0;
++        long eptTimeAver;
++        EptRecordExample eptRecordExample = new EptRecordExample();
++        EptRecordExample.Criteria criteria1 = eptRecordExample.createCriteria();
++        criteria1.andUseridEqualTo(user.getId());
++        List<EptRecord> eptRecordList = eptrecordMapper.selectByExample(eptRecordExample);
++        long eptTimeSum = 0;
++        for (EptRecord e : eptRecordList) {
++            eptTimeSum += e.getDurTime();
++            if (e.getDurTime() > eptTimeMax) {
++                eptTimeMax = e.getDurTime();
++            }
++            if (e.getDurTime() < eptTimeMin) {
++                eptTimeMin = e.getDurTime();
++            }
++        }
++        eptTimeAver = eptTimeSum / eptRecordList.size();
++
++        //学习时长
++        long learningTimeMin = Long.MAX_VALUE;
++        long learningTimeMax = 0;
++        long learningTimeAver;
++        LearningRecordExample learningRecordExample = new LearningRecordExample();
++        LearningRecordExample.Criteria criteria2 = learningRecordExample.createCriteria();
++        criteria2.andUserIdEqualTo(user.getId());
++        List<LearningRecord> learningRecordList = learningRecordMapper.selectByExample(learningRecordExample);
++        long learningTimeSum = 0;
++        for (LearningRecord l :
++                learningRecordList) {
++            learningTimeSum += l.getDuringTime();
++            if (l.getDuringTime() > eptTimeMax) {
++                learningTimeMax = l.getDuringTime();
++            }
++            if (l.getDuringTime() < eptTimeMin) {
++                learningTimeMin = l.getDuringTime();
++            }
++        }
++        learningTimeAver = learningTimeSum / learningRecordList.size();
++
++        //在线时长
++        long onlineTimeMin = Long.MAX_VALUE;
++        long onlineTimeMax = 0;
++        long onlineTimeAver;
++        UserloginlogExample userloginlogExample = new UserloginlogExample();
++        UserloginlogExample.Criteria criteria3 = userloginlogExample.createCriteria();
++        criteria3.andUserIdEqualTo(user.getId());
++        List<Userloginlog> userloginlogList = userloginlogMapper.selectByExample(userloginlogExample);
++        long onlineTimeSum = 0;
++        for (Userloginlog u :
++                userloginlogList) {
++            onlineTimeSum += u.getDuringTime();
++            if (u.getDuringTime() > onlineTimeMax) {
++                onlineTimeMax = u.getDuringTime();
++            }
++            if (u.getDuringTime() < onlineTimeMin) {
++                onlineTimeMin = u.getDuringTime();
++            }
++        }
++        onlineTimeAver = onlineTimeSum / userloginlogList.size();
++        HashMap<String, Object> res = new HashMap<>();
++        res.put("eptTimeMin", eptTimeMin);
++        res.put("eptTimeMax", eptTimeMax);
++        res.put("eptTimeAver", eptTimeAver);
++        res.put("learningTimeMin", learningTimeMin);
++        res.put("learningTimeMax", learningTimeMax);
++        res.put("learningTimeAver", learningTimeAver);
++        res.put("onlineTimeMin", onlineTimeMin);
++        res.put("onlineTimeMax", onlineTimeMax);
++        res.put("onlineTimeAver", onlineTimeAver);
++        return ServerResponse.createBySuccess("获取成功", res);
+     }
+ 
+ 
+@@ -788,8 +1287,7 @@
+ //    }
+ 
+     //获取该用户该实验进度
+-    public ServerResponse<int[]> getEptProcess(int eptId,int userId)
+-    {
++    public ServerResponse<int[]> getEptProcess(int eptId, int userId) {
+         UserprocessExample userprocessExample = new UserprocessExample();
+         UserprocessExample.Criteria criteria = userprocessExample.createCriteria();
+         criteria.andEptIdEqualTo(eptId);
+@@ -798,8 +1296,7 @@
+ 
+         int[] stageList = new int[userprocessList.size()];
+         int count = 0;
+-        for(Userprocess userprocess:userprocessList)
+-        {
++        for (Userprocess userprocess : userprocessList) {
+             stageList[count] = userprocess.getStageNum();
+             count++;
+         }
+@@ -812,16 +1309,15 @@
+     //用户过了某一关
+     @Override
+     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
+-    public ServerResponse<Boolean> postUserStageNum(int userId,int eptId,int stageNum)
+-    {
++    public ServerResponse<Boolean> postUserStageNum(int userId, int eptId, int stageNum) {
+         /**
+          * @Author jiaxin
+          * @Description 用户过了某一关//TODO
+          * @Date 3:34 下午 2020/11/12
+          * @Param [userId, eptId, stageNum]
+-         * @return hci.artedu.common.ServerResponse<int[]>
++         * @return hci.artedu.common.ServerResponse<int [ ]>
+          **/
+-         //先查有没有此关的记录
++        //先查有没有此关的记录
+ 
+         UserprocessExample userprocessExample = new UserprocessExample();
+         UserprocessExample.Criteria criteria = userprocessExample.createCriteria();
+@@ -829,12 +1325,9 @@
+         criteria.andEptIdEqualTo(eptId);
+         criteria.andStageNumEqualTo(stageNum);
+         List<Userprocess> userprocessList = userprocessMapper.selectByExample(userprocessExample);
+-        if(userprocessList.size()!=0)
+-        {
++        if (userprocessList.size() != 0) {
+             return ServerResponse.createByErrorMessage("已存在该记录");
+-        }
+-        else
+-        {
++        } else {
+             Userprocess userprocess = new Userprocess();
+             userprocess.setStageNum(stageNum);
+             userprocess.setEptId(eptId);
+@@ -842,13 +1335,11 @@
+             Timestamp nowTime = DateUtils.nowDateTime();
+             userprocess.setCompletetime(nowTime);
+             userprocessMapper.insert(userprocess);
+-            return ServerResponse.createBySuccess("记录成功",Boolean.TRUE);
++            return ServerResponse.createBySuccess("记录成功", Boolean.TRUE);
+         }
+     }
+ 
+     //
+ 
+ 
+-
+-
+ }
+Index: src/main/java/hci/artedu/service/impl/EqtServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hci.artedu.service.impl;\n\nimport hci.artedu.common.ServerResponse;\nimport hci.artedu.dao.EqtRecordMapper;\nimport hci.artedu.dao.EquipmentMapper;\nimport hci.artedu.dao.UserMapper;\nimport hci.artedu.pojo.*;\nimport hci.artedu.service.EqtService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\nimport org.springframework.transaction.annotation.Propagation;\nimport org.springframework.transaction.annotation.Transactional;\n\nimport java.util.ArrayList;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.List;\n\n/**\n * @program: artedu\n * @description: 设备\n * @author: Leaf\n * @create: 2020-11-04 16:14\n * @Version: 1.0\n **/\n@Service\npublic class EqtServiceImpl implements EqtService {\n    @Autowired\n    private EqtRecordMapper eqtRecordMapper;\n\n    @Autowired\n    private EquipmentMapper equipmentMapper;\n\n    @Autowired\n    private UserMapper userMapper;\n\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> getEqtNumber() {\n        /**\n         * TODO\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>\n         * @Description 实验仪器设备中获取目前已有设备数量\n         * @Author Leaf\n         * @Date 2020/11/4 6:30 下午\n         **/\n        int toolTpye1 = 0;\n        EquipmentExample example = new EquipmentExample();\n        EquipmentExample.Criteria criteria = example.createCriteria();\n        criteria.andTypeEqualTo(0);\n        int toolNum1 = (int)equipmentMapper.countByExample(example);\n\n        int toolTpye2 = 1;\n        EquipmentExample example2 = new EquipmentExample();\n        EquipmentExample.Criteria criteria2 = example2.createCriteria();\n        criteria2.andTypeEqualTo(1);\n        int toolNum2 = (int)equipmentMapper.countByExample(example2);\n\n        HashMap<String, Object> toolInfo = new HashMap<String, Object>();\n        toolInfo.put(\"toolTpye1\",toolTpye1);\n        toolInfo.put(\"toolNum1\",toolNum1);\n        toolInfo.put(\"toolTpye2\",toolTpye2);\n        toolInfo.put(\"toolNum2\",toolNum2);\n        return ServerResponse.createBySuccess(\"获取成功\", toolInfo);\n    }\n\n    @Override\n    public ServerResponse<String> reserveApply(int deviceId, Date reverseTime, Double reversePeriod)\n    {\n        /**\n         * TODO \n         * @return hci.artedu.common.ServerResponse<java.lang.String>\n         * @Description 提交设备预约申请\n         * @Author Leaf\n         * @Date 2020/11/4 6:27 下午\n         **/\n        EqtRecord eqtRecord =new EqtRecord();\n        eqtRecord.setDeviceId(deviceId);\n        eqtRecord.setUseTime(reverseTime);\n        eqtRecord.setUsePeriod(reversePeriod);\n        eqtRecordMapper.insert(eqtRecord);\n        return ServerResponse.createBySuccess(\"提交成功\");\n    }\n\n    @Override\n    public ServerResponse<ArrayList<Object>> getReserveApply() {\n        /**\n         * TODO 获取设备租借申请的相关信息\n         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>\n         * @Description \n         * @Author Leaf\n         * @Date 2020/11/4 6:27 下午\n         **/\n        EqtRecordExample eqtRecordExample = new EqtRecordExample();\n        List<EqtRecord> eqtRecordList = eqtRecordMapper.selectByExample(eqtRecordExample);\n\n        ArrayList<Object> getEqtRecordList = new ArrayList<>();\n        for (EqtRecord eqtRecord: eqtRecordList) {\n\n            Integer userId = eqtRecord.getUserId();\n            UserExample example = new UserExample();\n            example.createCriteria().andIdEqualTo(userId);\n            List<User> userList = userMapper.selectByExample(example);\n            String userName = null;\n            String userClass = null;\n            if (!userList.isEmpty()){\n                User thisUser = userList.get(0);\n                userName = thisUser.getUserName();\n                userClass = thisUser.getClassName();\n            }\n            Integer toolInfo = eqtRecord.getState();\n            Date useTime = eqtRecord.getUseTime();\n            HashMap<String,Object> map = new HashMap<String, Object>();\n            map.put(\"userName\", userName);\n            map.put(\"userClass\", userClass);\n            map.put(\"toolInfo\", toolInfo);\n            map.put(\"useTime\", useTime);\n            getEqtRecordList.add(map);\n        }\n        return ServerResponse.createBySuccess(\"获取成功\", getEqtRecordList);\n    }\n\n    @Override\n    public ServerResponse<HashMap<String, Object>> toolInfo(int toolTpye) {\n        /**\n         * TODO \n         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>\n         * @Description 获取设备信息\n         * @Author Leaf\n         * @Date 2020/11/4 6:26 下午\n         **/\n        EquipmentExample example = new EquipmentExample();\n        int toolNum = (int)equipmentMapper.countByExample(example);\n\n        EquipmentExample example1 = new EquipmentExample();\n        EquipmentExample.Criteria criteria1 = example1.createCriteria();\n        criteria1.andStateEqualTo(1);\n        int offNum = (int)equipmentMapper.countByExample(example1);\n\n        EquipmentExample example2 = new EquipmentExample();\n        EquipmentExample.Criteria criteria2 = example2.createCriteria();\n        criteria2.andStateEqualTo(2);\n        int brokeNum = (int)equipmentMapper.countByExample(example2);\n\n        HashMap<String, Object> toolInfo = new HashMap<String, Object>();\n        toolInfo.put(\"toolTpye\",toolTpye);\n        toolInfo.put(\"toolNum\",toolNum);\n        toolInfo.put(\"offNum\",offNum);\n        toolInfo.put(\"brokeNum\",brokeNum);\n        return ServerResponse.createBySuccess(\"获取成功\", toolInfo);\n\n    }\n\n    @Override\n    @Transactional(propagation = Propagation.SUPPORTS)\n    public ServerResponse<String> checkApply(int result,String comment) {\n        /**\n         * TODO\n         * @return hci.artedu.common.ServerResponse<java.lang.String>\n         * @Description 提交教师批准结果\n         * @Author Leaf\n         * @Date 2020/11/4 5:09 下午\n         **/\n        EqtRecord eqtRecord =new EqtRecord();\n        eqtRecord.setState(result);\n        eqtRecord.setNote(comment);\n        eqtRecordMapper.insert(eqtRecord);\n        return ServerResponse.createBySuccess(\"提交成功\");\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/hci/artedu/service/impl/EqtServiceImpl.java	(revision bc9aa15b68235da2e7f4f27686a4320712d5b358)
++++ src/main/java/hci/artedu/service/impl/EqtServiceImpl.java	(date 1605260681350)
+@@ -102,7 +102,7 @@
+             example.createCriteria().andIdEqualTo(userId);
+             List<User> userList = userMapper.selectByExample(example);
+             String userName = null;
+-            String userClass = null;
++            int userClass = 0;
+             if (!userList.isEmpty()){
+                 User thisUser = userList.get(0);
+                 userName = thisUser.getUserName();
+Index: target/classes/application.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>web:\n  upload-path: static/\nspring:\n  datasource:\n    # 如果存在多个数据源，监控的时候可以通过名字来区分开来\n    name: mysql\n    # 连接数据库的url\n    url: jdbc:mysql://localhost:3306/simulator?useUnicode=true&characterEncoding=utf-8&useSSL=false&verifyServerCertificate=false&serverTimezone=GMT%2B8\n    # 连接数据库的账号\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    username: root\n    #  连接数据库的密码\n    # password: 13541362\n    password: 19971019\n    #password: bupt20427\n\n    # 使用druid数据源\n    type: com.alibaba.druid.pool.DruidDataSource\n    # 扩展插件\n    # 监控统计用的filter:stat 日志用的filter:log4j 防御sql注入的filter:wall\n    filters: stat\n    # 最大连接池数量\n    maxActive: 20\n    # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时\n    initialSize: 1\n    # 获取连接时最大等待时间，单位毫秒\n    maxWait: 60000\n    # 最小连接池数量\n    minIdle: 1\n    timeBetweenEvictionRunsMillis: 60000\n    # 连接保持空闲而不被驱逐的最长时间\n    minEvictableIdleTimeMillis: 300000\n    # 用来检测连接是否有效的sql，要求是一个查询语句\n    # 如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用\n    validationQuery: select count(1) from 'table'\n    # 申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效\n    testWhileIdle: true\n    # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能\n    testOnBorrow: false\n    # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能\n    testOnReturn: false\n    # 是否缓存preparedStatement，即PSCache\n    poolPreparedStatements: false\n    # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true\n    maxOpenPreparedStatements: -1\n#  security:\n#    user:\n#      password: 1234\n#      name: root\n\n  jackson:\n    #日期格式化\n    date-format: yyyy-MM-dd HH:mm:ss\n    time-zone: GMT+8\n#  data:\n#    mongodb:\n#      host: 127.0.0.1\n#      port: 27017\n#      database: testmongo1\n  resources:\n    static-locations: file:${web.upload-path}\n  # static-locations: classpath:static/,file:static/\n# pagehelper分页插件\npagehelper:\n  # 数据库的方言\n  helperDialect: mysql\n  # 启用合理化，如果pageNum < 1会查询第一页，如果pageNum > pages会查询最后一页\n  reasonable: true\n\nmybatis:\n  mapper-locations: classpath:mybatis/mapper/*.xml\n  type-aliases-package: hci.dky.pojo\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- target/classes/application.yml	(revision bc9aa15b68235da2e7f4f27686a4320712d5b358)
++++ target/classes/application.yml	(date 1605261561923)
+@@ -11,7 +11,7 @@
+     username: root
+     #  连接数据库的密码
+     # password: 13541362
+-    password: 19971019
++    password: abc720904
+     #password: bupt20427
+ 
+     # 使用druid数据源
+Index: src/main/java/hci/artedu/pojo/UserExample.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hci.artedu.pojo;\n\nimport java.util.ArrayList;\nimport java.util.List;\n\npublic class UserExample {\n    protected String orderByClause;\n\n    protected boolean distinct;\n\n    protected List<Criteria> oredCriteria;\n\n    public UserExample() {\n        oredCriteria = new ArrayList<>();\n    }\n\n    public void setOrderByClause(String orderByClause) {\n        this.orderByClause = orderByClause;\n    }\n\n    public String getOrderByClause() {\n        return orderByClause;\n    }\n\n    public void setDistinct(boolean distinct) {\n        this.distinct = distinct;\n    }\n\n    public boolean isDistinct() {\n        return distinct;\n    }\n\n    public List<Criteria> getOredCriteria() {\n        return oredCriteria;\n    }\n\n    public void or(Criteria criteria) {\n        oredCriteria.add(criteria);\n    }\n\n    public Criteria or() {\n        Criteria criteria = createCriteriaInternal();\n        oredCriteria.add(criteria);\n        return criteria;\n    }\n\n    public Criteria createCriteria() {\n        Criteria criteria = createCriteriaInternal();\n        if (oredCriteria.size() == 0) {\n            oredCriteria.add(criteria);\n        }\n        return criteria;\n    }\n\n    protected Criteria createCriteriaInternal() {\n        Criteria criteria = new Criteria();\n        return criteria;\n    }\n\n    public void clear() {\n        oredCriteria.clear();\n        orderByClause = null;\n        distinct = false;\n    }\n\n    protected abstract static class GeneratedCriteria {\n        protected List<Criterion> criteria;\n\n        protected GeneratedCriteria() {\n            super();\n            criteria = new ArrayList<>();\n        }\n\n        public boolean isValid() {\n            return criteria.size() > 0;\n        }\n\n        public List<Criterion> getAllCriteria() {\n            return criteria;\n        }\n\n        public List<Criterion> getCriteria() {\n            return criteria;\n        }\n\n        protected void addCriterion(String condition) {\n            if (condition == null) {\n                throw new RuntimeException(\"Value for condition cannot be null\");\n            }\n            criteria.add(new Criterion(condition));\n        }\n\n        protected void addCriterion(String condition, Object value, String property) {\n            if (value == null) {\n                throw new RuntimeException(\"Value for \" + property + \" cannot be null\");\n            }\n            criteria.add(new Criterion(condition, value));\n        }\n\n        protected void addCriterion(String condition, Object value1, Object value2, String property) {\n            if (value1 == null || value2 == null) {\n                throw new RuntimeException(\"Between values for \" + property + \" cannot be null\");\n            }\n            criteria.add(new Criterion(condition, value1, value2));\n        }\n\n        public Criteria andIdIsNull() {\n            addCriterion(\"id is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andIdIsNotNull() {\n            addCriterion(\"id is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andIdEqualTo(Integer value) {\n            addCriterion(\"id =\", value, \"id\");\n            return (Criteria) this;\n        }\n\n        public Criteria andIdNotEqualTo(Integer value) {\n            addCriterion(\"id <>\", value, \"id\");\n            return (Criteria) this;\n        }\n\n        public Criteria andIdGreaterThan(Integer value) {\n            addCriterion(\"id >\", value, \"id\");\n            return (Criteria) this;\n        }\n\n        public Criteria andIdGreaterThanOrEqualTo(Integer value) {\n            addCriterion(\"id >=\", value, \"id\");\n            return (Criteria) this;\n        }\n\n        public Criteria andIdLessThan(Integer value) {\n            addCriterion(\"id <\", value, \"id\");\n            return (Criteria) this;\n        }\n\n        public Criteria andIdLessThanOrEqualTo(Integer value) {\n            addCriterion(\"id <=\", value, \"id\");\n            return (Criteria) this;\n        }\n\n        public Criteria andIdIn(List<Integer> values) {\n            addCriterion(\"id in\", values, \"id\");\n            return (Criteria) this;\n        }\n\n        public Criteria andIdNotIn(List<Integer> values) {\n            addCriterion(\"id not in\", values, \"id\");\n            return (Criteria) this;\n        }\n\n        public Criteria andIdBetween(Integer value1, Integer value2) {\n            addCriterion(\"id between\", value1, value2, \"id\");\n            return (Criteria) this;\n        }\n\n        public Criteria andIdNotBetween(Integer value1, Integer value2) {\n            addCriterion(\"id not between\", value1, value2, \"id\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameIsNull() {\n            addCriterion(\"userName is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameIsNotNull() {\n            addCriterion(\"userName is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameEqualTo(String value) {\n            addCriterion(\"userName =\", value, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameNotEqualTo(String value) {\n            addCriterion(\"userName <>\", value, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameGreaterThan(String value) {\n            addCriterion(\"userName >\", value, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameGreaterThanOrEqualTo(String value) {\n            addCriterion(\"userName >=\", value, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameLessThan(String value) {\n            addCriterion(\"userName <\", value, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameLessThanOrEqualTo(String value) {\n            addCriterion(\"userName <=\", value, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameLike(String value) {\n            addCriterion(\"userName like\", value, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameNotLike(String value) {\n            addCriterion(\"userName not like\", value, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameIn(List<String> values) {\n            addCriterion(\"userName in\", values, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameNotIn(List<String> values) {\n            addCriterion(\"userName not in\", values, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameBetween(String value1, String value2) {\n            addCriterion(\"userName between\", value1, value2, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNameNotBetween(String value1, String value2) {\n            addCriterion(\"userName not between\", value1, value2, \"userName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderIsNull() {\n            addCriterion(\"userGender is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderIsNotNull() {\n            addCriterion(\"userGender is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderEqualTo(Boolean value) {\n            addCriterion(\"userGender =\", value, \"userGender\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderNotEqualTo(Boolean value) {\n            addCriterion(\"userGender <>\", value, \"userGender\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderGreaterThan(Boolean value) {\n            addCriterion(\"userGender >\", value, \"userGender\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderGreaterThanOrEqualTo(Boolean value) {\n            addCriterion(\"userGender >=\", value, \"userGender\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderLessThan(Boolean value) {\n            addCriterion(\"userGender <\", value, \"userGender\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderLessThanOrEqualTo(Boolean value) {\n            addCriterion(\"userGender <=\", value, \"userGender\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderIn(List<Boolean> values) {\n            addCriterion(\"userGender in\", values, \"userGender\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderNotIn(List<Boolean> values) {\n            addCriterion(\"userGender not in\", values, \"userGender\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderBetween(Boolean value1, Boolean value2) {\n            addCriterion(\"userGender between\", value1, value2, \"userGender\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserGenderNotBetween(Boolean value1, Boolean value2) {\n            addCriterion(\"userGender not between\", value1, value2, \"userGender\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailIsNull() {\n            addCriterion(\"userEmail is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailIsNotNull() {\n            addCriterion(\"userEmail is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailEqualTo(String value) {\n            addCriterion(\"userEmail =\", value, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailNotEqualTo(String value) {\n            addCriterion(\"userEmail <>\", value, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailGreaterThan(String value) {\n            addCriterion(\"userEmail >\", value, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailGreaterThanOrEqualTo(String value) {\n            addCriterion(\"userEmail >=\", value, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailLessThan(String value) {\n            addCriterion(\"userEmail <\", value, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailLessThanOrEqualTo(String value) {\n            addCriterion(\"userEmail <=\", value, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailLike(String value) {\n            addCriterion(\"userEmail like\", value, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailNotLike(String value) {\n            addCriterion(\"userEmail not like\", value, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailIn(List<String> values) {\n            addCriterion(\"userEmail in\", values, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailNotIn(List<String> values) {\n            addCriterion(\"userEmail not in\", values, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailBetween(String value1, String value2) {\n            addCriterion(\"userEmail between\", value1, value2, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserEmailNotBetween(String value1, String value2) {\n            addCriterion(\"userEmail not between\", value1, value2, \"userEmail\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordIsNull() {\n            addCriterion(\"userPassword is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordIsNotNull() {\n            addCriterion(\"userPassword is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordEqualTo(String value) {\n            addCriterion(\"userPassword =\", value, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordNotEqualTo(String value) {\n            addCriterion(\"userPassword <>\", value, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordGreaterThan(String value) {\n            addCriterion(\"userPassword >\", value, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordGreaterThanOrEqualTo(String value) {\n            addCriterion(\"userPassword >=\", value, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordLessThan(String value) {\n            addCriterion(\"userPassword <\", value, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordLessThanOrEqualTo(String value) {\n            addCriterion(\"userPassword <=\", value, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordLike(String value) {\n            addCriterion(\"userPassword like\", value, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordNotLike(String value) {\n            addCriterion(\"userPassword not like\", value, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordIn(List<String> values) {\n            addCriterion(\"userPassword in\", values, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordNotIn(List<String> values) {\n            addCriterion(\"userPassword not in\", values, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordBetween(String value1, String value2) {\n            addCriterion(\"userPassword between\", value1, value2, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserPasswordNotBetween(String value1, String value2) {\n            addCriterion(\"userPassword not between\", value1, value2, \"userPassword\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeIsNull() {\n            addCriterion(\"userType is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeIsNotNull() {\n            addCriterion(\"userType is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeEqualTo(Integer value) {\n            addCriterion(\"userType =\", value, \"userType\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeNotEqualTo(Integer value) {\n            addCriterion(\"userType <>\", value, \"userType\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeGreaterThan(Integer value) {\n            addCriterion(\"userType >\", value, \"userType\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeGreaterThanOrEqualTo(Integer value) {\n            addCriterion(\"userType >=\", value, \"userType\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeLessThan(Integer value) {\n            addCriterion(\"userType <\", value, \"userType\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeLessThanOrEqualTo(Integer value) {\n            addCriterion(\"userType <=\", value, \"userType\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeIn(List<Integer> values) {\n            addCriterion(\"userType in\", values, \"userType\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeNotIn(List<Integer> values) {\n            addCriterion(\"userType not in\", values, \"userType\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeBetween(Integer value1, Integer value2) {\n            addCriterion(\"userType between\", value1, value2, \"userType\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserTypeNotBetween(Integer value1, Integer value2) {\n            addCriterion(\"userType not between\", value1, value2, \"userType\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberIsNull() {\n            addCriterion(\"userNumber is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberIsNotNull() {\n            addCriterion(\"userNumber is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberEqualTo(String value) {\n            addCriterion(\"userNumber =\", value, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberNotEqualTo(String value) {\n            addCriterion(\"userNumber <>\", value, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberGreaterThan(String value) {\n            addCriterion(\"userNumber >\", value, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberGreaterThanOrEqualTo(String value) {\n            addCriterion(\"userNumber >=\", value, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberLessThan(String value) {\n            addCriterion(\"userNumber <\", value, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberLessThanOrEqualTo(String value) {\n            addCriterion(\"userNumber <=\", value, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberLike(String value) {\n            addCriterion(\"userNumber like\", value, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberNotLike(String value) {\n            addCriterion(\"userNumber not like\", value, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberIn(List<String> values) {\n            addCriterion(\"userNumber in\", values, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberNotIn(List<String> values) {\n            addCriterion(\"userNumber not in\", values, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberBetween(String value1, String value2) {\n            addCriterion(\"userNumber between\", value1, value2, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserNumberNotBetween(String value1, String value2) {\n            addCriterion(\"userNumber not between\", value1, value2, \"userNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameIsNull() {\n            addCriterion(\"schoolName is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameIsNotNull() {\n            addCriterion(\"schoolName is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameEqualTo(String value) {\n            addCriterion(\"schoolName =\", value, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameNotEqualTo(String value) {\n            addCriterion(\"schoolName <>\", value, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameGreaterThan(String value) {\n            addCriterion(\"schoolName >\", value, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameGreaterThanOrEqualTo(String value) {\n            addCriterion(\"schoolName >=\", value, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameLessThan(String value) {\n            addCriterion(\"schoolName <\", value, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameLessThanOrEqualTo(String value) {\n            addCriterion(\"schoolName <=\", value, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameLike(String value) {\n            addCriterion(\"schoolName like\", value, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameNotLike(String value) {\n            addCriterion(\"schoolName not like\", value, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameIn(List<String> values) {\n            addCriterion(\"schoolName in\", values, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameNotIn(List<String> values) {\n            addCriterion(\"schoolName not in\", values, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameBetween(String value1, String value2) {\n            addCriterion(\"schoolName between\", value1, value2, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andSchoolNameNotBetween(String value1, String value2) {\n            addCriterion(\"schoolName not between\", value1, value2, \"schoolName\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameIsNull() {\n            addCriterion(\"className is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameIsNotNull() {\n            addCriterion(\"className is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameEqualTo(String value) {\n            addCriterion(\"className =\", value, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameNotEqualTo(String value) {\n            addCriterion(\"className <>\", value, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameGreaterThan(String value) {\n            addCriterion(\"className >\", value, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameGreaterThanOrEqualTo(String value) {\n            addCriterion(\"className >=\", value, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameLessThan(String value) {\n            addCriterion(\"className <\", value, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameLessThanOrEqualTo(String value) {\n            addCriterion(\"className <=\", value, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameLike(String value) {\n            addCriterion(\"className like\", value, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameNotLike(String value) {\n            addCriterion(\"className not like\", value, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameIn(List<String> values) {\n            addCriterion(\"className in\", values, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameNotIn(List<String> values) {\n            addCriterion(\"className not in\", values, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameBetween(String value1, String value2) {\n            addCriterion(\"className between\", value1, value2, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andClassNameNotBetween(String value1, String value2) {\n            addCriterion(\"className not between\", value1, value2, \"className\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryIsNull() {\n            addCriterion(\"levelOfMastery is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryIsNotNull() {\n            addCriterion(\"levelOfMastery is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryEqualTo(Integer value) {\n            addCriterion(\"levelOfMastery =\", value, \"levelOfMastery\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryNotEqualTo(Integer value) {\n            addCriterion(\"levelOfMastery <>\", value, \"levelOfMastery\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryGreaterThan(Integer value) {\n            addCriterion(\"levelOfMastery >\", value, \"levelOfMastery\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryGreaterThanOrEqualTo(Integer value) {\n            addCriterion(\"levelOfMastery >=\", value, \"levelOfMastery\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryLessThan(Integer value) {\n            addCriterion(\"levelOfMastery <\", value, \"levelOfMastery\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryLessThanOrEqualTo(Integer value) {\n            addCriterion(\"levelOfMastery <=\", value, \"levelOfMastery\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryIn(List<Integer> values) {\n            addCriterion(\"levelOfMastery in\", values, \"levelOfMastery\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryNotIn(List<Integer> values) {\n            addCriterion(\"levelOfMastery not in\", values, \"levelOfMastery\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryBetween(Integer value1, Integer value2) {\n            addCriterion(\"levelOfMastery between\", value1, value2, \"levelOfMastery\");\n            return (Criteria) this;\n        }\n\n        public Criteria andLevelOfMasteryNotBetween(Integer value1, Integer value2) {\n            addCriterion(\"levelOfMastery not between\", value1, value2, \"levelOfMastery\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeIsNull() {\n            addCriterion(\"userAttitude is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeIsNotNull() {\n            addCriterion(\"userAttitude is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeEqualTo(Integer value) {\n            addCriterion(\"userAttitude =\", value, \"userAttitude\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeNotEqualTo(Integer value) {\n            addCriterion(\"userAttitude <>\", value, \"userAttitude\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeGreaterThan(Integer value) {\n            addCriterion(\"userAttitude >\", value, \"userAttitude\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeGreaterThanOrEqualTo(Integer value) {\n            addCriterion(\"userAttitude >=\", value, \"userAttitude\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeLessThan(Integer value) {\n            addCriterion(\"userAttitude <\", value, \"userAttitude\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeLessThanOrEqualTo(Integer value) {\n            addCriterion(\"userAttitude <=\", value, \"userAttitude\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeIn(List<Integer> values) {\n            addCriterion(\"userAttitude in\", values, \"userAttitude\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeNotIn(List<Integer> values) {\n            addCriterion(\"userAttitude not in\", values, \"userAttitude\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeBetween(Integer value1, Integer value2) {\n            addCriterion(\"userAttitude between\", value1, value2, \"userAttitude\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserAttitudeNotBetween(Integer value1, Integer value2) {\n            addCriterion(\"userAttitude not between\", value1, value2, \"userAttitude\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreIsNull() {\n            addCriterion(\"userScore is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreIsNotNull() {\n            addCriterion(\"userScore is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreEqualTo(Double value) {\n            addCriterion(\"userScore =\", value, \"userScore\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreNotEqualTo(Double value) {\n            addCriterion(\"userScore <>\", value, \"userScore\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreGreaterThan(Double value) {\n            addCriterion(\"userScore >\", value, \"userScore\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreGreaterThanOrEqualTo(Double value) {\n            addCriterion(\"userScore >=\", value, \"userScore\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreLessThan(Double value) {\n            addCriterion(\"userScore <\", value, \"userScore\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreLessThanOrEqualTo(Double value) {\n            addCriterion(\"userScore <=\", value, \"userScore\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreIn(List<Double> values) {\n            addCriterion(\"userScore in\", values, \"userScore\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreNotIn(List<Double> values) {\n            addCriterion(\"userScore not in\", values, \"userScore\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreBetween(Double value1, Double value2) {\n            addCriterion(\"userScore between\", value1, value2, \"userScore\");\n            return (Criteria) this;\n        }\n\n        public Criteria andUserScoreNotBetween(Double value1, Double value2) {\n            addCriterion(\"userScore not between\", value1, value2, \"userScore\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberIsNull() {\n            addCriterion(\"phoneNumber is null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberIsNotNull() {\n            addCriterion(\"phoneNumber is not null\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberEqualTo(String value) {\n            addCriterion(\"phoneNumber =\", value, \"phoneNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberNotEqualTo(String value) {\n            addCriterion(\"phoneNumber <>\", value, \"phoneNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberGreaterThan(String value) {\n            addCriterion(\"phoneNumber >\", value, \"phoneNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberGreaterThanOrEqualTo(String value) {\n            addCriterion(\"phoneNumber >=\", value, \"phoneNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberLessThan(String value) {\n            addCriterion(\"phoneNumber <\", value, \"phoneNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberLessThanOrEqualTo(String value) {\n            addCriterion(\"phoneNumber <=\", value, \"phoneNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberLike(String value) {\n            addCriterion(\"phoneNumber like\", value, \"phoneNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberNotLike(String value) {\n            addCriterion(\"phoneNumber not like\", value, \"phoneNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberIn(List<String> values) {\n            addCriterion(\"phoneNumber in\", values, \"phoneNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberNotIn(List<String> values) {\n            addCriterion(\"phoneNumber not in\", values, \"phoneNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberBetween(String value1, String value2) {\n            addCriterion(\"phoneNumber between\", value1, value2, \"phoneNumber\");\n            return (Criteria) this;\n        }\n\n        public Criteria andPhoneNumberNotBetween(String value1, String value2) {\n            addCriterion(\"phoneNumber not between\", value1, value2, \"phoneNumber\");\n            return (Criteria) this;\n        }\n    }\n\n    /**\n     */\n    public static class Criteria extends GeneratedCriteria {\n        protected Criteria() {\n            super();\n        }\n    }\n\n    public static class Criterion {\n        private String condition;\n\n        private Object value;\n\n        private Object secondValue;\n\n        private boolean noValue;\n\n        private boolean singleValue;\n\n        private boolean betweenValue;\n\n        private boolean listValue;\n\n        private String typeHandler;\n\n        public String getCondition() {\n            return condition;\n        }\n\n        public Object getValue() {\n            return value;\n        }\n\n        public Object getSecondValue() {\n            return secondValue;\n        }\n\n        public boolean isNoValue() {\n            return noValue;\n        }\n\n        public boolean isSingleValue() {\n            return singleValue;\n        }\n\n        public boolean isBetweenValue() {\n            return betweenValue;\n        }\n\n        public boolean isListValue() {\n            return listValue;\n        }\n\n        public String getTypeHandler() {\n            return typeHandler;\n        }\n\n        protected Criterion(String condition) {\n            super();\n            this.condition = condition;\n            this.typeHandler = null;\n            this.noValue = true;\n        }\n\n        protected Criterion(String condition, Object value, String typeHandler) {\n            super();\n            this.condition = condition;\n            this.value = value;\n            this.typeHandler = typeHandler;\n            if (value instanceof List<?>) {\n                this.listValue = true;\n            } else {\n                this.singleValue = true;\n            }\n        }\n\n        protected Criterion(String condition, Object value) {\n            this(condition, value, null);\n        }\n\n        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {\n            super();\n            this.condition = condition;\n            this.value = value;\n            this.secondValue = secondValue;\n            this.typeHandler = typeHandler;\n            this.betweenValue = true;\n        }\n\n        protected Criterion(String condition, Object value, Object secondValue) {\n            this(condition, value, secondValue, null);\n        }\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/hci/artedu/pojo/UserExample.java	(revision bc9aa15b68235da2e7f4f27686a4320712d5b358)
++++ src/main/java/hci/artedu/pojo/UserExample.java	(date 1605257483422)
+@@ -644,62 +644,52 @@
+             return (Criteria) this;
+         }
+ 
+-        public Criteria andClassNameEqualTo(String value) {
++        public Criteria andClassNameEqualTo(Integer value) {
+             addCriterion("className =", value, "className");
+             return (Criteria) this;
+         }
+ 
+-        public Criteria andClassNameNotEqualTo(String value) {
++        public Criteria andClassNameNotEqualTo(Integer value) {
+             addCriterion("className <>", value, "className");
+             return (Criteria) this;
+         }
+ 
+-        public Criteria andClassNameGreaterThan(String value) {
++        public Criteria andClassNameGreaterThan(Integer value) {
+             addCriterion("className >", value, "className");
+             return (Criteria) this;
+         }
+ 
+-        public Criteria andClassNameGreaterThanOrEqualTo(String value) {
++        public Criteria andClassNameGreaterThanOrEqualTo(Integer value) {
+             addCriterion("className >=", value, "className");
+             return (Criteria) this;
+         }
+ 
+-        public Criteria andClassNameLessThan(String value) {
++        public Criteria andClassNameLessThan(Integer value) {
+             addCriterion("className <", value, "className");
+             return (Criteria) this;
+         }
+ 
+-        public Criteria andClassNameLessThanOrEqualTo(String value) {
++        public Criteria andClassNameLessThanOrEqualTo(Integer value) {
+             addCriterion("className <=", value, "className");
+             return (Criteria) this;
+         }
+ 
+-        public Criteria andClassNameLike(String value) {
+-            addCriterion("className like", value, "className");
+-            return (Criteria) this;
+-        }
+-
+-        public Criteria andClassNameNotLike(String value) {
+-            addCriterion("className not like", value, "className");
+-            return (Criteria) this;
+-        }
+-
+-        public Criteria andClassNameIn(List<String> values) {
++        public Criteria andClassNameIn(List<Integer> values) {
+             addCriterion("className in", values, "className");
+             return (Criteria) this;
+         }
+ 
+-        public Criteria andClassNameNotIn(List<String> values) {
++        public Criteria andClassNameNotIn(List<Integer> values) {
+             addCriterion("className not in", values, "className");
+             return (Criteria) this;
+         }
+ 
+-        public Criteria andClassNameBetween(String value1, String value2) {
++        public Criteria andClassNameBetween(Integer value1, Integer value2) {
+             addCriterion("className between", value1, value2, "className");
+             return (Criteria) this;
+         }
+ 
+-        public Criteria andClassNameNotBetween(String value1, String value2) {
++        public Criteria andClassNameNotBetween(Integer value1, Integer value2) {
+             addCriterion("className not between", value1, value2, "className");
+             return (Criteria) this;
+         }
+Index: src/main/resources/mybatis/mapper/UserMapper.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\n<mapper namespace=\"hci.artedu.dao.UserMapper\">\n  <resultMap id=\"BaseResultMap\" type=\"hci.artedu.pojo.User\">\n    <id column=\"id\" jdbcType=\"INTEGER\" property=\"id\" />\n    <result column=\"userName\" jdbcType=\"VARCHAR\" property=\"userName\" />\n    <result column=\"userGender\" jdbcType=\"BOOLEAN\" property=\"userGender\" />\n    <result column=\"userEmail\" jdbcType=\"VARCHAR\" property=\"userEmail\" />\n    <result column=\"userPassword\" jdbcType=\"VARCHAR\" property=\"userPassword\" />\n    <result column=\"userType\" jdbcType=\"INTEGER\" property=\"userType\" />\n    <result column=\"userNumber\" jdbcType=\"VARCHAR\" property=\"userNumber\" />\n    <result column=\"schoolName\" jdbcType=\"VARCHAR\" property=\"schoolName\" />\n    <result column=\"className\" jdbcType=\"VARCHAR\" property=\"className\" />\n    <result column=\"levelOfMastery\" jdbcType=\"INTEGER\" property=\"levelOfMastery\" />\n    <result column=\"userAttitude\" jdbcType=\"INTEGER\" property=\"userAttitude\" />\n    <result column=\"userScore\" jdbcType=\"FLOAT\" property=\"userScore\" />\n  </resultMap>\n  <sql id=\"Example_Where_Clause\">\n    <where>\n      <foreach collection=\"oredCriteria\" item=\"criteria\" separator=\"or\">\n        <if test=\"criteria.valid\">\n          <trim prefix=\"(\" prefixOverrides=\"and\" suffix=\")\">\n            <foreach collection=\"criteria.criteria\" item=\"criterion\">\n              <choose>\n                <when test=\"criterion.noValue\">\n                  and ${criterion.condition}\n                </when>\n                <when test=\"criterion.singleValue\">\n                  and ${criterion.condition} #{criterion.value}\n                </when>\n                <when test=\"criterion.betweenValue\">\n                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}\n                </when>\n                <when test=\"criterion.listValue\">\n                  and ${criterion.condition}\n                  <foreach close=\")\" collection=\"criterion.value\" item=\"listItem\" open=\"(\" separator=\",\">\n                    #{listItem}\n                  </foreach>\n                </when>\n              </choose>\n            </foreach>\n          </trim>\n        </if>\n      </foreach>\n    </where>\n  </sql>\n  <sql id=\"Update_By_Example_Where_Clause\">\n    <where>\n      <foreach collection=\"example.oredCriteria\" item=\"criteria\" separator=\"or\">\n        <if test=\"criteria.valid\">\n          <trim prefix=\"(\" prefixOverrides=\"and\" suffix=\")\">\n            <foreach collection=\"criteria.criteria\" item=\"criterion\">\n              <choose>\n                <when test=\"criterion.noValue\">\n                  and ${criterion.condition}\n                </when>\n                <when test=\"criterion.singleValue\">\n                  and ${criterion.condition} #{criterion.value}\n                </when>\n                <when test=\"criterion.betweenValue\">\n                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}\n                </when>\n                <when test=\"criterion.listValue\">\n                  and ${criterion.condition}\n                  <foreach close=\")\" collection=\"criterion.value\" item=\"listItem\" open=\"(\" separator=\",\">\n                    #{listItem}\n                  </foreach>\n                </when>\n              </choose>\n            </foreach>\n          </trim>\n        </if>\n      </foreach>\n    </where>\n  </sql>\n  <sql id=\"Base_Column_List\">\n    id, userName, userGender, userEmail, userPassword, userType, userNumber, schoolName, \n    className, levelOfMastery, userAttitude, userScore\n  </sql>\n  <select id=\"selectByExample\" parameterType=\"hci.artedu.pojo.UserExample\" resultMap=\"BaseResultMap\">\n    select\n    <if test=\"distinct\">\n      distinct\n    </if>\n    <include refid=\"Base_Column_List\" />\n    from user\n    <if test=\"_parameter != null\">\n      <include refid=\"Example_Where_Clause\" />\n    </if>\n    <if test=\"orderByClause != null\">\n      order by ${orderByClause}\n    </if>\n  </select>\n  <select id=\"selectByPrimaryKey\" parameterType=\"java.lang.Integer\" resultMap=\"BaseResultMap\">\n    select \n    <include refid=\"Base_Column_List\" />\n    from user\n    where id = #{id,jdbcType=INTEGER}\n  </select>\n  <delete id=\"deleteByPrimaryKey\" parameterType=\"java.lang.Integer\">\n    delete from user\n    where id = #{id,jdbcType=INTEGER}\n  </delete>\n  <delete id=\"deleteByExample\" parameterType=\"hci.artedu.pojo.UserExample\">\n    delete from user\n    <if test=\"_parameter != null\">\n      <include refid=\"Example_Where_Clause\" />\n    </if>\n  </delete>\n  <insert id=\"insert\" keyColumn=\"id\" keyProperty=\"id\" parameterType=\"hci.artedu.pojo.User\" useGeneratedKeys=\"true\">\n    insert into user (userName, userGender, userEmail, \n      userPassword, userType, userNumber, \n      schoolName, className, levelOfMastery, \n      userAttitude, userScore)\n    values (#{userName,jdbcType=VARCHAR}, #{userGender,jdbcType=BOOLEAN}, #{userEmail,jdbcType=VARCHAR}, \n      #{userPassword,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{userNumber,jdbcType=VARCHAR}, \n      #{schoolName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{levelOfMastery,jdbcType=INTEGER}, \n      #{userAttitude,jdbcType=INTEGER}, #{userScore,jdbcType=FLOAT})\n  </insert>\n  <insert id=\"insertSelective\" keyColumn=\"id\" keyProperty=\"id\" parameterType=\"hci.artedu.pojo.User\" useGeneratedKeys=\"true\">\n    insert into user\n    <trim prefix=\"(\" suffix=\")\" suffixOverrides=\",\">\n      <if test=\"userName != null\">\n        userName,\n      </if>\n      <if test=\"userGender != null\">\n        userGender,\n      </if>\n      <if test=\"userEmail != null\">\n        userEmail,\n      </if>\n      <if test=\"userPassword != null\">\n        userPassword,\n      </if>\n      <if test=\"userType != null\">\n        userType,\n      </if>\n      <if test=\"userNumber != null\">\n        userNumber,\n      </if>\n      <if test=\"schoolName != null\">\n        schoolName,\n      </if>\n      <if test=\"className != null\">\n        className,\n      </if>\n      <if test=\"levelOfMastery != null\">\n        levelOfMastery,\n      </if>\n      <if test=\"userAttitude != null\">\n        userAttitude,\n      </if>\n      <if test=\"userScore != null\">\n        userScore,\n      </if>\n    </trim>\n    <trim prefix=\"values (\" suffix=\")\" suffixOverrides=\",\">\n      <if test=\"userName != null\">\n        #{userName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userGender != null\">\n        #{userGender,jdbcType=BOOLEAN},\n      </if>\n      <if test=\"userEmail != null\">\n        #{userEmail,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userPassword != null\">\n        #{userPassword,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userType != null\">\n        #{userType,jdbcType=INTEGER},\n      </if>\n      <if test=\"userNumber != null\">\n        #{userNumber,jdbcType=VARCHAR},\n      </if>\n      <if test=\"schoolName != null\">\n        #{schoolName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"className != null\">\n        #{className,jdbcType=VARCHAR},\n      </if>\n      <if test=\"levelOfMastery != null\">\n        #{levelOfMastery,jdbcType=INTEGER},\n      </if>\n      <if test=\"userAttitude != null\">\n        #{userAttitude,jdbcType=INTEGER},\n      </if>\n      <if test=\"userScore != null\">\n        #{userScore,jdbcType=FLOAT},\n      </if>\n    </trim>\n  </insert>\n  <select id=\"countByExample\" parameterType=\"hci.artedu.pojo.UserExample\" resultType=\"java.lang.Long\">\n    select count(*) from user\n    <if test=\"_parameter != null\">\n      <include refid=\"Example_Where_Clause\" />\n    </if>\n  </select>\n  <update id=\"updateByExampleSelective\" parameterType=\"map\">\n    update user\n    <set>\n      <if test=\"record.id != null\">\n        id = #{record.id,jdbcType=INTEGER},\n      </if>\n      <if test=\"record.userName != null\">\n        userName = #{record.userName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.userGender != null\">\n        userGender = #{record.userGender,jdbcType=BOOLEAN},\n      </if>\n      <if test=\"record.userEmail != null\">\n        userEmail = #{record.userEmail,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.userPassword != null\">\n        userPassword = #{record.userPassword,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.userType != null\">\n        userType = #{record.userType,jdbcType=INTEGER},\n      </if>\n      <if test=\"record.userNumber != null\">\n        userNumber = #{record.userNumber,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.schoolName != null\">\n        schoolName = #{record.schoolName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.className != null\">\n        className = #{record.className,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.levelOfMastery != null\">\n        levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},\n      </if>\n      <if test=\"record.userAttitude != null\">\n        userAttitude = #{record.userAttitude,jdbcType=INTEGER},\n      </if>\n      <if test=\"record.userScore != null\">\n        userScore = #{record.userScore,jdbcType=FLOAT},\n      </if>\n    </set>\n    <if test=\"_parameter != null\">\n      <include refid=\"Update_By_Example_Where_Clause\" />\n    </if>\n  </update>\n  <update id=\"updateByExample\" parameterType=\"map\">\n    update user\n    set id = #{record.id,jdbcType=INTEGER},\n      userName = #{record.userName,jdbcType=VARCHAR},\n      userGender = #{record.userGender,jdbcType=BOOLEAN},\n      userEmail = #{record.userEmail,jdbcType=VARCHAR},\n      userPassword = #{record.userPassword,jdbcType=VARCHAR},\n      userType = #{record.userType,jdbcType=INTEGER},\n      userNumber = #{record.userNumber,jdbcType=VARCHAR},\n      schoolName = #{record.schoolName,jdbcType=VARCHAR},\n      className = #{record.className,jdbcType=VARCHAR},\n      levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},\n      userAttitude = #{record.userAttitude,jdbcType=INTEGER},\n      userScore = #{record.userScore,jdbcType=FLOAT}\n    <if test=\"_parameter != null\">\n      <include refid=\"Update_By_Example_Where_Clause\" />\n    </if>\n  </update>\n  <update id=\"updateByPrimaryKeySelective\" parameterType=\"hci.artedu.pojo.User\">\n    update user\n    <set>\n      <if test=\"userName != null\">\n        userName = #{userName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userGender != null\">\n        userGender = #{userGender,jdbcType=BOOLEAN},\n      </if>\n      <if test=\"userEmail != null\">\n        userEmail = #{userEmail,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userPassword != null\">\n        userPassword = #{userPassword,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userType != null\">\n        userType = #{userType,jdbcType=INTEGER},\n      </if>\n      <if test=\"userNumber != null\">\n        userNumber = #{userNumber,jdbcType=VARCHAR},\n      </if>\n      <if test=\"schoolName != null\">\n        schoolName = #{schoolName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"className != null\">\n        className = #{className,jdbcType=VARCHAR},\n      </if>\n      <if test=\"levelOfMastery != null\">\n        levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},\n      </if>\n      <if test=\"userAttitude != null\">\n        userAttitude = #{userAttitude,jdbcType=INTEGER},\n      </if>\n      <if test=\"userScore != null\">\n        userScore = #{userScore,jdbcType=FLOAT},\n      </if>\n    </set>\n    where id = #{id,jdbcType=INTEGER}\n  </update>\n  <update id=\"updateByPrimaryKey\" parameterType=\"hci.artedu.pojo.User\">\n    update user\n    set userName = #{userName,jdbcType=VARCHAR},\n      userGender = #{userGender,jdbcType=BOOLEAN},\n      userEmail = #{userEmail,jdbcType=VARCHAR},\n      userPassword = #{userPassword,jdbcType=VARCHAR},\n      userType = #{userType,jdbcType=INTEGER},\n      userNumber = #{userNumber,jdbcType=VARCHAR},\n      schoolName = #{schoolName,jdbcType=VARCHAR},\n      className = #{className,jdbcType=VARCHAR},\n      levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},\n      userAttitude = #{userAttitude,jdbcType=INTEGER},\n      userScore = #{userScore,jdbcType=FLOAT}\n    where id = #{id,jdbcType=INTEGER}\n  </update>\n</mapper>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/mybatis/mapper/UserMapper.xml	(revision bc9aa15b68235da2e7f4f27686a4320712d5b358)
++++ src/main/resources/mybatis/mapper/UserMapper.xml	(date 1605257483401)
+@@ -10,10 +10,11 @@
+     <result column="userType" jdbcType="INTEGER" property="userType" />
+     <result column="userNumber" jdbcType="VARCHAR" property="userNumber" />
+     <result column="schoolName" jdbcType="VARCHAR" property="schoolName" />
+-    <result column="className" jdbcType="VARCHAR" property="className" />
++    <result column="className" jdbcType="INTEGER" property="className" />
+     <result column="levelOfMastery" jdbcType="INTEGER" property="levelOfMastery" />
+     <result column="userAttitude" jdbcType="INTEGER" property="userAttitude" />
+     <result column="userScore" jdbcType="FLOAT" property="userScore" />
++    <result column="phoneNumber" jdbcType="VARCHAR" property="phoneNumber" />
+   </resultMap>
+   <sql id="Example_Where_Clause">
+     <where>
+@@ -75,7 +76,7 @@
+   </sql>
+   <sql id="Base_Column_List">
+     id, userName, userGender, userEmail, userPassword, userType, userNumber, schoolName, 
+-    className, levelOfMastery, userAttitude, userScore
++    className, levelOfMastery, userAttitude, userScore, phoneNumber
+   </sql>
+   <select id="selectByExample" parameterType="hci.artedu.pojo.UserExample" resultMap="BaseResultMap">
+     select
+@@ -111,11 +112,13 @@
+     insert into user (userName, userGender, userEmail, 
+       userPassword, userType, userNumber, 
+       schoolName, className, levelOfMastery, 
+-      userAttitude, userScore)
++      userAttitude, userScore, phoneNumber
++      )
+     values (#{userName,jdbcType=VARCHAR}, #{userGender,jdbcType=BOOLEAN}, #{userEmail,jdbcType=VARCHAR}, 
+       #{userPassword,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{userNumber,jdbcType=VARCHAR}, 
+-      #{schoolName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{levelOfMastery,jdbcType=INTEGER}, 
+-      #{userAttitude,jdbcType=INTEGER}, #{userScore,jdbcType=FLOAT})
++      #{schoolName,jdbcType=VARCHAR}, #{className,jdbcType=INTEGER}, #{levelOfMastery,jdbcType=INTEGER}, 
++      #{userAttitude,jdbcType=INTEGER}, #{userScore,jdbcType=FLOAT}, #{phoneNumber,jdbcType=VARCHAR}
++      )
+   </insert>
+   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.User" useGeneratedKeys="true">
+     insert into user
+@@ -152,6 +155,9 @@
+       </if>
+       <if test="userScore != null">
+         userScore,
++      </if>
++      <if test="phoneNumber != null">
++        phoneNumber,
+       </if>
+     </trim>
+     <trim prefix="values (" suffix=")" suffixOverrides=",">
+@@ -177,7 +183,7 @@
+         #{schoolName,jdbcType=VARCHAR},
+       </if>
+       <if test="className != null">
+-        #{className,jdbcType=VARCHAR},
++        #{className,jdbcType=INTEGER},
+       </if>
+       <if test="levelOfMastery != null">
+         #{levelOfMastery,jdbcType=INTEGER},
+@@ -188,6 +194,9 @@
+       <if test="userScore != null">
+         #{userScore,jdbcType=FLOAT},
+       </if>
++      <if test="phoneNumber != null">
++        #{phoneNumber,jdbcType=VARCHAR},
++      </if>
+     </trim>
+   </insert>
+   <select id="countByExample" parameterType="hci.artedu.pojo.UserExample" resultType="java.lang.Long">
+@@ -224,7 +233,7 @@
+         schoolName = #{record.schoolName,jdbcType=VARCHAR},
+       </if>
+       <if test="record.className != null">
+-        className = #{record.className,jdbcType=VARCHAR},
++        className = #{record.className,jdbcType=INTEGER},
+       </if>
+       <if test="record.levelOfMastery != null">
+         levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},
+@@ -234,6 +243,9 @@
+       </if>
+       <if test="record.userScore != null">
+         userScore = #{record.userScore,jdbcType=FLOAT},
++      </if>
++      <if test="record.phoneNumber != null">
++        phoneNumber = #{record.phoneNumber,jdbcType=VARCHAR},
+       </if>
+     </set>
+     <if test="_parameter != null">
+@@ -250,10 +262,11 @@
+       userType = #{record.userType,jdbcType=INTEGER},
+       userNumber = #{record.userNumber,jdbcType=VARCHAR},
+       schoolName = #{record.schoolName,jdbcType=VARCHAR},
+-      className = #{record.className,jdbcType=VARCHAR},
++      className = #{record.className,jdbcType=INTEGER},
+       levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},
+       userAttitude = #{record.userAttitude,jdbcType=INTEGER},
+-      userScore = #{record.userScore,jdbcType=FLOAT}
++      userScore = #{record.userScore,jdbcType=FLOAT},
++      phoneNumber = #{record.phoneNumber,jdbcType=VARCHAR}
+     <if test="_parameter != null">
+       <include refid="Update_By_Example_Where_Clause" />
+     </if>
+@@ -283,7 +296,7 @@
+         schoolName = #{schoolName,jdbcType=VARCHAR},
+       </if>
+       <if test="className != null">
+-        className = #{className,jdbcType=VARCHAR},
++        className = #{className,jdbcType=INTEGER},
+       </if>
+       <if test="levelOfMastery != null">
+         levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},
+@@ -294,6 +307,9 @@
+       <if test="userScore != null">
+         userScore = #{userScore,jdbcType=FLOAT},
+       </if>
++      <if test="phoneNumber != null">
++        phoneNumber = #{phoneNumber,jdbcType=VARCHAR},
++      </if>
+     </set>
+     where id = #{id,jdbcType=INTEGER}
+   </update>
+@@ -306,10 +322,11 @@
+       userType = #{userType,jdbcType=INTEGER},
+       userNumber = #{userNumber,jdbcType=VARCHAR},
+       schoolName = #{schoolName,jdbcType=VARCHAR},
+-      className = #{className,jdbcType=VARCHAR},
++      className = #{className,jdbcType=INTEGER},
+       levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},
+       userAttitude = #{userAttitude,jdbcType=INTEGER},
+-      userScore = #{userScore,jdbcType=FLOAT}
++      userScore = #{userScore,jdbcType=FLOAT},
++      phoneNumber = #{phoneNumber,jdbcType=VARCHAR}
+     where id = #{id,jdbcType=INTEGER}
+   </update>
+ </mapper>
+\ No newline at end of file
+Index: src/main/java/hci/artedu/pojo/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hci.artedu.pojo;\n\nimport java.io.Serializable;\n\nimport lombok.AllArgsConstructor;\nimport lombok.Data;\nimport lombok.NoArgsConstructor;\nimport org.springframework.stereotype.Component;\n\n/**\n * user\n * @author \n */\n@Data\n@Component\n@NoArgsConstructor\n@AllArgsConstructor\npublic class User implements Serializable {\n    private Integer id;\n\n    /**\n     * 姓名\n     */\n    private String userName;\n\n    /**\n     * 性别\n     */\n    private Boolean userGender;\n\n    /**\n     * 邮箱\n     */\n    private String userEmail;\n\n    /**\n     * 密码\n     */\n    private String userPassword;\n\n    /**\n     * 用户类型\n     */\n    private Integer userType;\n\n    /**\n     * 学号/工号\n     */\n    private String userNumber;\n\n    /**\n     * 学校名称\n     */\n    private String schoolName;\n\n    /**\n     * 班号\n     */\n    private String className;\n\n    /**\n     * 对素描的掌握程度\n     */\n    private Integer levelOfMastery;\n\n    /**\n     * 对素描课程态度\n     */\n    private Integer userAttitude;\n\n    /**\n     * 成绩\n     */\n    private Double userScore;\n\n    /**\n     * 手机号\n     */\n    private String phoneNumber;\n\n    private static final long serialVersionUID = 1L;\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/hci/artedu/pojo/User.java	(revision bc9aa15b68235da2e7f4f27686a4320712d5b358)
++++ src/main/java/hci/artedu/pojo/User.java	(date 1605257483423)
+@@ -1,20 +1,13 @@
+ package hci.artedu.pojo;
+ 
+ import java.io.Serializable;
+-
+-import lombok.AllArgsConstructor;
+ import lombok.Data;
+-import lombok.NoArgsConstructor;
+-import org.springframework.stereotype.Component;
+ 
+ /**
+  * user
+  * @author 
+  */
+ @Data
+-@Component
+-@NoArgsConstructor
+-@AllArgsConstructor
+ public class User implements Serializable {
+     private Integer id;
+ 
+@@ -56,7 +49,7 @@
+     /**
+      * 班号
+      */
+-    private String className;
++    private Integer className;
+ 
+     /**
+      * 对素描的掌握程度
+@@ -79,5 +72,4 @@
+     private String phoneNumber;
+ 
+     private static final long serialVersionUID = 1L;
+-
+ }
+\ No newline at end of file
+Index: target/classes/mybatis/mapper/UserMapper.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\n<mapper namespace=\"hci.artedu.dao.UserMapper\">\n  <resultMap id=\"BaseResultMap\" type=\"hci.artedu.pojo.User\">\n    <id column=\"id\" jdbcType=\"INTEGER\" property=\"id\" />\n    <result column=\"userName\" jdbcType=\"VARCHAR\" property=\"userName\" />\n    <result column=\"userGender\" jdbcType=\"BOOLEAN\" property=\"userGender\" />\n    <result column=\"userEmail\" jdbcType=\"VARCHAR\" property=\"userEmail\" />\n    <result column=\"userPassword\" jdbcType=\"VARCHAR\" property=\"userPassword\" />\n    <result column=\"userType\" jdbcType=\"INTEGER\" property=\"userType\" />\n    <result column=\"userNumber\" jdbcType=\"VARCHAR\" property=\"userNumber\" />\n    <result column=\"schoolName\" jdbcType=\"VARCHAR\" property=\"schoolName\" />\n    <result column=\"className\" jdbcType=\"VARCHAR\" property=\"className\" />\n    <result column=\"levelOfMastery\" jdbcType=\"INTEGER\" property=\"levelOfMastery\" />\n    <result column=\"userAttitude\" jdbcType=\"INTEGER\" property=\"userAttitude\" />\n    <result column=\"userScore\" jdbcType=\"FLOAT\" property=\"userScore\" />\n  </resultMap>\n  <sql id=\"Example_Where_Clause\">\n    <where>\n      <foreach collection=\"oredCriteria\" item=\"criteria\" separator=\"or\">\n        <if test=\"criteria.valid\">\n          <trim prefix=\"(\" prefixOverrides=\"and\" suffix=\")\">\n            <foreach collection=\"criteria.criteria\" item=\"criterion\">\n              <choose>\n                <when test=\"criterion.noValue\">\n                  and ${criterion.condition}\n                </when>\n                <when test=\"criterion.singleValue\">\n                  and ${criterion.condition} #{criterion.value}\n                </when>\n                <when test=\"criterion.betweenValue\">\n                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}\n                </when>\n                <when test=\"criterion.listValue\">\n                  and ${criterion.condition}\n                  <foreach close=\")\" collection=\"criterion.value\" item=\"listItem\" open=\"(\" separator=\",\">\n                    #{listItem}\n                  </foreach>\n                </when>\n              </choose>\n            </foreach>\n          </trim>\n        </if>\n      </foreach>\n    </where>\n  </sql>\n  <sql id=\"Update_By_Example_Where_Clause\">\n    <where>\n      <foreach collection=\"example.oredCriteria\" item=\"criteria\" separator=\"or\">\n        <if test=\"criteria.valid\">\n          <trim prefix=\"(\" prefixOverrides=\"and\" suffix=\")\">\n            <foreach collection=\"criteria.criteria\" item=\"criterion\">\n              <choose>\n                <when test=\"criterion.noValue\">\n                  and ${criterion.condition}\n                </when>\n                <when test=\"criterion.singleValue\">\n                  and ${criterion.condition} #{criterion.value}\n                </when>\n                <when test=\"criterion.betweenValue\">\n                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}\n                </when>\n                <when test=\"criterion.listValue\">\n                  and ${criterion.condition}\n                  <foreach close=\")\" collection=\"criterion.value\" item=\"listItem\" open=\"(\" separator=\",\">\n                    #{listItem}\n                  </foreach>\n                </when>\n              </choose>\n            </foreach>\n          </trim>\n        </if>\n      </foreach>\n    </where>\n  </sql>\n  <sql id=\"Base_Column_List\">\n    id, userName, userGender, userEmail, userPassword, userType, userNumber, schoolName, \n    className, levelOfMastery, userAttitude, userScore\n  </sql>\n  <select id=\"selectByExample\" parameterType=\"hci.artedu.pojo.UserExample\" resultMap=\"BaseResultMap\">\n    select\n    <if test=\"distinct\">\n      distinct\n    </if>\n    <include refid=\"Base_Column_List\" />\n    from user\n    <if test=\"_parameter != null\">\n      <include refid=\"Example_Where_Clause\" />\n    </if>\n    <if test=\"orderByClause != null\">\n      order by ${orderByClause}\n    </if>\n  </select>\n  <select id=\"selectByPrimaryKey\" parameterType=\"java.lang.Integer\" resultMap=\"BaseResultMap\">\n    select \n    <include refid=\"Base_Column_List\" />\n    from user\n    where id = #{id,jdbcType=INTEGER}\n  </select>\n  <delete id=\"deleteByPrimaryKey\" parameterType=\"java.lang.Integer\">\n    delete from user\n    where id = #{id,jdbcType=INTEGER}\n  </delete>\n  <delete id=\"deleteByExample\" parameterType=\"hci.artedu.pojo.UserExample\">\n    delete from user\n    <if test=\"_parameter != null\">\n      <include refid=\"Example_Where_Clause\" />\n    </if>\n  </delete>\n  <insert id=\"insert\" keyColumn=\"id\" keyProperty=\"id\" parameterType=\"hci.artedu.pojo.User\" useGeneratedKeys=\"true\">\n    insert into user (userName, userGender, userEmail, \n      userPassword, userType, userNumber, \n      schoolName, className, levelOfMastery, \n      userAttitude, userScore)\n    values (#{userName,jdbcType=VARCHAR}, #{userGender,jdbcType=BOOLEAN}, #{userEmail,jdbcType=VARCHAR}, \n      #{userPassword,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{userNumber,jdbcType=VARCHAR}, \n      #{schoolName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{levelOfMastery,jdbcType=INTEGER}, \n      #{userAttitude,jdbcType=INTEGER}, #{userScore,jdbcType=FLOAT})\n  </insert>\n  <insert id=\"insertSelective\" keyColumn=\"id\" keyProperty=\"id\" parameterType=\"hci.artedu.pojo.User\" useGeneratedKeys=\"true\">\n    insert into user\n    <trim prefix=\"(\" suffix=\")\" suffixOverrides=\",\">\n      <if test=\"userName != null\">\n        userName,\n      </if>\n      <if test=\"userGender != null\">\n        userGender,\n      </if>\n      <if test=\"userEmail != null\">\n        userEmail,\n      </if>\n      <if test=\"userPassword != null\">\n        userPassword,\n      </if>\n      <if test=\"userType != null\">\n        userType,\n      </if>\n      <if test=\"userNumber != null\">\n        userNumber,\n      </if>\n      <if test=\"schoolName != null\">\n        schoolName,\n      </if>\n      <if test=\"className != null\">\n        className,\n      </if>\n      <if test=\"levelOfMastery != null\">\n        levelOfMastery,\n      </if>\n      <if test=\"userAttitude != null\">\n        userAttitude,\n      </if>\n      <if test=\"userScore != null\">\n        userScore,\n      </if>\n    </trim>\n    <trim prefix=\"values (\" suffix=\")\" suffixOverrides=\",\">\n      <if test=\"userName != null\">\n        #{userName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userGender != null\">\n        #{userGender,jdbcType=BOOLEAN},\n      </if>\n      <if test=\"userEmail != null\">\n        #{userEmail,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userPassword != null\">\n        #{userPassword,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userType != null\">\n        #{userType,jdbcType=INTEGER},\n      </if>\n      <if test=\"userNumber != null\">\n        #{userNumber,jdbcType=VARCHAR},\n      </if>\n      <if test=\"schoolName != null\">\n        #{schoolName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"className != null\">\n        #{className,jdbcType=VARCHAR},\n      </if>\n      <if test=\"levelOfMastery != null\">\n        #{levelOfMastery,jdbcType=INTEGER},\n      </if>\n      <if test=\"userAttitude != null\">\n        #{userAttitude,jdbcType=INTEGER},\n      </if>\n      <if test=\"userScore != null\">\n        #{userScore,jdbcType=FLOAT},\n      </if>\n    </trim>\n  </insert>\n  <select id=\"countByExample\" parameterType=\"hci.artedu.pojo.UserExample\" resultType=\"java.lang.Long\">\n    select count(*) from user\n    <if test=\"_parameter != null\">\n      <include refid=\"Example_Where_Clause\" />\n    </if>\n  </select>\n  <update id=\"updateByExampleSelective\" parameterType=\"map\">\n    update user\n    <set>\n      <if test=\"record.id != null\">\n        id = #{record.id,jdbcType=INTEGER},\n      </if>\n      <if test=\"record.userName != null\">\n        userName = #{record.userName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.userGender != null\">\n        userGender = #{record.userGender,jdbcType=BOOLEAN},\n      </if>\n      <if test=\"record.userEmail != null\">\n        userEmail = #{record.userEmail,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.userPassword != null\">\n        userPassword = #{record.userPassword,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.userType != null\">\n        userType = #{record.userType,jdbcType=INTEGER},\n      </if>\n      <if test=\"record.userNumber != null\">\n        userNumber = #{record.userNumber,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.schoolName != null\">\n        schoolName = #{record.schoolName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.className != null\">\n        className = #{record.className,jdbcType=VARCHAR},\n      </if>\n      <if test=\"record.levelOfMastery != null\">\n        levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},\n      </if>\n      <if test=\"record.userAttitude != null\">\n        userAttitude = #{record.userAttitude,jdbcType=INTEGER},\n      </if>\n      <if test=\"record.userScore != null\">\n        userScore = #{record.userScore,jdbcType=FLOAT},\n      </if>\n    </set>\n    <if test=\"_parameter != null\">\n      <include refid=\"Update_By_Example_Where_Clause\" />\n    </if>\n  </update>\n  <update id=\"updateByExample\" parameterType=\"map\">\n    update user\n    set id = #{record.id,jdbcType=INTEGER},\n      userName = #{record.userName,jdbcType=VARCHAR},\n      userGender = #{record.userGender,jdbcType=BOOLEAN},\n      userEmail = #{record.userEmail,jdbcType=VARCHAR},\n      userPassword = #{record.userPassword,jdbcType=VARCHAR},\n      userType = #{record.userType,jdbcType=INTEGER},\n      userNumber = #{record.userNumber,jdbcType=VARCHAR},\n      schoolName = #{record.schoolName,jdbcType=VARCHAR},\n      className = #{record.className,jdbcType=VARCHAR},\n      levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},\n      userAttitude = #{record.userAttitude,jdbcType=INTEGER},\n      userScore = #{record.userScore,jdbcType=FLOAT}\n    <if test=\"_parameter != null\">\n      <include refid=\"Update_By_Example_Where_Clause\" />\n    </if>\n  </update>\n  <update id=\"updateByPrimaryKeySelective\" parameterType=\"hci.artedu.pojo.User\">\n    update user\n    <set>\n      <if test=\"userName != null\">\n        userName = #{userName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userGender != null\">\n        userGender = #{userGender,jdbcType=BOOLEAN},\n      </if>\n      <if test=\"userEmail != null\">\n        userEmail = #{userEmail,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userPassword != null\">\n        userPassword = #{userPassword,jdbcType=VARCHAR},\n      </if>\n      <if test=\"userType != null\">\n        userType = #{userType,jdbcType=INTEGER},\n      </if>\n      <if test=\"userNumber != null\">\n        userNumber = #{userNumber,jdbcType=VARCHAR},\n      </if>\n      <if test=\"schoolName != null\">\n        schoolName = #{schoolName,jdbcType=VARCHAR},\n      </if>\n      <if test=\"className != null\">\n        className = #{className,jdbcType=VARCHAR},\n      </if>\n      <if test=\"levelOfMastery != null\">\n        levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},\n      </if>\n      <if test=\"userAttitude != null\">\n        userAttitude = #{userAttitude,jdbcType=INTEGER},\n      </if>\n      <if test=\"userScore != null\">\n        userScore = #{userScore,jdbcType=FLOAT},\n      </if>\n    </set>\n    where id = #{id,jdbcType=INTEGER}\n  </update>\n  <update id=\"updateByPrimaryKey\" parameterType=\"hci.artedu.pojo.User\">\n    update user\n    set userName = #{userName,jdbcType=VARCHAR},\n      userGender = #{userGender,jdbcType=BOOLEAN},\n      userEmail = #{userEmail,jdbcType=VARCHAR},\n      userPassword = #{userPassword,jdbcType=VARCHAR},\n      userType = #{userType,jdbcType=INTEGER},\n      userNumber = #{userNumber,jdbcType=VARCHAR},\n      schoolName = #{schoolName,jdbcType=VARCHAR},\n      className = #{className,jdbcType=VARCHAR},\n      levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},\n      userAttitude = #{userAttitude,jdbcType=INTEGER},\n      userScore = #{userScore,jdbcType=FLOAT}\n    where id = #{id,jdbcType=INTEGER}\n  </update>\n</mapper>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- target/classes/mybatis/mapper/UserMapper.xml	(revision bc9aa15b68235da2e7f4f27686a4320712d5b358)
++++ target/classes/mybatis/mapper/UserMapper.xml	(date 1605260627400)
+@@ -10,10 +10,11 @@
+     <result column="userType" jdbcType="INTEGER" property="userType" />
+     <result column="userNumber" jdbcType="VARCHAR" property="userNumber" />
+     <result column="schoolName" jdbcType="VARCHAR" property="schoolName" />
+-    <result column="className" jdbcType="VARCHAR" property="className" />
++    <result column="className" jdbcType="INTEGER" property="className" />
+     <result column="levelOfMastery" jdbcType="INTEGER" property="levelOfMastery" />
+     <result column="userAttitude" jdbcType="INTEGER" property="userAttitude" />
+     <result column="userScore" jdbcType="FLOAT" property="userScore" />
++    <result column="phoneNumber" jdbcType="VARCHAR" property="phoneNumber" />
+   </resultMap>
+   <sql id="Example_Where_Clause">
+     <where>
+@@ -75,7 +76,7 @@
+   </sql>
+   <sql id="Base_Column_List">
+     id, userName, userGender, userEmail, userPassword, userType, userNumber, schoolName, 
+-    className, levelOfMastery, userAttitude, userScore
++    className, levelOfMastery, userAttitude, userScore, phoneNumber
+   </sql>
+   <select id="selectByExample" parameterType="hci.artedu.pojo.UserExample" resultMap="BaseResultMap">
+     select
+@@ -111,11 +112,13 @@
+     insert into user (userName, userGender, userEmail, 
+       userPassword, userType, userNumber, 
+       schoolName, className, levelOfMastery, 
+-      userAttitude, userScore)
++      userAttitude, userScore, phoneNumber
++      )
+     values (#{userName,jdbcType=VARCHAR}, #{userGender,jdbcType=BOOLEAN}, #{userEmail,jdbcType=VARCHAR}, 
+       #{userPassword,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{userNumber,jdbcType=VARCHAR}, 
+-      #{schoolName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{levelOfMastery,jdbcType=INTEGER}, 
+-      #{userAttitude,jdbcType=INTEGER}, #{userScore,jdbcType=FLOAT})
++      #{schoolName,jdbcType=VARCHAR}, #{className,jdbcType=INTEGER}, #{levelOfMastery,jdbcType=INTEGER}, 
++      #{userAttitude,jdbcType=INTEGER}, #{userScore,jdbcType=FLOAT}, #{phoneNumber,jdbcType=VARCHAR}
++      )
+   </insert>
+   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hci.artedu.pojo.User" useGeneratedKeys="true">
+     insert into user
+@@ -152,6 +155,9 @@
+       </if>
+       <if test="userScore != null">
+         userScore,
++      </if>
++      <if test="phoneNumber != null">
++        phoneNumber,
+       </if>
+     </trim>
+     <trim prefix="values (" suffix=")" suffixOverrides=",">
+@@ -177,7 +183,7 @@
+         #{schoolName,jdbcType=VARCHAR},
+       </if>
+       <if test="className != null">
+-        #{className,jdbcType=VARCHAR},
++        #{className,jdbcType=INTEGER},
+       </if>
+       <if test="levelOfMastery != null">
+         #{levelOfMastery,jdbcType=INTEGER},
+@@ -188,6 +194,9 @@
+       <if test="userScore != null">
+         #{userScore,jdbcType=FLOAT},
+       </if>
++      <if test="phoneNumber != null">
++        #{phoneNumber,jdbcType=VARCHAR},
++      </if>
+     </trim>
+   </insert>
+   <select id="countByExample" parameterType="hci.artedu.pojo.UserExample" resultType="java.lang.Long">
+@@ -224,7 +233,7 @@
+         schoolName = #{record.schoolName,jdbcType=VARCHAR},
+       </if>
+       <if test="record.className != null">
+-        className = #{record.className,jdbcType=VARCHAR},
++        className = #{record.className,jdbcType=INTEGER},
+       </if>
+       <if test="record.levelOfMastery != null">
+         levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},
+@@ -234,6 +243,9 @@
+       </if>
+       <if test="record.userScore != null">
+         userScore = #{record.userScore,jdbcType=FLOAT},
++      </if>
++      <if test="record.phoneNumber != null">
++        phoneNumber = #{record.phoneNumber,jdbcType=VARCHAR},
+       </if>
+     </set>
+     <if test="_parameter != null">
+@@ -250,10 +262,11 @@
+       userType = #{record.userType,jdbcType=INTEGER},
+       userNumber = #{record.userNumber,jdbcType=VARCHAR},
+       schoolName = #{record.schoolName,jdbcType=VARCHAR},
+-      className = #{record.className,jdbcType=VARCHAR},
++      className = #{record.className,jdbcType=INTEGER},
+       levelOfMastery = #{record.levelOfMastery,jdbcType=INTEGER},
+       userAttitude = #{record.userAttitude,jdbcType=INTEGER},
+-      userScore = #{record.userScore,jdbcType=FLOAT}
++      userScore = #{record.userScore,jdbcType=FLOAT},
++      phoneNumber = #{record.phoneNumber,jdbcType=VARCHAR}
+     <if test="_parameter != null">
+       <include refid="Update_By_Example_Where_Clause" />
+     </if>
+@@ -283,7 +296,7 @@
+         schoolName = #{schoolName,jdbcType=VARCHAR},
+       </if>
+       <if test="className != null">
+-        className = #{className,jdbcType=VARCHAR},
++        className = #{className,jdbcType=INTEGER},
+       </if>
+       <if test="levelOfMastery != null">
+         levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},
+@@ -294,6 +307,9 @@
+       <if test="userScore != null">
+         userScore = #{userScore,jdbcType=FLOAT},
+       </if>
++      <if test="phoneNumber != null">
++        phoneNumber = #{phoneNumber,jdbcType=VARCHAR},
++      </if>
+     </set>
+     where id = #{id,jdbcType=INTEGER}
+   </update>
+@@ -306,10 +322,11 @@
+       userType = #{userType,jdbcType=INTEGER},
+       userNumber = #{userNumber,jdbcType=VARCHAR},
+       schoolName = #{schoolName,jdbcType=VARCHAR},
+-      className = #{className,jdbcType=VARCHAR},
++      className = #{className,jdbcType=INTEGER},
+       levelOfMastery = #{levelOfMastery,jdbcType=INTEGER},
+       userAttitude = #{userAttitude,jdbcType=INTEGER},
+-      userScore = #{userScore,jdbcType=FLOAT}
++      userScore = #{userScore,jdbcType=FLOAT},
++      phoneNumber = #{phoneNumber,jdbcType=VARCHAR}
+     where id = #{id,jdbcType=INTEGER}
+   </update>
+ </mapper>
+\ No newline at end of file

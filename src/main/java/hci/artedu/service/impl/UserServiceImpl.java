@@ -10,11 +10,15 @@ import hci.artedu.pojo.Userloginlog;
 import hci.artedu.service.TokenService;
 import hci.artedu.service.UserService;
 import hci.artedu.utils.DateUtils;
+import org.apache.catalina.Server;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -37,12 +41,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserloginlogMapper userloginlogMapper;
 
-
-
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
 
     @Override
-    public ServerResponse<HashMap<String,Object>> login(User user, HttpSession session){
+    public ServerResponse<HashMap<String, Object>> login(User user, HttpSession session) {
         /**
          * @Author leaf
          * @Description 登录
@@ -84,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
-    public ServerResponse<String> register(User user, HttpServletRequest request,String verifyCode){
+    public ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode, String phoneNo) {
 
         /**
          * @Author jiaxin
@@ -98,16 +102,20 @@ public class UserServiceImpl implements UserService {
         UserExample example = new UserExample();
         example.createCriteria().andUserNameEqualTo(user.getUserName());
         List<User> uList = userMapper.selectByExample(example);
-        JSONObject json = (JSONObject)request.getSession().getAttribute("verifyCode");
+
+        /*JSONObject json = (JSONObject)request.getSession().getAttribute("verifyCode");
         if(!json.getString("verifyCode").equals(verifyCode)){
             return ServerResponse.createBySuccessMessage("验证码错误");
         }
         if((System.currentTimeMillis() - json.getLong("createTime")) > 1000 * 60 * 5) {
             return ServerResponse.createBySuccessMessage("验证码过期");
+        }*/
+
+        if (check(verifyCode, phoneNo).getStatus() == 1) {
+            return ServerResponse.createByErrorMessage("验证码校对失败");
         }
 
-        if(!uList.isEmpty())
-        {
+        if (!uList.isEmpty()) {
             return ServerResponse.createByErrorMessage("昵称重复，注册失败");
         }
         //若不存在
@@ -124,8 +132,21 @@ public class UserServiceImpl implements UserService {
         return userMapper.insert(user);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ServerResponse<String> check(String verifyCode, String phoneNo) {
+        if (redisTemplate.hasKey(phoneNo)) {
+            if (!verifyCode.matches(redisTemplate.opsForValue().get(phoneNo))) {
+                System.out.println(redisTemplate.opsForValue().get(phoneNo));
+                return ServerResponse.createByErrorMessage("验证码错误");
+            }
+        } else {
+            return ServerResponse.createByErrorMessage("未发送验证码");
+        }
+        return ServerResponse.createBySuccessMessage("验证码校验成功");
+    }
+
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
-    public ServerResponse<String> delete(User user){
+    public ServerResponse<String> delete(User user) {
         UserExample example = new UserExample();
         example.createCriteria().andUserNameEqualTo(user.getUserName());
 //        List<User> uList = userMapper.selectByExample(example);
@@ -150,7 +171,13 @@ public class UserServiceImpl implements UserService {
         return ServerResponse.createBySuccess("获取成功",userList);
 
     }
+    public ServerResponse<User> getUser(int id)
+    {
 
+        User user = userMapper.selectByPrimaryKey(id);
+        return ServerResponse.createBySuccess("获取成功",user);
+
+    }
 
     @Override
     public User findUserById(int id)

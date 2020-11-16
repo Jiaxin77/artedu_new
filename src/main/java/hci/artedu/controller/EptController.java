@@ -203,7 +203,7 @@ public class EptController {
          * @Param [userid, expId]
          * @return hci.artedu.common.ServerResponse<java.lang.Boolean>
          **/
-        ServerResponse<Boolean> response = eptService.beginExperiment((int)userId,(int)expId);
+        ServerResponse<Boolean> response = eptService.beginExperiment(userId, expId);
         return response;
 
     }
@@ -270,7 +270,7 @@ public class EptController {
 
     }
 
-    @PostMapping("/getClassInfo")
+    @GetMapping("/getClassInfo")
     public ServerResponse<HashMap<String, Object>> getClassInfo(int classNumber)
     {
         /**
@@ -285,7 +285,7 @@ public class EptController {
 
     }
 
-    @PostMapping("/getSchoolInfo")
+    @GetMapping("/getSchoolInfo")
     public ServerResponse<HashMap<String, Object>> getSchoolInfo(String SchoolName)
     {
         /**
@@ -315,7 +315,7 @@ public class EptController {
 
     }
 
-    @PostMapping("/getStudentScore")
+    @GetMapping("/getStudentScore")
     public ServerResponse<HashMap<String, Object>> getStudentScore(String studentName)
     {
         /**
@@ -331,7 +331,7 @@ public class EptController {
     }
 
     @PostMapping("/postAnswer")
-    public ServerResponse<String> postAnswer(int userId, int eptId, int progress, Date time, Date startTime, Date endTime, Date date)
+    public ServerResponse<String> postAnswer(Integer userId, Integer eptId, Integer progress, Date time, Date startTime, Date endTime, Date date)
     {
         /**
          * TODO
@@ -346,7 +346,7 @@ public class EptController {
     }
 
     @PostMapping("/getRank")
-    public ServerResponse<HashMap<String, Object>> getRank(int userId, int id)
+    public ServerResponse<HashMap<String, Object>> getRank(Integer userId, int id)
     {
         /**
          * TODO
@@ -361,7 +361,7 @@ public class EptController {
     }
 
     @PostMapping("/postFeedback")
-    public ServerResponse<String> postFeedback( int id, int difficultLevel, int exerciseLevel, int masteryLevel)
+    public ServerResponse<String> postFeedback(Integer id, Integer difficultLevel, Integer exerciseLevel, Integer masteryLevel)
     {
         /**
          * TODO
@@ -376,7 +376,7 @@ public class EptController {
     }
 
     @PostMapping("/getScore")
-    public ServerResponse<HashMap<String, Object>> getScore(int userId, int eptId)
+    public ServerResponse<HashMap<String, Object>> getScore(Integer userId, Integer eptId)
     {
         /**
          * TODO
@@ -390,7 +390,7 @@ public class EptController {
 
     }
 
-    @PostMapping("/getReport")
+    @GetMapping("/getReport")
     public ServerResponse<HashMap<String, Object>> getReport(int userId)
     {
         /**
@@ -409,7 +409,7 @@ public class EptController {
     @PostMapping("/postUserStageNum")
     public ServerResponse<Boolean> postUserStageNum(Integer userId, Integer eptId, Integer stageNum)
     {
-        ServerResponse<Boolean> response = eptService.postUserStageNum((int)userId,(int)eptId,(int)stageNum);
+        ServerResponse<Boolean> response = eptService.postUserStageNum(userId, eptId, stageNum);
         return response;
     }
 

@@ -5,6 +5,7 @@ import hci.artedu.pojo.User;
 import hci.artedu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,14 +35,13 @@ public class UserController {
 
     /**
      * 注册
+     *
      * @param user
      * @return
      */
     @PostMapping("/register")
-    public ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode){
-
-
-        ServerResponse<String> response = userService.register(user, request, verifyCode);
+    public ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode, String phoneNo) {
+        ServerResponse<String> response = userService.register(user, request, verifyCode, phoneNo);
         return response;
     }
 
@@ -64,6 +64,12 @@ public class UserController {
     public ServerResponse<List<User>> getAllUser()
     {
         return userService.getAllUser();
+    }
+
+    @GetMapping("/getUser")
+    public ServerResponse<User> getUser(Integer id)
+    {
+        return userService.getUser(id);
     }
 
     @PostMapping("/logout")
