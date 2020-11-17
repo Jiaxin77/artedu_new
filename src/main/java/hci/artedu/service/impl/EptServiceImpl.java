@@ -660,7 +660,9 @@ public class EptServiceImpl implements EptService {
                 }
             }
         }
+        DecimalFormat df   = new DecimalFormat("######0.00");
         double malePercent = male / userList.size();
+        malePercent = Double.parseDouble(df.format(malePercent));
         double femalePercent = female / userList.size();
         averAttitude0 = maleAttitude0 * malePercent + femaleAttitude0 * femalePercent;
         averAttitude1 = maleAttitude1 * malePercent + femaleAttitude1 * femalePercent;
@@ -828,8 +830,6 @@ public class EptServiceImpl implements EptService {
                     maxSteps[i] = u.getStageNum();
                 }
             }
-//            System.out.println(maxSteps[i]);
-//            System.out.println(steps[i]);
             DecimalFormat df   = new DecimalFormat("######0.00");
 //            hashMap.put("eptScore", df.format(avg_score));
             stepPercent[i] = maxSteps[i]/steps[i];
@@ -975,8 +975,11 @@ public class EptServiceImpl implements EptService {
                     }
                 }
             }
+            DecimalFormat df   = new DecimalFormat("######0.00");
             double malePercent = male / userList.size();
+            malePercent = Double.parseDouble(df.format(malePercent));
             double femalePercent = female / userList.size();
+            femalePercent = Double.parseDouble(df.format(femalePercent));
             averAttitude0 = maleAttitude0 * malePercent + femaleAttitude0 * femalePercent;
             averAttitude1 = maleAttitude1 * malePercent + femaleAttitude1 * femalePercent;
             averAttitude2 = maleAttitude2 * malePercent + femaleAttitude2 * femalePercent;
@@ -1162,8 +1165,11 @@ public class EptServiceImpl implements EptService {
                 }
             }
         }
+        DecimalFormat df   = new DecimalFormat("######0.00");
         double malePercent = male / userList.size();
+        malePercent = Double.parseDouble(df.format(malePercent));
         double femalePercent = female / userList.size();
+        femalePercent = Double.parseDouble(df.format(femalePercent));
         averAttitude0 = maleAttitude0 * malePercent + femaleAttitude0 * femalePercent;
         averAttitude1 = maleAttitude1 * malePercent + femaleAttitude1 * femalePercent;
         averAttitude2 = maleAttitude2 * malePercent + femaleAttitude2 * femalePercent;
@@ -1554,7 +1560,9 @@ public class EptServiceImpl implements EptService {
                     maxSteps[i] = u.getStageNum();
                 }
             }
+            DecimalFormat df   = new DecimalFormat("######0.00");
             stepPercent[i] = maxSteps[i]/steps[i];
+            stepPercent[i]= Double.parseDouble(df.format(stepPercent[i]));
         }
         HashMap<String, Object> res = new HashMap<>();
         res.put("eptTimeMin", eptTimeMin);
