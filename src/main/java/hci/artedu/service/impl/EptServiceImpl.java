@@ -1404,7 +1404,7 @@ public class EptServiceImpl implements EptService {
     }
 
     @Override
-    public ServerResponse<ArrayList<Object>> getScore(int userId) {
+    public ServerResponse<ArrayList<Object>> getScore(Integer userNumber) {
        /**
         * @Author jiaxin
         * @Description 获取某用户的各实验分数//TODO
@@ -1413,6 +1413,21 @@ public class EptServiceImpl implements EptService {
         * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
         **/
 
+       //定位到哪位同学
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria1 = userExample.createCriteria();
+        criteria1.andUserNumberEqualTo(userNumber);
+        List<User> userList = userMapper.selectByExample(userExample);
+        User user;
+
+        if(userList.size()!=0)
+        {
+            user = userList.get(0);
+        }
+        else
+        {
+            return ServerResponse.createByErrorMessage("学号错误，未找到该用户");
+        }
        //实验ID列表
         ExperimentExample eptExample = new ExperimentExample();
         eptExample.setDistinct(false);
@@ -1424,7 +1439,7 @@ public class EptServiceImpl implements EptService {
             hashMap.put("eptName", ept.getEptName());
             UserprocessExample userprocessExample = new UserprocessExample();
             UserprocessExample.Criteria criteria = userprocessExample.createCriteria();
-            criteria.andUserIdEqualTo(userId);
+            criteria.andUserIdEqualTo(user.getId());
             criteria.andEptIdEqualTo(ept.getId());
             List<Userprocess> userprocessList = userprocessMapper.selectByExample(userprocessExample);
             double avg_score = 0;

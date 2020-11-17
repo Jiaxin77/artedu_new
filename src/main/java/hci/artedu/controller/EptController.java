@@ -376,16 +376,16 @@ public class EptController {
     }
 
     @GetMapping("/getScore")
-    public ServerResponse<ArrayList<Object>> getScore(Integer userId)
+    public ServerResponse<ArrayList<Object>> getScore(int userNumber)
     {
         /**
          * TODO
          * @return hci.artedu.common.ServerResponse<java.util.HashMap<java.lang.String,java.lang.Object>>
-         * @Description 获取实验成绩
-         * @Author Leaf
+         * @Description 获取实验成绩 通过学号获取
+         * @Author Jiaxin
          * @Date 2020/11/11 4:52 下午
          **/
-        ServerResponse<ArrayList<Object>> response = eptService.getScore(userId);
+        ServerResponse<ArrayList<Object>> response = eptService.getScore(userNumber);
         return response;
 
     }

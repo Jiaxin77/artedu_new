@@ -55,7 +55,7 @@ public interface EptService {
 
     ServerResponse<String> postFeedback(int id, int difficultLevel, int exerciseLevel, int masteryLevel);
 
-    ServerResponse<ArrayList<Object>> getScore(int userId);
+    ServerResponse<ArrayList<Object>> getScore(Integer userNumber);
 
     ServerResponse<HashMap<String, Object>> getReport(int userId);
 

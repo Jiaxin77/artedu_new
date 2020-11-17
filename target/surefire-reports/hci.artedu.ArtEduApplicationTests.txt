@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: hci.artedu.ArtEduApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.074 s - in hci.artedu.ArtEduApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.771 s - in hci.artedu.ArtEduApplicationTests
