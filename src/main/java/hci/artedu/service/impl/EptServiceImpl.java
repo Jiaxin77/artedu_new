@@ -830,7 +830,10 @@ public class EptServiceImpl implements EptService {
             }
 //            System.out.println(maxSteps[i]);
 //            System.out.println(steps[i]);
+            DecimalFormat df   = new DecimalFormat("######0.00");
+//            hashMap.put("eptScore", df.format(avg_score));
             stepPercent[i] = maxSteps[i]/steps[i];
+            stepPercent[i] = Double.parseDouble(df.format(stepPercent[i]));
 //            System.out.println(stepPercent[i]);
         }
 
