@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)//增加事务回滚
-    public ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode, String phoneNo) {
+    public ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode) {
 
         /**
          * @Author jiaxin
@@ -110,17 +110,22 @@ public class UserServiceImpl implements UserService {
         if((System.currentTimeMillis() - json.getLong("createTime")) > 1000 * 60 * 5) {
             return ServerResponse.createBySuccessMessage("验证码过期");
         }*/
-
-        if (check(verifyCode, phoneNo).getStatus() == 1) {
-            return ServerResponse.createByErrorMessage("验证码校对失败");
+        if (redisTemplate.hasKey(user.getPhoneNumber())) {
+            if (!verifyCode.matches(redisTemplate.opsForValue().get(user.getPhoneNumber()))) {
+//                System.out.println(redisTemplate.opsForValue().get(phoneNo));
+                return ServerResponse.createByErrorMessage("验证码错误");
+            }
+        } else {
+            return ServerResponse.createByErrorMessage("未发送验证码");
         }
+
+//        if (check(verifyCode, phoneNo).getStatus() == 1) {
+//            return ServerResponse.createByErrorMessage("验证码校对失败");
+//        }
 
         if (!uList.isEmpty()) {
             return ServerResponse.createByErrorMessage("昵称重复，注册失败");
         }
-        //若不存在
-        //User newUser = new User(userid,username,password,0);
-        //存数据库
         user.setUserPassword(encoder.encode(user.getUserPassword()));
 
         userMapper.insert(user);

@@ -40,8 +40,8 @@ public class UserController {
      * @return
      */
     @PostMapping("/register")
-    public ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode, String phoneNo) {
-        ServerResponse<String> response = userService.register(user, request, verifyCode, phoneNo);
+    public ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode) {
+        ServerResponse<String> response = userService.register(user, request, verifyCode);
         return response;
     }
 
