@@ -134,6 +134,12 @@ public class EptServiceImpl implements EptService {
          **/
 
         Experiment experiment = experimentMapper.selectByPrimaryKey(eptId);
+
+        //更新浏览次数
+        experiment.setScanNum(experiment.getScanNum()+1);
+        experimentMapper.updateByPrimaryKey(experiment);
+
+
         HashMap<String,Object> eptInfo = new HashMap<String, Object>();
         eptInfo.put("eptId",experiment.getId());
         eptInfo.put("eptName",experiment.getEptName());
@@ -145,6 +151,9 @@ public class EptServiceImpl implements EptService {
         eptInfo.put("knowledgePoint",experiment.getKnowledgePoint());
         eptInfo.put("scanNum",experiment.getScanNum());
         eptInfo.put("coverPic",experiment.getCoverPic());
+
+
+
 
         //获取步骤图
         ExperimentstepExample experimentstepExample = new ExperimentstepExample();
