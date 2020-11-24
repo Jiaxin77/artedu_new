@@ -71,5 +71,10 @@ public class User implements Serializable {
      */
     private String phoneNumber;
 
+    /**
+     * 用户当前ip
+     */
+    private String ip;
+
     private static final long serialVersionUID = 1L;
 }
