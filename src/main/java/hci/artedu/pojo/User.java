@@ -39,7 +39,7 @@ public class User implements Serializable {
     /**
      * 学号/工号
      */
-    private Integer userNumber;
+    private String userNumber;
 
     /**
      * 学校名称
