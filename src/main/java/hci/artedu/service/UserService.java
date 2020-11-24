@@ -24,4 +24,6 @@ public interface UserService {
     ServerResponse<String> logout(int uid, HttpSession session);
     int insertLoginLog(int uid);
     void insertLogoutLog(int uid) throws ParseException;
+
+    int checkGuestIP(String ip);
 }

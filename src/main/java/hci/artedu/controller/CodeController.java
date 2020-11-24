@@ -73,7 +73,7 @@ public class CodeController {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    @RequestMapping("/code/{phone}")
+    @GetMapping("/code/{phone}")
     @ResponseBody
     public ServerResponse<String> codeSend(@PathVariable("phone") String phone) {
         String code = redisTemplate.opsForValue().get(phone);

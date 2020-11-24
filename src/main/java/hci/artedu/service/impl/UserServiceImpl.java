@@ -102,7 +102,9 @@ public class UserServiceImpl implements UserService {
         UserExample example = new UserExample();
         example.createCriteria().andUserNameEqualTo(user.getUserName());
         List<User> uList = userMapper.selectByExample(example);
-
+        if (!uList.isEmpty()) {
+            return ServerResponse.createByErrorMessage("昵称重复，注册失败");
+        }
         /*JSONObject json = (JSONObject)request.getSession().getAttribute("verifyCode");
         if(!json.getString("verifyCode").equals(verifyCode)){
             return ServerResponse.createBySuccessMessage("验证码错误");
@@ -112,25 +114,28 @@ public class UserServiceImpl implements UserService {
         }*/
         if (redisTemplate.hasKey(user.getPhoneNumber())) {
             if (!verifyCode.matches(redisTemplate.opsForValue().get(user.getPhoneNumber()))) {
-//                System.out.println(redisTemplate.opsForValue().get(phoneNo));
                 return ServerResponse.createByErrorMessage("验证码错误");
             }
         } else {
             return ServerResponse.createByErrorMessage("未发送验证码");
         }
 
-//        if (check(verifyCode, phoneNo).getStatus() == 1) {
-//            return ServerResponse.createByErrorMessage("验证码校对失败");
-//        }
-
-        if (!uList.isEmpty()) {
-            return ServerResponse.createByErrorMessage("昵称重复，注册失败");
+        UserExample example2 = new UserExample();
+        example2.createCriteria().andIpEqualTo(user.getIp());
+        List<User> uList2 = userMapper.selectByExample(example2);
+        if (uList2.size() == 0 || user.getIp() == null) {
+            user.setUserPassword(encoder.encode(user.getUserPassword()));
+            userMapper.insert(user);
+            return ServerResponse.createBySuccessMessage("新用户注册成功");
+        } else {
+            user.setIp(uList2.get(0).getIp());
+            user.setId(uList2.get(0).getId());
+            user.setUserPassword(encoder.encode(user.getUserPassword()));
+            userMapper.updateByPrimaryKeySelective(user);
+            return ServerResponse.createBySuccessMessage("游客注册成功");
         }
-        user.setUserPassword(encoder.encode(user.getUserPassword()));
 
-        userMapper.insert(user);
 
-        return ServerResponse.createBySuccessMessage("注册成功");
     }
 
     public int add(User user) {
@@ -272,6 +277,29 @@ public class UserServiceImpl implements UserService {
 //        }
 
 
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public int checkGuestIP(String ip) {
+        /**
+         * @Author myz
+         * @Description 记录访问游客的ip地址
+         * @Date 18:00 上午 2020/11/24
+         * @Param [ip] 游客ip地址
+         * @return int userid
+         **/
+        UserExample example = new UserExample();
+        example.createCriteria().andIpEqualTo(ip);
+        List<User> userList = userMapper.selectByExample(example);
+        if (userList.size() == 0) {
+            User user = new User();
+            user.setIp(ip);
+            userMapper.insert(user);
+            return userMapper.selectByExample(example).get(0).getId();
+        } else {
+            return userList.get(0).getId();
+        }
     }
 
 /*

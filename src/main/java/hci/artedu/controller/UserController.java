@@ -22,12 +22,13 @@ public class UserController {
 
     /**
      * 登录
+     *
      * @param user
      * @return user信息
      */
     @PostMapping("/login")
-    public ServerResponse<HashMap<String,Object>>  login(User user, HttpSession session){
-        ServerResponse<HashMap<String,Object>> response = userService.login(user,session);
+    public ServerResponse<HashMap<String, Object>> login(User user, HttpSession session) {
+        ServerResponse<HashMap<String, Object>> response = userService.login(user, session);
 
         return response;
     }
@@ -43,6 +44,17 @@ public class UserController {
     public ServerResponse<String> register(User user, HttpServletRequest request, String verifyCode) {
         ServerResponse<String> response = userService.register(user, request, verifyCode);
         return response;
+    }
+
+    /**
+     * 注册
+     *
+     * @param ip
+     * @return
+     */
+    @PostMapping("/checkGuestIP/{ip}")
+    public ServerResponse<String> checkGuestIP(@PathVariable("ip") String ip) {
+        return ServerResponse.createBySuccessMessage(userService.checkGuestIP(ip) + "");
     }
 
     @PostMapping("/add")
@@ -61,20 +73,17 @@ public class UserController {
     }
 
     @GetMapping("/getAllUser")
-    public ServerResponse<List<User>> getAllUser()
-    {
+    public ServerResponse<List<User>> getAllUser() {
         return userService.getAllUser();
     }
 
     @GetMapping("/getUser")
-    public ServerResponse<User> getUser(Integer id)
-    {
+    public ServerResponse<User> getUser(Integer id) {
         return userService.getUser(id);
     }
 
     @PostMapping("/logout")
-    public ServerResponse<String> logout(int uid,HttpSession session)
-    {
-        return userService.logout(uid,session);
+    public ServerResponse<String> logout(int uid, HttpSession session) {
+        return userService.logout(uid, session);
     }
 }
