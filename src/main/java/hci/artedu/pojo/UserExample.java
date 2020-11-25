@@ -504,62 +504,52 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andUserNumberEqualTo(String value) {
+        public Criteria andUserNumberEqualTo(Integer value) {
             addCriterion("userNumber =", value, "userNumber");
             return (Criteria) this;
         }
 
-        public Criteria andUserNumberNotEqualTo(String value) {
+        public Criteria andUserNumberNotEqualTo(Integer value) {
             addCriterion("userNumber <>", value, "userNumber");
             return (Criteria) this;
         }
 
-        public Criteria andUserNumberGreaterThan(String value) {
+        public Criteria andUserNumberGreaterThan(Integer value) {
             addCriterion("userNumber >", value, "userNumber");
             return (Criteria) this;
         }
 
-        public Criteria andUserNumberGreaterThanOrEqualTo(String value) {
+        public Criteria andUserNumberGreaterThanOrEqualTo(Integer value) {
             addCriterion("userNumber >=", value, "userNumber");
             return (Criteria) this;
         }
 
-        public Criteria andUserNumberLessThan(String value) {
+        public Criteria andUserNumberLessThan(Integer value) {
             addCriterion("userNumber <", value, "userNumber");
             return (Criteria) this;
         }
 
-        public Criteria andUserNumberLessThanOrEqualTo(String value) {
+        public Criteria andUserNumberLessThanOrEqualTo(Integer value) {
             addCriterion("userNumber <=", value, "userNumber");
             return (Criteria) this;
         }
 
-        public Criteria andUserNumberLike(String value) {
-            addCriterion("userNumber like", value, "userNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserNumberNotLike(String value) {
-            addCriterion("userNumber not like", value, "userNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserNumberIn(List<String> values) {
+        public Criteria andUserNumberIn(List<Integer> values) {
             addCriterion("userNumber in", values, "userNumber");
             return (Criteria) this;
         }
 
-        public Criteria andUserNumberNotIn(List<String> values) {
+        public Criteria andUserNumberNotIn(List<Integer> values) {
             addCriterion("userNumber not in", values, "userNumber");
             return (Criteria) this;
         }
 
-        public Criteria andUserNumberBetween(String value1, String value2) {
+        public Criteria andUserNumberBetween(Integer value1, Integer value2) {
             addCriterion("userNumber between", value1, value2, "userNumber");
             return (Criteria) this;
         }
 
-        public Criteria andUserNumberNotBetween(String value1, String value2) {
+        public Criteria andUserNumberNotBetween(Integer value1, Integer value2) {
             addCriterion("userNumber not between", value1, value2, "userNumber");
             return (Criteria) this;
         }
